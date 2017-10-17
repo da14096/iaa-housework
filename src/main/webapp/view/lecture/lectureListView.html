@@ -1,0 +1,13 @@
+<input type="text" ng-model="lectureSearchQuery">
+<table>
+  <tr>
+    <th>Title</th>
+    <th>RoomBuilding</th>
+    <th>RoomNumber</th>
+  </tr>
+  <tr ng-repeat="lecture in lectures | filter:lectureSearchQuery | orderBy:['title','room.building','room.number']">
+    <td>{{lecture.title}}</td>
+    <td>{{lecture.room.building}}</td>
+    <td>{{lecture.room.number}}</td>
+  </tr>
+</table>
