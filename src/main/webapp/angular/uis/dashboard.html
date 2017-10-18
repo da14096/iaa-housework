@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="scheduleManagement">
+	<head>
+		<meta charset="UTF-8">
+		<title>Stundenplanung - Dashboard</title>
+		<script type="application/javascript" src="angular/lib/angular.min.js"></script>
+		<script type="application/javascript" src="angular/application.js"></script>
+	</head>
+	<body ng-controller="scheduleDashboardController">
+		<h1>Dashboard</h1>
+		<div></div>
+		<lecture-list></lecture-list>
+		<form name="lectureEditForm" ng-controller="lectureEditController">
+			<input name="title" type="text" ng-model="lecture.title"> <input
+				name="room.id" type="text" ng-model="lecture.room.id"> <input
+				type="submit" ng-click="saveLecture()" />
+		</form>
+	</body>
+</html>

@@ -5,7 +5,7 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
 
   <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-    <property name="url" value="jdbc:h2:${sys:user.home}/iaa-housework/h2db"/>
+    <property name="url" value="jdbc:h2:C:/Users/da0015/iaa-housework/h2db"/>
     <property name="username" value="iaa"/>
     <property name="password" value="iaa"/>
     <property name="driverClassName" value="org.h2.Driver"/>
@@ -34,5 +34,5 @@
   <tx:annotation-driven/>
 
   <mvc:annotation-driven/>
-  <context:component-scan base-package="de.nordakademie.iaa"/>
+  <context:component-scan base-package="de.nak.iaa"/>
 </beans>
