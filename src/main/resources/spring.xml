@@ -13,7 +13,7 @@
 
   <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
     <property name="dataSource" ref="dataSource"/>
-    <property name="packagesToScan" value="de.nordakademie.iaa"/>
+    <property name="packagesToScan" value="de.nak.iaa.housework"/>
     <property name="jpaVendorAdapter">
       <bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"/>
     </property>
@@ -34,5 +34,5 @@
   <tx:annotation-driven/>
 
   <mvc:annotation-driven/>
-  <context:component-scan base-package="de.nak.iaa"/>
+  <context:component-scan base-package="de.nak.iaa.housework"/>
 </beans>
