@@ -18,7 +18,7 @@ import javax.persistence.Table;
 public class StudentsClass extends EventParticipant {
 
 	@EmbeddedId
-	private StudentsClassId id;
+	private final StudentsClassId id;
 	@Basic
 	private int size;
 	

@@ -25,6 +25,7 @@ import de.nak.iaa.housework.model.EventType;
 import de.nak.iaa.housework.model.FieldOfStudy;
 import de.nak.iaa.housework.model.Lecturer;
 import de.nak.iaa.housework.model.Room;
+import de.nak.iaa.housework.model.RoomName;
 import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.model.StudentsClassId;
 
@@ -43,10 +44,12 @@ public class TestDefaultDomainRepository {
 	
 	@Autowired
 	private DefaultDomainRepository repository;
-		
-	private Room room;
+	
 	private Lecturer lecturer;
 	private Event event;
+	
+	private RoomName roomName;
+	private Room room;
 	
 	private StudentsClassId studentsClassId;
 	private StudentsClass studentsClass;
@@ -54,7 +57,8 @@ public class TestDefaultDomainRepository {
 	/** setup routine um Datenobjekte zu haben */
 	@Before
 	public void setup () {
-		room =  new Room("TestRoom", 30);
+		roomName = new RoomName('A', 1);
+		room =  new Room(roomName, 30);
 		lecturer = new Lecturer("TestLecturer", 15);
 		event = new Event(EventType.LECTURE, "TestEvent", START, START.plus(90,ChronoUnit.MINUTES), room, lecturer, 10);
 		
@@ -175,7 +179,7 @@ public class TestDefaultDomainRepository {
 		List <Room> allRoom = repository.readAll(Room.class);
 		assertTrue (allRoom.isEmpty());
 		
-		assertNull (repository.find(Room.class, "TestRoom"));
+		assertNull (repository.find(Room.class, roomName));
 		
 		assertNotNull (room.getName());
 		Room updatedRoom = repository.update(room);
@@ -189,7 +193,7 @@ public class TestDefaultDomainRepository {
 		assertFalse (allRoom.isEmpty());
 		Room savedRoom = allRoom.get(0);
 		
-		assertEquals (repository.find(Room.class, "TestRoom"), savedRoom);
+		assertEquals (repository.find(Room.class, roomName), savedRoom);
 		
 		assertEquals (savedRoom, updatedRoom);
 		room.setCapacity(50);
@@ -203,7 +207,7 @@ public class TestDefaultDomainRepository {
 		repository.delete(room);
 		allRoom = repository.readAll(Room.class);
 		assertTrue (allRoom.isEmpty());
-		assertNull (repository.find(Room.class, "TestRoom"));
+		assertNull (repository.find(Room.class, roomName));
 	}
 	
 	/**

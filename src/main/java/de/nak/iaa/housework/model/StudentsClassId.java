@@ -4,6 +4,12 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+
+/**
+ * Diese Klasse wird verwendet um den komplexen Schlüssel der Zenturiennamen abzubilden
+ * 
+ * @author Nico Kriebel
+ */
 @Embeddable
 public class StudentsClassId implements Serializable {
 

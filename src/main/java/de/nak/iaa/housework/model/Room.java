@@ -1,8 +1,8 @@
 package de.nak.iaa.housework.model;
 
 import javax.persistence.Basic;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 /**
@@ -14,22 +14,22 @@ import javax.persistence.Table;
 @Table (name = "ROOM")
 public class Room {
 	
-	@Id
-	private final String name;
+	@EmbeddedId
+	private final RoomName name;
 	@Basic
 	private Integer capacity;
 	@Basic
 	private int changeDuration;
 	
-	public Room(String name) {
+	public Room(RoomName name) {
 		this.name = name;
 	}
-	public Room(String name, int capacity) {
+	public Room(RoomName name, int capacity) {
 		this (name);
 		this.capacity = capacity;
 	}
 	
-	public String getName() {
+	public RoomName getName() {
 		return name;
 	}
 	public Integer getCapacity() {
