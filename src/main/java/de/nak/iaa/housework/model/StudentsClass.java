@@ -1,13 +1,14 @@
 package de.nak.iaa.housework.model;
 
 import javax.persistence.Basic;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 
 /**
- * Repräsentation einer Zenturie, welche über ihren Namen eindeutig identifiziert werden kann.
+ * Repräsentation einer Zenturie, welche über ihren Namen eindeutig identifiziert werden kann. Dieser setzt sich
+ * zusammen aus dem {@link FieldOfStudy} also der Studienrichtung, dem Jahrgang sowie der Klasse(a,b,c,d, usw.)
  * 
  * @author Nico Kriebel
  *
@@ -16,22 +17,30 @@ import javax.persistence.Table;
 @Table (name = "STUDENT_CLASS")
 public class StudentsClass extends EventParticipant {
 
-	@Id
-	private final String name;
+	@EmbeddedId
+	private StudentsClassId id;
 	@Basic
 	private int size;
 	
-	
-	public StudentsClass (String name) {
-		this.name = name;
+	public StudentsClass(StudentsClassId name) {
+		id = name;
 	}
-	public StudentsClass(String name, int size, int minimalBreakTime) {
+	public StudentsClass(StudentsClassId name, int size, int minimalBreakTime) {
 		this (name);
 		super.setMinimalBreakTime(minimalBreakTime);
 		this.size = size;
 	}
 	public String getName() {
-		return name;
+		return id.getFormName();
+	}
+	public FieldOfStudy getFieldOfStudy() {
+		return id.getFieldOfStudy();
+	}
+	public int getYr() {
+		return id.getYear();
+	}
+	public char getForm() {
+		return id.getForm();
 	}
 	public int getSize() {
 		return size;
@@ -40,12 +49,11 @@ public class StudentsClass extends EventParticipant {
 		this.size = size;
 	}
 	
-	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
 	@Override
@@ -57,10 +65,10 @@ public class StudentsClass extends EventParticipant {
 		if (getClass() != obj.getClass())
 			return false;
 		StudentsClass other = (StudentsClass) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (id == null) {
+			if (other.id != null)
 				return false;
-		} else if (!name.equals(other.name))
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
 	}

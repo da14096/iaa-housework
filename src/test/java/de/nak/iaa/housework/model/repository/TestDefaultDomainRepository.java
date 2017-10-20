@@ -22,9 +22,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.EventType;
+import de.nak.iaa.housework.model.FieldOfStudy;
 import de.nak.iaa.housework.model.Lecturer;
 import de.nak.iaa.housework.model.Room;
 import de.nak.iaa.housework.model.StudentsClass;
+import de.nak.iaa.housework.model.StudentsClassId;
 
 
 /**
@@ -44,16 +46,20 @@ public class TestDefaultDomainRepository {
 		
 	private Room room;
 	private Lecturer lecturer;
-	private StudentsClass studentsClass;
 	private Event event;
+	
+	private StudentsClassId studentsClassId;
+	private StudentsClass studentsClass;
 	
 	/** setup routine um Datenobjekte zu haben */
 	@Before
 	public void setup () {
 		room =  new Room("TestRoom", 30);
 		lecturer = new Lecturer("TestLecturer", 15);
-		studentsClass = new StudentsClass("I14c", 36, 15);
 		event = new Event(EventType.LECTURE, "TestEvent", START, START.plus(90,ChronoUnit.MINUTES), room, lecturer, 10);
+		
+		studentsClassId = new StudentsClassId(FieldOfStudy.I, 14, 'c');
+		studentsClass = new StudentsClass(studentsClassId, 36, 15);
 	}
 	
 	/**
@@ -215,7 +221,7 @@ public class TestDefaultDomainRepository {
 		List <StudentsClass> allStudentsClass = repository.readAll(StudentsClass.class);
 		assertTrue (allStudentsClass.isEmpty());
 		
-		assertNull (repository.find(StudentsClass.class, "I14c"));
+		assertNull (repository.find(StudentsClass.class, studentsClassId));
 		
 		assertNotNull (studentsClass.getName());
 		StudentsClass updatedStudentsClass = repository.update(studentsClass);
@@ -229,7 +235,7 @@ public class TestDefaultDomainRepository {
 		assertFalse (allStudentsClass.isEmpty());
 		StudentsClass savedStudentsClass = allStudentsClass.get(0);
 		
-		assertEquals (repository.find(StudentsClass.class, "I14c"), savedStudentsClass);
+		assertEquals (repository.find(StudentsClass.class, studentsClassId), savedStudentsClass);
 		
 		assertEquals (savedStudentsClass, updatedStudentsClass);
 		studentsClass.setSize(50);
@@ -243,6 +249,6 @@ public class TestDefaultDomainRepository {
 		repository.delete(studentsClass);
 		allStudentsClass = repository.readAll(StudentsClass.class);
 		assertTrue (allStudentsClass.isEmpty());
-		assertNull (repository.find(StudentsClass.class, "I14c"));
+		assertNull (repository.find(StudentsClass.class, studentsClassId));
 	}
 }
