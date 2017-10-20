@@ -17,8 +17,8 @@ import javax.persistence.Table;
 public class Lecturer extends EventParticipant {
 
 	@Id
-	@GeneratedValue (strategy = GenerationType.AUTO)
-	private long personnelNumber;
+	@GeneratedValue (strategy = GenerationType.IDENTITY)
+	private Long personnelNumber;
 	@Basic (optional = false)
 	private String name;
 	
@@ -27,7 +27,7 @@ public class Lecturer extends EventParticipant {
 		this.name = name;
 	}
 	
-	public long getPersonnelNumber() {
+	public Long getPersonnelNumber() {
 		return personnelNumber;
 	}
 	public String getName() {
@@ -36,12 +36,12 @@ public class Lecturer extends EventParticipant {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (personnelNumber ^ (personnelNumber >>> 32));
+		result = prime * result + ((personnelNumber == null) ? 0 : personnelNumber.hashCode());
 		return result;
 	}
 	@Override
@@ -53,8 +53,13 @@ public class Lecturer extends EventParticipant {
 		if (getClass() != obj.getClass())
 			return false;
 		Lecturer other = (Lecturer) obj;
-		if (personnelNumber != other.personnelNumber)
+		if (personnelNumber == null) {
+			if (other.personnelNumber != null)
+				return false;
+		} else if (!personnelNumber.equals(other.personnelNumber))
 			return false;
 		return true;
 	}
+	
+	
 }

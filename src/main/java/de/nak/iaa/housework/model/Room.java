@@ -17,7 +17,7 @@ public class Room {
 	@Id
 	private final String name;
 	@Basic
-	private int capacity;
+	private Integer capacity;
 	@Basic
 	private int changeDuration;
 	
@@ -32,7 +32,7 @@ public class Room {
 	public String getName() {
 		return name;
 	}
-	public int getCapacity() {
+	public Integer getCapacity() {
 		return capacity;
 	}
 	public void setCapacity(int capacity) {

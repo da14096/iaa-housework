@@ -1,6 +1,6 @@
 package de.nak.iaa.housework.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -23,17 +23,17 @@ import javax.persistence.Table;
 public class Event {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 	@Basic (optional = false)
 	private final EventType type;
 	@Basic (optional = false)
 	private String title;
 	
 	@Basic
-	private LocalDate start;
+	private LocalDateTime start;
 	@Basic
-	private LocalDate end;
+	private LocalDateTime end;
 	@Basic
 	private int changeDuration;
 	@ManyToOne
@@ -45,12 +45,12 @@ public class Event {
 		this.type = type;
 		this.title = title;
 	}
-	public Event (EventType type, String title, LocalDate start, LocalDate end) {
+	public Event (EventType type, String title, LocalDateTime start, LocalDateTime end) {
 		this (type, title);
 		this.start = start;
 		this.end = end;
 	}
-	public Event(EventType type, String title, LocalDate start, LocalDate end, 
+	public Event(EventType type, String title, LocalDateTime start, LocalDateTime end, 
 			Room room, Lecturer lecturer, int changeDurationInMinutes) {
 		this (type, title, start, end);
 		this.room = room;
@@ -58,7 +58,7 @@ public class Event {
 		this.changeDuration = changeDurationInMinutes;
 	}
 	
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 	public EventType getType() {
@@ -82,16 +82,16 @@ public class Event {
 	public void setLecturer(Lecturer lecturer) {
 		this.lecturer = lecturer;
 	}
-	public LocalDate getStart() {
+	public LocalDateTime getStart() {
 		return start;
 	}
-	public void setStart(LocalDate start) {
+	public void setStart(LocalDateTime start) {
 		this.start = start;
 	}
-	public LocalDate getEnd() {
+	public LocalDateTime getEnd() {
 		return end;
 	}
-	public void setEnd(LocalDate end) {
+	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
 	public int getChangeDuration() {
@@ -101,15 +101,13 @@ public class Event {
 		this.changeDuration = changeDuration;
 	}
 	
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + (int) (id ^ (id >>> 32));
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -119,8 +117,11 @@ public class Event {
 		if (getClass() != obj.getClass())
 			return false;
 		Event other = (Event) obj;
-		if (id != other.id)
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}	
+	}
 }

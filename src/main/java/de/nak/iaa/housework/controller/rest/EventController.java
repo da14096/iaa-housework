@@ -1,6 +1,5 @@
 package de.nak.iaa.housework.controller.rest;
 
-
 import java.util.Collection;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +16,25 @@ import de.nak.iaa.housework.service.DomainService;
 @RequestMapping("/events")
 public class EventController {
 
-  private final DomainService<Event> eventService;
+	private final DomainService<Event> eventService;
 
-  @Autowired
-  public EventController(final DomainService<Event> eventService) {
-    this.eventService = eventService;
-  }
+	@Autowired
+	public EventController(final DomainService<Event> eventService) {
+		this.eventService = eventService;
+	}
 
-  @GetMapping
-  public Collection<Event> readAll() {
-    return eventService.readAll();
-  }
-  @PostMapping
-  public Event updateEvent(@RequestBody final Event event) {
-    return eventService.update(event);
-  }
+	@GetMapping
+	public Collection<Event> readAll() {
+		return eventService.readAll();
+	}
+
+	@PostMapping(path = "/update")
+	public Event updateEvent(@RequestBody final Event event) {
+		return eventService.update(event);
+	}
+
+	@PostMapping(path = "/delete")
+	public void deleteEvent(@RequestBody final Event event) {
+		eventService.delete(event);
+	}
 }
