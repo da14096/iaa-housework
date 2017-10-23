@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="scheduleManagement" style="height:100%">
+	<head>
+		<meta charset="UTF-8"/>
+		<title>Stundenplanung - Dashboard</title>
+				
+		<!-- application & library -->
+		<script type="application/javascript" src="../lib/angular.js"></script>
+		<script type="application/javascript" src="../application.js"></script>
+		
+		<!-- services -->
+		<script type="application/javascript" src="../services/roomService.js"></script>
+		<script type="application/javascript" src="../services/lecturerService.js"></script>
+		<script type="application/javascript" src="../services/eventService.js"></script>
+		<script type="application/javascript" src="../services/studentsClassService.js"></script>
+		
+		<!-- controller -->
+		<script type="application/javascript" src="controller/roomController.js"></script>
+		
+		<!-- directives -->
+		<script type="application/javascript" src="directives/roomDirectives.js"></script>
+		<!-- styles -->
+		<link rel="stylesheet" href="style/font-awesome.min.css">
+		<link rel="stylesheet" type="text/css" href="style/styles.css">
+	</head>
+	<body style="height: 100%; margin: 0px">
+		<div class="header">
+			<div class="caption">Dashboard</div>
+		</div>
+		<div> 
+			<button>Neuer Dozent</button>
+			<button>Neue Zenturie</button>
+			<button>Neue Veranstaltung</button>
+			<button>Neuer Raum</button>
+		</div>
+		<div class="dashboard-tile">
+			<room-list></room-list>
+		</div>
+		<div class="dashboard-tile">
+			<room-list></room-list>
+		</div>
+		<div class="dashboard-tile">
+			<room-list></room-list>
+		</div>
+		<div class="dashboard-tile">
+			<room-list></room-list>
+		</div>		
+	</body>
+</html>

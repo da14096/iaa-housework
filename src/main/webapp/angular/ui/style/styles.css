@@ -1,0 +1,66 @@
+/* variables */
+:root {
+	--margin-width: 0.5rem;
+	--table-divider-color: rgb(115, 115, 115);
+	--font-size: 1rem;
+	--header-font-size: calc(1.5*var(--font-size));
+	--table-header-font-size: calc(1.2*var(--font-size));
+}
+
+/* General Styles */
+body * {
+	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
+	font-size: var(--font-size);
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 500;
+	line-height: 1.2;
+}
+
+/* Styles for a container that has a header and a content */
+.header {
+	background-color: rgb(238, 238, 238);
+	display: flex;
+	padding: var(--margin-width);
+	width: calc(100% - 2px (2* var(--margin-width)));
+}
+.header * {
+	display: inline-block;
+	vertical-align: middle;
+}
+.header .caption {
+	font-size: 	var(--header-font-size);
+	flex-grow: 1;
+}
+.content {
+	width: 100%;
+}
+
+table, th, td {
+	border: 1px solid var(--table-divider-color);
+	border-collapse: collapse;
+}
+
+th, td {
+	text-align: center;
+	vertical-align: middle;
+	padding: calc(var(--margin-width)/2) 0;
+}
+
+th {
+	font-size: var(--table-header-font-size);
+}
+
+tr:nth-child(even) {
+	background-color: rgb(242, 242, 242);
+}
+
+
+
+
+/* Specialized Styles */
+.dashboard-tile {
+	display: inline-block;
+	padding: var(--margin-width);
+	width: calc(50% - (2* var(--margin-width)));
+}
