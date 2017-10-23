@@ -21,10 +21,16 @@ public class Lecturer extends EventParticipant {
 	private Long personnelNumber;
 	@Basic (optional = false)
 	private String name;
+	@Basic (optional = false)
+	private String surname;
 	
-	public Lecturer(String name, int minimalBreakTime) {
+	public Lecturer () {
+		
+	}
+	public Lecturer(String name, String surname, int minimalBreakTime) {
 		super (minimalBreakTime);
 		this.name = name;
+		this.surname = surname;
 	}
 	
 	public Long getPersonnelNumber() {
@@ -35,6 +41,12 @@ public class Lecturer extends EventParticipant {
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+	public String getSurname() {
+		return surname;
 	}
 
 	@Override

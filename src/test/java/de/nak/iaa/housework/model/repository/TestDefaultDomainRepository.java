@@ -20,6 +20,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import de.nak.iaa.housework.model.Building;
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.EventType;
 import de.nak.iaa.housework.model.FieldOfStudy;
@@ -57,9 +58,9 @@ public class TestDefaultDomainRepository {
 	/** setup routine um Datenobjekte zu haben */
 	@Before
 	public void setup () {
-		roomName = new RoomName('A', 1);
+		roomName = new RoomName(Building.A, 1);
 		room =  new Room(roomName, 30);
-		lecturer = new Lecturer("TestLecturer", 15);
+		lecturer = new Lecturer("Test", "Lecturer", 15);
 		event = new Event(EventType.LECTURE, "TestEvent", START, START.plus(90,ChronoUnit.MINUTES), room, lecturer, 10);
 		
 		studentsClassId = new StudentsClassId(FieldOfStudy.I, 14, 'c');
@@ -77,7 +78,7 @@ public class TestDefaultDomainRepository {
 	@Transactional
 	@Rollback(true)
 	@Test
-	public void testForEvent () {
+	public void testForEvent ()  {
 		List <Event> allEvents = repository.readAll(Event.class);
 		assertTrue (allEvents.isEmpty());
 		assertNull (repository.find(Event.class, 1L));

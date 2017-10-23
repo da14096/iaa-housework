@@ -20,7 +20,6 @@ public interface DomainRepository {
 	 */
 	<TYPE> List <TYPE> readAll (Class <TYPE> targetType);
 	
-	
 	/**
 	 * Liefert das Objekt welches über die {@link id} identifiziert wird.
 	 * Der Typ der hier übergebenen id muss dabei passend zu dem {@link Id} Feld (dem Primary-Key) des
@@ -34,20 +33,18 @@ public interface DomainRepository {
 	
 	/**
 	 * Aktualisiert ein Objekt im Persistenzkontext. Ist das Objekt noch nicht persistent
-	 * wird es persitiert. Hier erfolgt auch die ID-Vergabe, sodass das zurückgegebene Objekt mit einer ID 
-	 * versehen ist. 
+	 * wird es persitiert. Hier erfolgt auch die ID-Vergabe bei generierten IDs, sodass das zurückgegebene Objekt 
+	 * mit einer ID versehen ist. 
 	 * 
 	 * @param item das Objekt
 	 * @return das Objekt
 	 */
 	<TYPE> TYPE update (TYPE item);
-	
+		
 	/**
 	 * Löscht ein Objekt aus dem Persistenzkontext.
 	 * 
 	 * @param item das Objekt
 	 */
-	<TYPE> void delete (TYPE item);
-	
-	
+	<TYPE> void delete (TYPE item);	
 }

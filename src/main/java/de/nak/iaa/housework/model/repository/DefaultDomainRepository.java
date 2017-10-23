@@ -2,6 +2,7 @@ package de.nak.iaa.housework.model.repository;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -37,7 +38,13 @@ public class DefaultDomainRepository implements DomainRepository {
 		if (entityManager.contains(item)) {
 			entityManager.merge(item);
 		} else {
-			entityManager.persist(item);
+			try {
+				entityManager.persist(item);
+			} catch (EntityExistsException e) {
+				throw new NotConsitentException("Die Entität [" + item + "] ist bereits persistent bzw. es existiert"
+					+ "eine andere persistente Entität mit dieser ID. Wenn Sie ein update dieser Entität vornehmen"
+					+ " möchten stellen Sie bitte sicher, dass sie diese Entität über eine der read-Methoden abrufen!");
+			}
 		}
 		return item;
 	}

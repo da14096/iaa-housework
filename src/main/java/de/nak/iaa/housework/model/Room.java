@@ -15,12 +15,15 @@ import javax.persistence.Table;
 public class Room {
 	
 	@EmbeddedId
-	private final RoomName name;
+	private RoomName name;
 	@Basic
 	private Integer capacity;
 	@Basic
 	private int changeDuration;
 	
+	public Room() {
+		
+	}
 	public Room(RoomName name) {
 		this.name = name;
 	}

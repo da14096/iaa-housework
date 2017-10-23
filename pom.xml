@@ -22,6 +22,13 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>angularjs</artifactId>
+			<version>1.5.6</version>
+			<scope>provided</scope>
+		</dependency>
+
 		<!-- servlet context -->
 		<dependency>
 			<groupId>javax.servlet</groupId>

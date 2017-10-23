@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.springframework.transaction.annotation.Transactional;
 
+import de.nak.iaa.housework.model.repository.NotConsitentException;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 
 abstract class GenericDomainService <RESPTYPE> implements DomainService<RESPTYPE> {
@@ -17,9 +18,18 @@ abstract class GenericDomainService <RESPTYPE> implements DomainService<RESPTYPE
 	}
 	
 	@Override
-	@Transactional (rollbackFor=Exception.class)
+	@Transactional (rollbackFor=NotConsitentException.class)
+	public RESPTYPE save(RESPTYPE item) throws AlreadyExistsException {
+		try {
+			return repository.update(item);
+		} catch (NotConsitentException e) {
+			throw new AlreadyExistsException("[" +item + "] existiert bereits!");
+		}
+	}
+	
+	@Override
 	public RESPTYPE update(RESPTYPE item) {
-		return repository.update(item);
+		throw new UnsupportedOperationException("The [" + this + "] does not support an update operation!");
 	}
 	
 	@Override
