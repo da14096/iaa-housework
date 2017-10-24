@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.nak.iaa.housework.model.Lecturer;
+import de.nak.iaa.housework.service.AlreadyExistsException;
 import de.nak.iaa.housework.service.DomainService;
 
 @RestController
@@ -28,7 +29,7 @@ public class LecturerController {
     return lecturerService.readAll();
   }
   @PostMapping
-  public Lecturer updateEvent(@RequestBody final Lecturer event) {
-    return lecturerService.update(event);
+  public Lecturer create(@RequestBody final Lecturer event) throws AlreadyExistsException {
+    return lecturerService.save(event);
   }
 }

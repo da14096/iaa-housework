@@ -9,27 +9,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.nak.iaa.housework.model.Room;
+import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.service.AlreadyExistsException;
 import de.nak.iaa.housework.service.DomainService;
 
 @RestController
-@RequestMapping("/room")
-public class RoomController {
+@RequestMapping("/studentsClass")
+public class StudentsClassController {
 
-  private final DomainService<Room> roomService;
+  private final DomainService<StudentsClass> studentsClassService;
 
   @Autowired
-  public RoomController(final DomainService<Room> roomService) {
-    this.roomService = roomService;
+  public StudentsClassController(final DomainService<StudentsClass> studentsClassService) {
+    this.studentsClassService = studentsClassService;
   }
 
   @GetMapping
-  public Collection<Room> readAll() {
-    return roomService.readAll();
+  public Collection<StudentsClass> readAll() {
+    return studentsClassService.readAll();
   }
   @PostMapping
-  public Room createRoom(@RequestBody final Room room) throws AlreadyExistsException {
-    return roomService.save(room);
+  public StudentsClass create(@RequestBody final StudentsClass event) throws AlreadyExistsException {
+    return studentsClassService.save(event);
   }
 }
