@@ -1,20 +1,28 @@
 /* variables */
 :root {
-	--margin-width: 0.5rem;
-	--table-divider-color: rgb(115, 115, 115);
-	--font-size: 1rem;
-	--header-font-size: calc(1.5*var(--font-size));
+	--general-font-size: 1rem;
+	--container-header-font-size: calc(1.5*var(--font-size));
 	--table-header-font-size: calc(1.2*var(--font-size));
+	
+	--margin-width: 0.5rem;
+	--container-margin-width: 2* var(--margin-width);
+
+	--container-header-height: calc(var(--container-header-font-size) + var(--container-margin-width));
+	--container-content-height: calc(100% - var(--container-header-height));
+	--container-width: calc(100% - var(--container-margin-width));
+	
+	--table-divider-color: rgb(212, 212, 212);
 }
 
 /* General Styles */
 body * {
 	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
-	font-size: var(--font-size);
+	font-size: var(--general-font-size);
 	font-style: normal;
 	font-variant: normal;
 	font-weight: 500;
 	line-height: 1.2;
+	color: rgb(70,70,70);
 }
 
 /* Styles for a container that has a header and a content */
@@ -22,18 +30,21 @@ body * {
 	background-color: rgb(238, 238, 238);
 	display: flex;
 	padding: var(--margin-width);
-	width: calc(100% - 2px (2* var(--margin-width)));
+	width: var(--container-width);
+	height: var(--container-header-height);
 }
 .header * {
 	display: inline-block;
 	vertical-align: middle;
 }
 .header .caption {
-	font-size: 	var(--header-font-size);
+	font-size: var(--container-header-font-size);
 	flex-grow: 1;
 }
 .content {
-	width: 100%;
+	padding: var(--margin-width);
+	width: var(--container-width);
+	height: var(--container-content-height);
 }
 
 table, th, td {
@@ -49,18 +60,20 @@ th, td {
 
 th {
 	font-size: var(--table-header-font-size);
+	background: linear-gradient(to bottom,#fafafa 2%, #efefef 98%);
 }
 
-tr:nth-child(even) {
-	background-color: rgb(242, 242, 242);
+tr:nth-child(odd) {
+	background-color: rgb(245, 245, 245);
 }
 
 
 
 
 /* Specialized Styles */
-.dashboard-tile {
+.dashboard-right-tile {
 	display: inline-block;
 	padding: var(--margin-width);
-	width: calc(50% - (2* var(--margin-width)));
+	width: calc(100% - var(--container-margin-width));
+	height: calc(33% - var(--container-margin-width));
 }

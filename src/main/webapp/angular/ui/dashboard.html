@@ -7,18 +7,17 @@
 		<!-- application & library -->
 		<script type="application/javascript" src="../lib/angular.js"></script>
 		<script type="application/javascript" src="../application.js"></script>
-		
 		<!-- services -->
-		<script type="application/javascript" src="../services/roomService.js"></script>
-		<script type="application/javascript" src="../services/lecturerService.js"></script>
-		<script type="application/javascript" src="../services/eventService.js"></script>
-		<script type="application/javascript" src="../services/studentsClassService.js"></script>
+		<script type="application/javascript" src="../services.js"></script>
 		
 		<!-- controller -->
 		<script type="application/javascript" src="controller/roomController.js"></script>
+		<script type="application/javascript" src="controller/lecturerController.js"></script>
+		<script type="application/javascript" src="controller/studentsClassController.js"></script>
 		
 		<!-- directives -->
-		<script type="application/javascript" src="directives/roomDirectives.js"></script>
+		<script type="application/javascript" src="directives/dashboardDirectives.js"></script>
+		
 		<!-- styles -->
 		<link rel="stylesheet" href="style/font-awesome.min.css">
 		<link rel="stylesheet" type="text/css" href="style/styles.css">
@@ -27,23 +26,12 @@
 		<div class="header">
 			<div class="caption">Dashboard</div>
 		</div>
-		<div> 
-			<button>Neuer Dozent</button>
-			<button>Neue Zenturie</button>
-			<button>Neue Veranstaltung</button>
-			<button>Neuer Raum</button>
-		</div>
-		<div class="dashboard-tile">
-			<room-list></room-list>
-		</div>
-		<div class="dashboard-tile">
-			<room-list></room-list>
-		</div>
-		<div class="dashboard-tile">
-			<room-list></room-list>
-		</div>
-		<div class="dashboard-tile">
-			<room-list></room-list>
+		<div class="content">
+			<div style="width: 40%; height: 100%">
+				<room-list class="dashboard-right-tile "></room-list>
+				<lecturers-list class="dashboard-right-tile "></lecturers-list>
+				<students-class-list class="dashboard-right-tile "></studentsClass-list>
+			</div>
 		</div>		
 	</body>
 </html>

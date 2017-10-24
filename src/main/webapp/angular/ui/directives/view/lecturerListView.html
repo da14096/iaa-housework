@@ -1,4 +1,4 @@
-<div class="header margin">
+<div class="header">
 	<div class="caption">Alle Dozenten</div>
 	<input placeholder="Filter" type="text" ng-model="lecturerSearchQuery">
 </div>
@@ -15,16 +15,18 @@
 		<td>{{minimalBreakTime}}</td>
 	</tr>
 	<tr>
-		<td> Wird generiert </td>
+		<td/>
 		<td> 
-			<form name="lecturerCreateForm">
-				<input ng-model="name" type="text" required minlength="2"/> 
-				<input ng-model="surname" type="text" required minlength="2"/> 
+			<form name="lecturerNameForm">
+				<input type="text" ng-model="lecturerToSave.name" placeholder="Vorname"  
+					required minlength="2" ng-pattern="/^[a-zA-Z\s\-]*$/"/> 
+				<input type="text" ng-model="lecturerToSave.surname" placeholder="Nachname"  
+					required minlength="2" ng-pattern="/^[a-zA-Z\s\-]*$/"/> 
 			</form>
 		</td>
 		<td> 
-			<input ng-model="minimalBreakTime" type="text"/> 
-			<button type="submit" ng-click="saveLecturer()" ng-disabled="lecturerCreateForm.$invalid">
+			<input ng-model="lecturerToSave.minimalBreakTime" type="text"/> 
+			<button ng-click="saveLecturer()" ng-disabled="lecturerNameForm.$invalid">
 				<i class="fa fa-plus" aria-hidden="true"></i>
 			</button>
 		</td>

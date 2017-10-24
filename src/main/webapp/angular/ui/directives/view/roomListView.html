@@ -1,4 +1,4 @@
-<div class="header margin">
+<div class="header">
 	<div class="caption">Alle Raeume</div>
 	<input placeholder="Filter" type="text" ng-model="roomSearchQuery">
 </div>
@@ -14,21 +14,21 @@
 		<td>{{room.capacity}}</td>
 		<td>{{room.changeDuration}}</td>
 	</tr>
-	<tr>
-		<td> 
-			<form name="roomEditForm">
-				<input name="building" ng-model="roomToSave.name.building" required type="text" placeholder="Geb." 
-						maxlength="1" minlength="1" pattern="[ABCDEH]" style="width:2.5rem;"/> 
-				<input name="number" ng-model="roomToSave.name.number" type="text" placeholder="Raumnummer"
-						maxlength="3" minlength="3" required pattern="[0-9]{3}" style="width:5rem;" /> 
-			</form>
+	<tr ng-form name="newRoomForm">
+		<td> 	
+			<input name="building" ng-model="roomToSave.name.building" required type="text" placeholder="Geb." 
+					maxlength="1" minlength="1" pattern="[ABCDEH]" style="width:2.5rem"/> 
+			<input name="number" ng-model="roomToSave.name.number" type="text" placeholder="Raumnummer"
+					maxlength="3" minlength="3" required pattern="[0-9]{3}" style="width:5rem;" /> 
 		</td>
 		<td> 
-			<input ng-model="roomToSave.capacity" type="text"/> 
+			<input name="capacity" placeholder="Platzanzahl" ng-model="roomToSave.capacity" type="text" 
+					minlength="1" maxlength="3" pattern="[0-9]{3}"/> 
 		</td>
 		<td> 
-			<input ng-model="roomToSave.changeDuration" type="text"/> 
-			<button type="submit" ng-click="saveRoom()" ng-disabled="roomEditForm.$invalid">
+			<input name="changeDuration" ng-model="roomToSave.changeDuration" type="text"
+					minlength="1" maxlength="3" pattern="[0-9]{3}"/> 
+			<button type="submit" ng-click="saveRoom()" ng-disabled="newRoomForm.$invalid">
 				<i class="fa fa-plus" aria-hidden="true"></i>
 			</button>
 		</td>

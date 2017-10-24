@@ -1,34 +1,37 @@
-<div class="header margin">
-	<div class="caption">Alle Raeume</div>
-	<input placeholder="Filter" type="text" ng-model="roomSearchQuery">
+<div class="header">
+	<div class="caption">Alle Zenturien</div>
+	<input placeholder="Filter" type="text" ng-model="studentsClassSearchQuery">
 </div>
-<table class="content" ng-controller="roomController">
+<table class="content" ng-controller="studentsClassController">
 	<tr>
-		<th>Raum</th>
-		<th>Kapazitaet</th>
-		<th>Wechselzeit</th>
+		<th>Name</th>
+		<th>Groesse</th>
+		<th>Minimale Pausenzeit</th>
 	</tr>
-	<tr ng-repeat="room in rooms | filter:roomSearchQuery | orderBy:['name.building', 'name.number']">
+	<tr ng-repeat="studentsClass in studentsClasses | filter:studentsClassSearchQuery | 
+			orderBy:['id.fieldOfStudy', 'id.yr', 'id.form']">
 		<!-- prepare building rep -->
-		<td>{{room.name.building}}{{room.name.number<100? '0':''}}{{room.name.number<10? '0':''}}{{room.name.number}}</td>
-		<td>{{room.capacity}}</td>
-		<td>{{room.changeDuration}}</td>
+		<td>{{studentsClass.id.fieldOfStudy}}{{studentsClass.id.yr}}{{studendsClass.id.form}}</td>
+		<td>{{studentsClass.size}}</td>
+		<td>{{studentsClass.minimalBreakTime}}</td>
 	</tr>
 	<tr>
 		<td> 
-			<form name="roomEditForm">
-				<input name="building" ng-model="roomToSave.name.building" required type="text" placeholder="Geb." 
-						maxlength="1" minlength="1" pattern="[ABCDEH]" style="width:2.5rem;"/> 
-				<input name="number" ng-model="roomToSave.name.number" type="text" placeholder="Raumnummer"
-						maxlength="3" minlength="3" required pattern="[0-9]{3}" style="width:5rem;" /> 
+			<form name="studentsClassIdForm">
+				<input name="fieldOfStury" ng-model="studentsClassToSave.id.fieldOfStudy" required type="text" 
+						placeholder="A/B/I/W" maxlength="1" minlength="1" pattern="[ABIW]" style="width:2.5rem;"/> 
+				<input name="yr" ng-model="studentsClassToSave.id.yr" type="text" placeholder="Jahrgang(YY)"
+						maxlength="2" minlength="1" required pattern="[0-9]{2}" style="width: 5rem;" /> 
+				<input name="form" ng-model="studentsClassToSave.id.form" type="text" placeholder="Kl."
+						maxlength="1" minlength="1" required pattern="[abcdefg]" style="width: 2.5rem;" /> 
 			</form>
 		</td>
 		<td> 
-			<input ng-model="roomToSave.capacity" type="text"/> 
+			<input ng-model="studentsClassToSave.size" type="text"/> 
 		</td>
 		<td> 
-			<input ng-model="roomToSave.changeDuration" type="text"/> 
-			<button type="submit" ng-click="saveRoom()" ng-disabled="roomEditForm.$invalid">
+			<input ng-model="studentsClassToSave.minimalBreakTime" type="text"/> 
+			<button type="submit" ng-click="saveStudentsClass()" ng-disabled="studentsClassIdForm.$invalid">
 				<i class="fa fa-plus" aria-hidden="true"></i>
 			</button>
 		</td>
