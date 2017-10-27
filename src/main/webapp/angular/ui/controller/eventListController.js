@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('eventController', [
+application.controller('eventListController', [
   '$scope',
   'eventService',
   ($scope, eventService) => {

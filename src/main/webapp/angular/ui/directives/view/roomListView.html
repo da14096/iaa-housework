@@ -2,7 +2,7 @@
 	<div class="caption">Alle Raeume</div>
 	<input placeholder="Filter" type="text" ng-model="roomSearchQuery">
 </div>
-<table class="content" ng-controller="roomController">
+<table class="content">
 	<thead>
 		<tr>
 			<th>Raum</th>
@@ -13,7 +13,8 @@
 	<tbody>
 		<tr ng-repeat="room in rooms | filter:roomSearchQuery | orderBy:['name.building', 'name.number']">
 			<!-- prepare building rep -->
-			<td>{{room.name.building}}{{room.name.number<100? '0':''}}{{room.name.number<10? '0':''}}{{room.name.number}}</td>
+			<td>{{room.name.building}}{{room.name.number<100? '0':''}}
+				{{room.name.number<10? '0':''}}{{room.name.number}}</td>
 			<td>{{room.capacity}}</td>
 			<td>{{room.changeDuration}}</td>
 		</tr>

@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('roomController', [
+application.controller('roomListController', [
   '$scope',
   'roomService',
   ($scope, roomService) => {
@@ -15,5 +15,13 @@ application.controller('roomController', [
             } 
           });
       }
+    
+    $scope.selectRoom = (selValue) => {
+    	if ($scope.selRoom === selValue) {
+    		$scope.selRoom = {};
+    	} else {
+    		$scope.selRoom = selValue;
+    	}
+    }
   }
 ]);

@@ -87,6 +87,14 @@ tr:nth-child(even) {
 	background-color: rgb(245, 245, 245);
 }
 
+.selectable-table tr {
+	cursor: pointer;
+}
+.selectable-table tr.selection {
+	background-image: linear-gradient(to bottom,#1b87e3 2%, #166ed5 98%);
+	color: white;
+}
+
 th, td {
 	border-right: 1px solid var(--general-border-color);
 	text-align: center;
@@ -122,6 +130,10 @@ input, button {
 
 button .fa {
 	vertical-align: middle;
+}
+
+button {
+	cursor: pointer;
 }
 
 /* Specialized Styles */

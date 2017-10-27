@@ -2,26 +2,26 @@ application.directive('roomList', () => ({
   restrict: 'E',
   transclude: false,
   templateUrl: 'directives/view/roomListView.html',
-  controller: 'roomController'
+  controller: 'roomListController'
 }));
 
 application.directive('lecturersList', () => ({
   restrict: 'E',
   transclude: false,
   templateUrl: 'directives/view/lecturerListView.html',
-  controller: 'lecturerController'
+  controller: 'lecturerListController'
 }));
 
 application.directive('studentsClassList', () => ({
   restrict: 'E',
   transclude: false,
   templateUrl: 'directives/view/studentsClassListView.html',
-  controller: 'studentsClassController'
+  controller: 'studentsClassListController'
 }));
 
 application.directive('eventList', () => ({
   restrict: 'E',
   transclude: false,
   templateUrl: 'directives/view/eventListView.html',
-  controller: 'eventController'
+  controller: 'eventListController'
 }));

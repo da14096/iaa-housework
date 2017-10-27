@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('studentsClassController', [
+application.controller('studentsClassListController', [
   '$scope',
   'studentsClassService',
   ($scope, studentsClassService) => {
@@ -15,5 +15,13 @@ application.controller('studentsClassController', [
             } 
           });
       }
+    
+    $scope.selectStudentsClass = (selValue) => {
+    	if ($scope.selStudentsClass === selValue) {
+    		$scope.selStudentsClass = {};
+    	} else {
+    		$scope.selStudentsClass = selValue;
+    	}
+    }
   }
 ]);

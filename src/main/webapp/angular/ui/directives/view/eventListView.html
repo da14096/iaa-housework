@@ -1,8 +1,12 @@
 <div class="header">
 	<div class="caption">Alle Veranstaltungen</div>
+	<button ng-click="createEvent()">
+		Neue Veranstaltung planen
+		<i class="fa fa-plus" aria-hidden="true"></i>
+	</button>
 	<input placeholder="Filter" type="text" ng-model="eventSearchQuery">
 </div>
-<table class="content" ng-controller="eventController">
+<table class="content">
 	<thead>
 		<tr>
 			<th>Uhrzeit</th>
@@ -18,7 +22,8 @@
 			<td>{{event.start}}</td>
 			<td>{{event.end}}</td>
 			<td>{{event.title}}</td>
-			<td>{{event.room.building}}{{event.room.name.number<100? '0':''}}{{event.room.name.number<10? '0':''}}{{event.room.name.number}}</td>
+			<td>{{event.room.building}}{{event.room.name.number<100? '0':''}}
+				{{event.room.name.number<10? '0':''}}{{event.room.name.number}}</td>
 			<td>{{event.lecturer.surname}}
 		</tr>
 	</tbody>

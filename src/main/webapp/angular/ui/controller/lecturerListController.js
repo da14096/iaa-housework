@@ -1,6 +1,6 @@
 'use strict';
 
-application.controller('lecturerController', [
+application.controller('lecturerListController', [
   '$scope',
   'lecturerService',
   ($scope, lecturerService) => {
@@ -15,5 +15,13 @@ application.controller('lecturerController', [
 	        } 
 	      });
 	  }
+	
+	$scope.selectLecturer = (selValue) => {
+		if ($scope.selLecturer === selValue) {
+    		$scope.selLecturer = {};
+    	} else {
+    		$scope.selLecturer = selValue;
+    	}
+	}
   }
 ]);
