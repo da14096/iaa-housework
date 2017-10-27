@@ -1,0 +1,25 @@
+<div class="header">
+	<div class="caption">Alle Veranstaltungen</div>
+	<input placeholder="Filter" type="text" ng-model="eventSearchQuery">
+</div>
+<table class="content" ng-controller="eventController">
+	<thead>
+		<tr>
+			<th>Uhrzeit</th>
+			<th>Ende</th>
+			<th>Titel</th>
+			<th>Raum</th>
+			<th>Dozent</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="event in events | filter:eventSearchQuery | orderBy:['start', 'room']">
+			<!-- prepare building rep -->
+			<td>{{event.start}}</td>
+			<td>{{event.end}}</td>
+			<td>{{event.title}}</td>
+			<td>{{event.room.building}}{{event.room.name.number<100? '0':''}}{{event.room.name.number<10? '0':''}}{{event.room.name.number}}</td>
+			<td>{{event.lecturer.surname}}
+		</tr>
+	</tbody>
+</table>

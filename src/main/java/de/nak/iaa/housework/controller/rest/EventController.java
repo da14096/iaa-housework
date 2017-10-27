@@ -13,7 +13,7 @@ import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.service.DomainService;
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/event")
 public class EventController {
 
 	private final DomainService<Event> eventService;

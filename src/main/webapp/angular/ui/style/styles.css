@@ -1,27 +1,37 @@
 /* variables */
 :root {
 	--general-font-size: 1rem;
-	--container-header-font-size: calc(1.5*var(--font-size));
-	--table-header-font-size: calc(1.2*var(--font-size));
+	--container-header-font-size: calc(1.5 * var(--general-font-size));
+	--table-header-font-size: calc(1.2 * var(--general-font-size));
 	
 	--margin-width: 0.5rem;
-	--container-margin-width: 2* var(--margin-width);
+	--field-margin-width: 0.25rem;
+	--container-margin-width: 2 * var(--margin-width);
+
+	--container-width: 100%;
 
 	--container-header-height: calc(var(--container-header-font-size) + var(--container-margin-width));
 	--container-content-height: calc(100% - var(--container-header-height));
-	--container-width: calc(100% - var(--container-margin-width));
 	
-	--table-divider-color: rgb(212, 212, 212);
+	--field-height: calc(var(--general-font-size));
+	/* is the absolute height of a field in the dom tree */
+	--absolute-field-height: calc(var(--field-height) + 
+									(2 * var(--field-margin-width)) + 
+									(2 * var(--field-border-width)));
+	
+	--field-border-width: 2px;
+	
+	--general-border-color: rgb(212, 212, 212);
 }
 
 /* General Styles */
-body * {
+body {
 	font-family: Calibri, Candara, Segoe, "Segoe UI", Optima, Arial, sans-serif;
 	font-size: var(--general-font-size);
 	font-style: normal;
 	font-variant: normal;
-	font-weight: 500;
-	line-height: 1.2;
+	font-weight: 200;
+	line-height: 1;
 	color: rgb(70,70,70);
 }
 
@@ -29,9 +39,10 @@ body * {
 .header {
 	background-color: rgb(238, 238, 238);
 	display: flex;
-	padding: var(--margin-width);
 	width: var(--container-width);
-	height: var(--container-header-height);
+	
+	padding: var(--margin-width);
+	box-sizing: border-box;
 }
 .header * {
 	display: inline-block;
@@ -42,38 +53,95 @@ body * {
 	flex-grow: 1;
 }
 .content {
-	padding: var(--margin-width);
 	width: var(--container-width);
 	height: var(--container-content-height);
+	
+	box-sizing: border-box;
+	padding: var(--margin-width);
 }
 
-table, th, td {
-	border: 1px solid var(--table-divider-color);
-	border-collapse: collapse;
+table {
+	border: 1px solid var(--general-border-color);
+	/* This style is important to prevent wrong results of the calc function (tables can't have padding anyways) */
+	padding: 0 !important;
+	display: flex;
+	flex-direction: column;
+}
+
+tbody, thead {
+	width: 100%;
+}
+
+tbody {
+	flex-grow: 1;
+	overflow-y: overlay;
+}
+
+tr {
+	display: flex;
+	flex-direction: row;
+	border-bottom: 1px solid var(--general-border-color);
+}
+
+tr:nth-child(even) {
+	background-color: rgb(245, 245, 245);
 }
 
 th, td {
+	border-right: 1px solid var(--general-border-color);
 	text-align: center;
 	vertical-align: middle;
-	padding: calc(var(--margin-width)/2) 0;
+	padding: var(--margin-width);
+	
+	/* Just a placeholder. Give all table-cells a defined width so they share the remaining space equivalent */
+	width: 1px;
+	flex-grow: 1;
+}
+
+th:last-of-type, td:last-of-type {
+	border-right: 0;
 }
 
 th {
 	font-size: var(--table-header-font-size);
 	background: linear-gradient(to bottom,#fafafa 2%, #efefef 98%);
+	font-weight: inherit;
 }
 
-tr:nth-child(odd) {
-	background-color: rgb(245, 245, 245);
+td input {
+
 }
 
 
+input, button {
+	box-sizing: content-box;
+	height: var(--field-height);
+	padding: var(--field-margin-width);
+	border-width: var(--field-border-width);
+}
 
+button .fa {
+	vertical-align: middle;
+}
 
 /* Specialized Styles */
-.dashboard-right-tile {
+.dashboard-tile {
 	display: inline-block;
+	width: 100%;
+	height: 33%;
+	
 	padding: var(--margin-width);
-	width: calc(100% - var(--container-margin-width));
-	height: calc(33% - var(--container-margin-width));
+	box-sizing: border-box;
+}
+
+.dashboard-tile .header .caption {
+	/* because the tiles contain a filter field reset the line height to vertically align the caption centered */
+	line-height: var(--absolute-field-height);
+}
+
+.horizontal-layouted-component {
+	display: inline-block;
+	height: 100%;
+	box-sizing: border-box;
+	float: left;
 }
