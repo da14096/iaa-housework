@@ -7,10 +7,16 @@ import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 
 @Service
-public class EventService extends GenericDomainService<Event> {
+public class EventService extends AbstractDomainService<Event> {
 
 	@Autowired
 	protected EventService(DomainRepository repository) {
 		super(repository, Event.class);
+	}
+	
+	
+	@Override
+	protected Object getIdFromItem(Event item) {
+		return item.getId();
 	}
 }

@@ -4,32 +4,33 @@ import java.util.Collection;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import de.nak.iaa.housework.model.repository.NotConsitentException;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 
-abstract class GenericDomainService <RESPTYPE> implements DomainService<RESPTYPE> {
-
+abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYPE> {
+	
 	private final DomainRepository repository;
 	private final Class <RESPTYPE> type;
 	
-	protected GenericDomainService(DomainRepository repository, Class <RESPTYPE> type) {
+	protected AbstractDomainService(DomainRepository repository, Class <RESPTYPE> type) {
 		this.repository = repository;
 		this.type = type;
 	}
 	
 	@Override
-	@Transactional (rollbackFor=NotConsitentException.class)
-	public RESPTYPE save(RESPTYPE item) throws AlreadyExistsException {
-		try {
+	@Transactional (rollbackFor=Exception.class)
+	public RESPTYPE persist(RESPTYPE item) throws AlreadyExistsException {
+		RESPTYPE persistentItem = repository.find(type, getIdFromItem(item));
+		if (persistentItem == null) {
 			return repository.update(item);
-		} catch (NotConsitentException e) {
-			throw new AlreadyExistsException("[" +item + "] existiert bereits!");
+		} else {
+			throw new IllegalArgumentException();
 		}
 	}
 	
 	@Override
+	@Transactional (rollbackFor=Exception.class)
 	public RESPTYPE update(RESPTYPE item) {
-		throw new UnsupportedOperationException("The [" + this + "] does not support an update operation!");
+		return repository.update(item);
 	}
 	
 	@Override
@@ -43,4 +44,6 @@ abstract class GenericDomainService <RESPTYPE> implements DomainService<RESPTYPE
 	public Collection<RESPTYPE> readAll() {
 		return repository.readAll(type);
 	}
+	
+	protected abstract Object getIdFromItem (RESPTYPE item);
 }

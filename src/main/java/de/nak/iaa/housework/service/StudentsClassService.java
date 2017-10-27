@@ -7,10 +7,15 @@ import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 
 @Service
-public class StudentsClassService extends GenericDomainService<StudentsClass> {
+public class StudentsClassService extends AbstractDomainService<StudentsClass> {
 
 	@Autowired
 	protected StudentsClassService(DomainRepository repository) {
 		super(repository, StudentsClass.class);
+	}
+	
+	@Override
+	protected Object getIdFromItem(StudentsClass item) {
+		return item.getId();
 	}
 }

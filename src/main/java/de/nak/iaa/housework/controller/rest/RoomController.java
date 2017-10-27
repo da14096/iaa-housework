@@ -30,6 +30,6 @@ public class RoomController {
   }
   @PostMapping
   public Room createRoom(@RequestBody final Room room) throws AlreadyExistsException {
-    return roomService.save(room);
+    return roomService.persist(room);
   }
 }

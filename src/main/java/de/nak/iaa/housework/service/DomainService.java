@@ -6,7 +6,7 @@ public interface DomainService <RESPTYPE> {
 
 	Collection <RESPTYPE> readAll ();
 	
-	RESPTYPE save (RESPTYPE item) throws AlreadyExistsException;
+	RESPTYPE persist (RESPTYPE item) throws AlreadyExistsException;
 	
 	RESPTYPE update (RESPTYPE item);
 	

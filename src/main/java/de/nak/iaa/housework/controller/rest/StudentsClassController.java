@@ -30,6 +30,6 @@ public class StudentsClassController {
   }
   @PostMapping
   public StudentsClass create(@RequestBody final StudentsClass event) throws AlreadyExistsException {
-    return studentsClassService.save(event);
+    return studentsClassService.persist(event);
   }
 }

@@ -48,6 +48,9 @@ public class StudentsClass extends EventParticipant {
 	public void setSize(int size) {
 		this.size = size;
 	}
+	public StudentsClassId getId() {
+		return id;
+	}
 	
 	@Override
 	public int hashCode() {
