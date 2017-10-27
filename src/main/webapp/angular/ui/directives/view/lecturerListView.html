@@ -3,32 +3,35 @@
 	<input placeholder="Filter" type="text" ng-model="lecturerSearchQuery">
 </div>
 <table class="content" ng-controller="lecturerController">
-	<tr>
-		<th>Personalnummer</th>
-		<th>Name</th>
-		<th>Minimale Pausenzeit</th>
-	</tr>
-	<tr ng-repeat="lecturer in lecturers | filter:lecturerSearchQuery | orderBy:['personnelNumber']">
-		<!-- prepare building rep -->
-		<td>{{personnelNumber}}</td>
-		<td>{{name}} {{surname}}</td>
-		<td>{{minimalBreakTime}}</td>
-	</tr>
-	<tr>
-		<td/>
-		<td> 
-			<form name="lecturerNameForm">
+	<thead>
+		<tr>
+			<th>Personalnummer</th>
+			<th>Name</th>
+			<th>Minimale Pausenzeit</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="lecturer in lecturers | filter:lecturerSearchQuery | orderBy:['personnelNumber']">
+			<!-- prepare building rep -->
+			<td>{{personnelNumber}}</td>
+			<td>{{name}} {{surname}}</td>
+			<td>{{minimalBreakTime}}</td>
+		</tr>
+		<tr ng-form name="newLecturerForm">
+			<td/> <!-- Display an empty cell for the personnelNumber (it is generated) -->
+			<td> 
 				<input type="text" ng-model="lecturerToSave.name" placeholder="Vorname"  
 					required minlength="2" ng-pattern="/^[a-zA-Z\s\-]*$/"/> 
 				<input type="text" ng-model="lecturerToSave.surname" placeholder="Nachname"  
 					required minlength="2" ng-pattern="/^[a-zA-Z\s\-]*$/"/> 
-			</form>
-		</td>
-		<td> 
-			<input ng-model="lecturerToSave.minimalBreakTime" type="text"/> 
-			<button ng-click="saveLecturer()" ng-disabled="lecturerNameForm.$invalid">
-				<i class="fa fa-plus" aria-hidden="true"></i>
-			</button>
-		</td>
-	</tr>
+			</td>
+			<td> 
+				<input ng-model="lecturerToSave.minimalBreakTime" type="text"
+					minlength="1" maxlength="3" pattern="[0-9]{3}" /> 
+				<button ng-click="saveLecturer()" ng-disabled="newLecturerForm.$invalid">
+					<i class="fa fa-plus" aria-hidden="true"></i>
+				</button>
+			</td>
+		</tr>
+	</tbody>
 </table>

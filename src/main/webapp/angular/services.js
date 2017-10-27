@@ -21,3 +21,11 @@ application.service('studentsClassService', [
     this.findAll = () => $http.get('/iaa-housework/api/studentsClass');
    }
 ]);
+
+application.service('eventService', [
+  '$http',
+  function ($http) {
+    this.findAll = () => $http.get('/iaa-housework/api/event');
+   }
+]);
+

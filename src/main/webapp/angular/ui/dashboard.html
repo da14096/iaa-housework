@@ -14,9 +14,10 @@
 		<script type="application/javascript" src="controller/roomController.js"></script>
 		<script type="application/javascript" src="controller/lecturerController.js"></script>
 		<script type="application/javascript" src="controller/studentsClassController.js"></script>
+		<script type="application/javascript" src="controller/eventController.js"></script>
 		
 		<!-- directives -->
-		<script type="application/javascript" src="directives/dashboardDirectives.js"></script>
+		<script type="application/javascript" src="directives/directives.js"></script>
 		
 		<!-- styles -->
 		<link rel="stylesheet" href="style/font-awesome.min.css">
@@ -27,10 +28,13 @@
 			<div class="caption">Dashboard</div>
 		</div>
 		<div class="content">
-			<div style="width: 40%; height: 100%">
-				<room-list class="dashboard-right-tile "></room-list>
-				<lecturers-list class="dashboard-right-tile "></lecturers-list>
-				<students-class-list class="dashboard-right-tile "></studentsClass-list>
+			<div class="horizontal-layouted-component" style="width: 45%">
+				<room-list class="dashboard-tile "></room-list>
+				<lecturers-list class="dashboard-tile "></lecturers-list>
+				<students-class-list class="dashboard-tile "></studentsClass-list>
+			</div>
+			<div class="horizontal-layouted-component" style="width: 55%">
+				<event-list class="dashboard-tile" style="height:100%"></event-list>
 			</div>
 		</div>		
 	</body>
