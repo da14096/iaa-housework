@@ -15,10 +15,12 @@ public interface DomainRepository {
 	/**
 	 * Liefert alle persistenten Objekte zu einem Typ.
 	 * 
-	 * @param targetType der gewünschte Type
+	 * @param targetType der gewünschte Typ
+	 * @param propertyFilters optional definierbare Filter-Kriterien
 	 * @return Alle persistenten Objekte vom targetType
 	 */
-	<TYPE> List <TYPE> readAll (Class <TYPE> targetType);
+	<TYPE> List <TYPE> readAll (Class <TYPE> targetType, PropertyFilterWrapper... propertyFilters);
+	
 	
 	/**
 	 * Liefert das Objekt welches über die {@link id} identifiziert wird.
@@ -32,15 +34,24 @@ public interface DomainRepository {
 	<TYPE> TYPE find (Class <TYPE> targetType, Object id);
 	
 	/**
-	 * Aktualisiert ein Objekt im Persistenzkontext. Ist das Objekt noch nicht persistent
-	 * wird es persitiert. Hier erfolgt auch die ID-Vergabe bei generierten IDs, sodass das zurückgegebene Objekt 
-	 * mit einer ID versehen ist. 
+	 * Aktualisiert ein Objekt im Persistenzkontext. 
 	 * 
 	 * @param item das Objekt
 	 * @return das Objekt
 	 */
 	<TYPE> TYPE update (TYPE item);
 		
+	
+	/**
+	 * Persistiert eine Objekt. Hier erfolgt auch die ID-Vergabe sofern die ID datenbankseitig generiert wird, 
+	 * sodass das zurückgegebene Objekt mit einer ID versehen ist. 
+	 * 
+	 * @param item das Objekt
+	 * @return das Objekt
+	 */
+	<TYPE> TYPE create (TYPE item);
+	
+	
 	/**
 	 * Löscht ein Objekt aus dem Persistenzkontext.
 	 * 

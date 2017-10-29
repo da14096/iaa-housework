@@ -22,6 +22,9 @@ import javax.persistence.Table;
 @Table(name = "EVENT")
 public class Event {
 
+	public static final String PROPERTY_NAME_START = "start";
+	public static final String PROPERTY_NAME_END = "end";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

@@ -29,6 +29,8 @@ import de.nak.iaa.housework.model.Room;
 import de.nak.iaa.housework.model.RoomName;
 import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.model.StudentsClassId;
+import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
+import de.nak.iaa.housework.model.repository.PropertyFilterWrapper.Connector;
 
 
 /**
@@ -84,7 +86,7 @@ public class TestDefaultDomainRepository {
 		assertNull (repository.find(Event.class, 1L));
 		
 		assertNull (event.getId());
-		Event updatedEvent = repository.update(event);
+		Event updatedEvent = repository.create(event);
 		assertNotNull (event.getId());
 		assertNotNull (repository.find(Event.class, 1L));
 		
@@ -98,8 +100,8 @@ public class TestDefaultDomainRepository {
 		assertEquals (event.getLecturer(), updatedEvent.getLecturer());
 		assertEquals (event.getChangeDuration(), updatedEvent.getChangeDuration());
 		
-		repository.update(lecturer);
-		repository.update(room);
+		repository.create(lecturer);
+		repository.create(room);
 		
 		allEvents = repository.readAll(Event.class);
 		assertFalse (allEvents.isEmpty());
@@ -114,10 +116,31 @@ public class TestDefaultDomainRepository {
 		savedEvent = allEvents.get(0);
 		assertEquals ("AnotherTitle", savedEvent.getTitle());
 		
+			
+		/* Test that the relevant filter-operations work correctly */
+		PropertyFilterWrapper fromFilter = 
+				new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.minusDays(5))
+				.wrap(Connector.AND);
+		PropertyFilterWrapper toFilter = 
+				new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.plusDays(5))
+				.wrap(Connector.AND);
+		
+		allEvents = repository.readAll(Event.class, fromFilter, toFilter);
+		assertFalse (allEvents.isEmpty());
+		assertEquals (allEvents.get(0), event);
+		
+		
+		fromFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.minusDays(5))
+				.wrap(Connector.AND);
+		toFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.plusDays(5))
+				.wrap(Connector.AND);
+		allEvents = repository.readAll(Event.class, fromFilter, toFilter);
+		assertTrue (allEvents.isEmpty());
+		
 		repository.delete(event);
 		allEvents = repository.readAll(Event.class);
 		assertTrue (allEvents.isEmpty());
-		assertNull (repository.find(Event.class, 1L));
+		assertNull (repository.find(Event.class, 1L));	
 	}
 	
 	/**
@@ -137,7 +160,7 @@ public class TestDefaultDomainRepository {
 		assertNull (repository.find(Lecturer.class, 1L));
 		
 		assertNull (lecturer.getPersonnelNumber());
-		Lecturer updatedLecturer = repository.update(lecturer);
+		Lecturer updatedLecturer = repository.create(lecturer);
 		assertNotNull (lecturer.getPersonnelNumber());
 		assertNotNull (repository.find(Lecturer.class, 1L));
 		
@@ -183,7 +206,7 @@ public class TestDefaultDomainRepository {
 		assertNull (repository.find(Room.class, roomName));
 		
 		assertNotNull (room.getName());
-		Room updatedRoom = repository.update(room);
+		Room updatedRoom = repository.create(room);
 		
 		/* consistent */
 		assertEquals (room, updatedRoom);
@@ -229,7 +252,7 @@ public class TestDefaultDomainRepository {
 		assertNull (repository.find(StudentsClass.class, studentsClassId));
 		
 		assertNotNull (studentsClass.getName());
-		StudentsClass updatedStudentsClass = repository.update(studentsClass);
+		StudentsClass updatedStudentsClass = repository.create(studentsClass);
 		
 		/* consistent */
 		assertEquals (studentsClass, updatedStudentsClass);
