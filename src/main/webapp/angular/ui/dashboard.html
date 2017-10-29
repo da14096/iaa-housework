@@ -15,6 +15,7 @@
 		<script type="application/javascript" src="controller/lecturerListController.js"></script>
 		<script type="application/javascript" src="controller/studentsClassListController.js"></script>
 		<script type="application/javascript" src="controller/eventListController.js"></script>
+		<script type="application/javascript" src="controller/eventAddController.js"></script>
 		
 		<!-- directives -->
 		<script type="application/javascript" src="directives/directives.js"></script>
@@ -30,12 +31,13 @@
 		<div class="content">
 			<div class="horizontal-layouted-component" style="width: 45%">
 				<lecturers-list class="dashboard-tile "></lecturers-list>
-				<students-class-list class="dashboard-tile "></studentsClass-list>
+				<students-class-list class="dashboard-tile "></students-class-list>
 				<room-list class="dashboard-tile "></room-list>
 			</div>
 			<div class="horizontal-layouted-component" style="width: 55%">
 				<event-list class="dashboard-tile" style="height:100%"></event-list>
 			</div>
-		</div>		
+		</div>	
+		<event-view ng-show="false" class="modal-dialogue"></event-view>	
 	</body>
 </html>

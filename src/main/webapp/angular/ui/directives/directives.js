@@ -25,3 +25,10 @@ application.directive('eventList', () => ({
   templateUrl: 'directives/view/eventListView.html',
   controller: 'eventListController'
 }));
+
+application.directive('eventView', () => ({
+  restrict: 'E',
+  transclude: false,
+  templateUrl: 'directives/view/eventAddView.html',
+  controller: 'eventAddController'
+}));

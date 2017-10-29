@@ -136,6 +136,20 @@ button {
 	cursor: pointer;
 }
 
+.modal-dialogue {
+	position: absolute;
+	z-index: 999;
+	width: 100%;
+	height: 100%;
+	opacity: 0.3;
+	background-color: black;
+	top: 0;
+}
+
+.model-dialogue .header, .model-dialogue .content  {
+	background-color: white;	
+}
+
 /* Specialized Styles */
 .dashboard-tile {
 	display: inline-block;
