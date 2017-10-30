@@ -2,9 +2,11 @@ package de.nak.iaa.housework.service;
 
 import java.util.Collection;
 
+import de.nak.iaa.housework.model.repository.PropertyFilterWrapper;
+
 public interface DomainService <RESPTYPE> {
 
-	Collection <RESPTYPE> readAll ();
+	Collection <RESPTYPE> readAll (PropertyFilterWrapper... filter);
 	
 	RESPTYPE persist (RESPTYPE item) throws ValidationException;
 	

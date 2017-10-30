@@ -1,5 +1,5 @@
 <div class="header">
-	<span class="caption">Dozenten</span>
+	<span class="caption">{{lecturerListCaption != null? lecturerListCaption: 'Dozenten'}}</span>
 	<button ng-show="newLecturerFormVisible" ng-disabled="newLecturerForm.$invalid" ng-click="saveLecturer()">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>

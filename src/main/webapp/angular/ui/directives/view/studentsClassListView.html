@@ -1,5 +1,5 @@
 <div class="header">
-	<span class="caption">Zenturien</span>
+	<span class="caption">{{studentsClassListCaption != null? studentsClassListCaption: 'Zenturien'}}</span>
 	<button ng-show="newStudentsClassFormVisible" ng-disabled="newStudentsClassForm.$invalid" 
 		ng-click="saveStudentsClass()">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -22,7 +22,7 @@
 		<tr ng-repeat="studentsClass in studentsClasses | filter:studentsClassSearchQuery | 
 			orderBy:['id.fieldOfStudy', 'id.year', 'id.form']">
 			<!-- prepare building rep -->
-			<td>{{studentsClass.id.fieldOfStudy}}{{studentsClass.id.year}}{{studentsClass.id.form}}</td>
+			<td>{{studentsClass.id.fieldOfStudy.identifier}}{{studentsClass.id.year}}{{studentsClass.id.form}}</td>
 			<td>{{studentsClass.size}}</td>
 			<td>{{studentsClass.minimalBreakTime}}</td>
 		</tr>
@@ -32,8 +32,8 @@
 	 ng-class="{'table-add-entry-form-visible': newStudentsClassFormVisible}">
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 20%;">
 		<span class="fieldCaption top-caption">Studienrichtung</span>
-		<input name="fieldOfStudy" ng-model="studentsClassToSave.id.fieldOfStudy" type="text" placeholder="A/B/I/W" 
-			required maxlength="1" minlength="1" pattern="[ABIW]"/>
+		<select name="fieldOfStudy" ng-model="studentsClassToSave.id.fieldOfStudy.identifier" required 
+				ng-options="fieldOfStudy.description for fieldOfStudy in fieldsOfStudy" required></select>
 	</div>
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Jahrgang</span>

@@ -6,14 +6,15 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.nak.iaa.housework.model.repository.DomainRepository;
+import de.nak.iaa.housework.model.repository.PropertyFilterWrapper;
 import de.nak.iaa.housework.service.validation.ValidationService;
 import de.nak.iaa.housework.service.validation.Violation;
 
 
 abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYPE> {
 	
-	private final DomainRepository repository;
-	private final ValidationService validationService;
+	protected final DomainRepository repository;
+	protected final ValidationService validationService;
 	
 	private final Class <RESPTYPE> type;
 	
@@ -45,8 +46,8 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 	
 	@Override
 	@Transactional (readOnly=true)
-	public Collection<RESPTYPE> readAll() {
-		return repository.readAll(type);
+	public Collection<RESPTYPE> readAll(PropertyFilterWrapper... filters) {
+		return repository.readAll(type, filters);
 	}
 	
 	protected abstract Object getIdFromItem (RESPTYPE item);

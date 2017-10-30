@@ -14,12 +14,16 @@
 					ng-min="today"/>
 		</div>
 		<div class="fieldWrapper">
-			<span class="fieldCaption top-caption">Veranstaltungstyp</span>
-			<input name="eventType" type="enum" ng-model="eventToDisplay.type" required/>
+			<span class="fieldCaption top-caption">Dozent</span>
+			<select name="lecturer" ng-model="eventToDisplay.lecturer" required
+				ng-options='(lecturer.surname + ", " + lecturer.name) for lecturer in lecturers'></select>
 		</div>
-		<span ng-show="eventForm.eventStart.$valid">Haaaaallo</span>
+		<div class="fieldWrapper">
+			<span class="fieldCaption top-caption">Veranstaltungstyp</span>
+			<select name="eventType" ng-model="eventToDisplay.type" required 
+				ng-options="eventType for eventType in eventTypes" required></select>
+		</div>
 	</form>
 	<room-list ng-controller="eventController" style="flex-grow: 1"></room-list>
-	
 </div>
 

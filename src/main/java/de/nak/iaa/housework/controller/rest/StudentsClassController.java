@@ -28,6 +28,14 @@ public class StudentsClassController {
   public Collection<StudentsClass> readAll() {
     return studentsClassService.readAll();
   }
+  @GetMapping(path="/cohort")
+  public Collection<StudentsClass> readAllCohorts() {
+    return studentsClassService.readAll();
+  }
+  @GetMapping(path="/maniple")
+  public Collection<StudentsClass> readAllManiples() {
+    return studentsClassService.readAll();
+  }
   @PostMapping
   public StudentsClass create(@RequestBody final StudentsClass studentsClass) throws ValidationException {
     return studentsClassService.persist(studentsClass);

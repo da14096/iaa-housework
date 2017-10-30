@@ -67,6 +67,7 @@ body {
 	padding: var(--margin-width);
 }
 
+/* table-styling */
 table {
 	border: 1px solid var(--general-border-color);
 	/* This style is important to prevent wrong results of the calc function (tables can't have padding anyways) */
@@ -122,17 +123,16 @@ th {
 	background: linear-gradient(to bottom,#fafafa 2%, #efefef 98%);
 	font-weight: inherit;
 }
-
+/* tables which are addable have a form that can slide in -> styling */
 .table-add-entry-form {
 	position: absolute; 
 	top: calc(var(--container-header-height) + var(--margin-width));
     width: calc(100% - var(--container-margin-width));
     box-sizing: border-box;
     padding: var(--margin-width);
-    display: inline-flex;
+    display: none;
     background-color: white;
     border: 1px solid var(--general-font-size);
-    visibility: hidden;
     opacity: 0;
     transition: opacity ease-in 0.5s;
     border-radius: 2px;
@@ -141,7 +141,7 @@ th {
 
 .table-add-entry-form-visible {
 	opacity: 1;
-	visibility: visible;
+	display: inline-flex;
 }
 
 .shadowed-container {
@@ -149,14 +149,28 @@ th {
 	-moz-box-shadow: 5px 5px 50px 0px rgba(0,0,0,0.75);
 	box-shadow: 5px 5px 50px 0px rgba(0,0,0,0.75);
 }
-
-input, button {
+/* styling of fields and buttons */
+input, button, select {
 	box-sizing: content-box;
 	height: var(--field-height);
 	padding: var(--field-margin-width);
 	border-width: var(--field-border-width);
 }
 
+input {
+	cursor: text;	
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+	cursor: pointer;
+}
+
+select {
+	border-width: 1px;
+	cursor: pointer;
+}
+
+/* stylings for fields that have a caption */
 .fieldWrapper {
 	padding: 0 var(--margin-width);
 	box-sizing: border-box;
@@ -164,6 +178,9 @@ input, button {
 
 .fieldWrapper input {
 	max-width: 100%;
+}
+.fieldWrapper select {
+	width: calc(100% - var(--container-margin-width));
 }
 
 .fieldCaption {
@@ -183,6 +200,7 @@ button {
 	cursor: pointer;
 }
 
+/* modal-dialogues */
 .modal-curtain {
 	position: absolute;
 	z-index: 999;

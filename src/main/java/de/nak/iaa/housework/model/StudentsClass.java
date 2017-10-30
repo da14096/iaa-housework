@@ -17,6 +17,10 @@ import javax.persistence.Table;
 @Table (name = "STUDENT_CLASS")
 public class StudentsClass {
 
+	public static final String PROPERTY_ID_FIELD_OF_STUDY = "id.fieldOfStudy";
+	public static final String PROPERTY_ID_YEAR = "id.year";
+	public static final String PROPERTY_ID_FORM = "id.form";
+	
 	@EmbeddedId
 	private StudentsClassId id;
 	@Basic

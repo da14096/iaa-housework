@@ -2,15 +2,20 @@
 
 application.controller('dashboardController', [
   '$scope',
+  'modelService',
   'roomService',
   'lecturerService',
   'studentsClassService',
-  ($scope, roomService, lecturerService, studentsClassService) => {
+  ($scope, modelService, roomService, lecturerService, studentsClassService) => {
     
 	$scope.roomListAddable = true;
     $scope.lecturerListAddable = true;
     $scope.studentsClassListAddable = true;
-   
+
+//  Initialize Enums 
+    modelService.buildings().then(response => {$scope.buildings = response.data});
+    modelService.fieldsOfStudy().then(response => {$scope.fieldsOfStudy = response.data})
+    modelService.eventTypes().then(response => {$scope.eventTypes = response.data})
     
 //  room-operations  
     roomService.findAll().then(response => {$scope.rooms = response.data});

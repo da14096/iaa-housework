@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class DefaultValidationService implements ValidationService {
 
-	@Autowired
+	@Autowired(required=false)
 	private List <Validator> validators;
 	
 	private final Map <Class, List <Validator>> responsibleValidators = new HashMap<>();

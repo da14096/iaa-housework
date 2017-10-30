@@ -1,5 +1,8 @@
 package de.nak.iaa.housework.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum FieldOfStudy {
 
 	A ('A', "Angewandte Informatik"),
@@ -7,19 +10,17 @@ public enum FieldOfStudy {
 	I ('I', "Wirtschaftsinformatik"),
 	W ('W', "Wirtschaftsingenieurswesen");
 	
-	
 	private char identifier;
-	private String name;
+	private String description;
 	
-	private FieldOfStudy (char identifier, String name) {
+	private FieldOfStudy (char identifier, String description) {
 		this.identifier = identifier;
-		this.name = name;
+		this.description = description;
 	}
-	
+	public String getDescription() {
+		return description;
+	}
 	public char getIdentifier() {
 		return identifier;
-	}
-	public String getName() {
-		return name;
 	}
 }

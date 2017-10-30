@@ -1,5 +1,15 @@
 'use strict';
 
+application.service('modelService', [
+  '$http',
+  function ($http) {
+    this.buildings = () => $http.get('/iaa-housework/api/model/buildings');
+    this.eventTypes = () => $http.get('/iaa-housework/api/model/eventTypes');
+    this.fieldsOfStudy = () => $http.get('/iaa-housework/api/model/fieldsOfStudy');
+    
+  }
+]);
+
 application.service('roomService', [
   '$http',
   function ($http) {

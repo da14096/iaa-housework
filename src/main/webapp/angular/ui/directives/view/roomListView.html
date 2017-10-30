@@ -1,5 +1,5 @@
 <div class="header">
-	<span class="caption">Räume</span>
+	<span class="caption">{{roomListCaption != null? roomListCaption: 'Räume'}}</span>
 	<button ng-show="newRoomFormVisible" ng-disabled="newRoomForm.$invalid" ng-click="saveRoom()">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>
@@ -27,10 +27,10 @@
 </table>
 <form name="newRoomForm" class="table-add-entry-form shadowed-container"
 	 ng-class="{'table-add-entry-form-visible': newRoomFormVisible}">
-	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 25%;">
+	<div class="fieldWrapper" style="display: inline-block; max-width: 25%;">
 		<span class="fieldCaption top-caption">Gebäude</span>
-		<input name="building" ng-model="roomToSave.name.building" type="text" placeholder="A/B/C/D/E/H" 
-			required maxlength="1" minlength="1" pattern="[ABCDEH]"/>
+		<select name="building" ng-model="roomToSave.name.building" 
+				ng-options="building for building in buildings" required></select>
 	</div>
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 25%;">
 		<span class="fieldCaption top-caption">Raum</span>

@@ -14,14 +14,12 @@ application.directive('studentsClassList', () => ({
   restrict: 'E',
   transclude: false,
   templateUrl: 'directives/view/studentsClassListView.html',
-  controller: 'studentsClassListController'
 }));
 
 application.directive('eventList', () => ({
   restrict: 'E',
   transclude: false,
   templateUrl: 'directives/view/eventListView.html',
-  controller: 'eventListController'
 }));
 
 application.directive('eventView', () => ({

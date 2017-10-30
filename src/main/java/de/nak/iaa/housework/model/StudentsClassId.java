@@ -28,7 +28,7 @@ public class StudentsClassId implements Serializable {
 	}
 
 	public String getFormName() {
-		return fieldOfStudy.getIdentifier() + String.valueOf(year) + form;
+		return fieldOfStudy + String.valueOf(year) + form;
 	}
 	public FieldOfStudy getFieldOfStudy() {
 		return fieldOfStudy;
