@@ -10,7 +10,7 @@
 
 	--container-width: 100%;
 
-	--container-header-height: calc(var(--container-header-font-size) + var(--container-margin-width));
+	--container-header-height: calc(var(--absolute-field-height) + var(--container-margin-width));
 	--container-content-height: calc(100% - var(--container-header-height));
 	
 	--field-height: calc(var(--general-font-size));
@@ -44,13 +44,20 @@ body {
 	padding: var(--margin-width);
 	box-sizing: border-box;
 }
-.header * {
+.header > * {
 	display: inline-block;
 	vertical-align: middle;
+	margin-right: var(--margin-width);
 }
+.header > *:last-child {
+	margin-right: 0;
+}
+
 .header .caption {
 	font-size: var(--container-header-font-size);
 	flex-grow: 1;
+	/* Set to field-height for the case fields or buttons are contained in the header */
+	line-height: var(--absolute-field-height);
 }
 .content {
 	width: var(--container-width);
@@ -116,16 +123,54 @@ th {
 	font-weight: inherit;
 }
 
-td input {
-
+.table-add-entry-form {
+	position: absolute; 
+	top: calc(var(--container-header-height) + var(--margin-width));
+    width: calc(100% - var(--container-margin-width));
+    box-sizing: border-box;
+    padding: var(--margin-width);
+    display: inline-flex;
+    background-color: white;
+    border: 1px solid var(--general-font-size);
+    opacity: 0;
+    transition: opacity ease-in 0.5s;
+    border-radius: 2px;
+    border: 1px solid var(--general-border-color);
 }
 
+.table-add-entry-form-visible {
+	opacity: 1;
+}
+
+.shadowed-container {
+	-webkit-box-shadow: 5px 5px 50px 0px rgba(0,0,0,0.75);
+	-moz-box-shadow: 5px 5px 50px 0px rgba(0,0,0,0.75);
+	box-shadow: 5px 5px 50px 0px rgba(0,0,0,0.75);
+}
 
 input, button {
 	box-sizing: content-box;
 	height: var(--field-height);
 	padding: var(--field-margin-width);
 	border-width: var(--field-border-width);
+}
+
+.fieldWrapper {
+	padding: 0 var(--margin-width);
+	box-sizing: border-box;
+}
+
+.fieldWrapper input {
+	max-width: 100%;
+}
+
+.fieldCaption {
+    line-height: 1.5;
+    color: grey;
+}
+
+.top-caption {
+	display: block;
 }
 
 button .fa {
@@ -136,7 +181,7 @@ button {
 	cursor: pointer;
 }
 
-.modal-dialogue {
+.modal-curtain {
 	position: absolute;
 	z-index: 999;
 	width: 100%;
@@ -146,8 +191,14 @@ button {
 	top: 0;
 }
 
-.model-dialogue .header, .model-dialogue .content  {
-	background-color: white;	
+.window {
+	background-color: white;
+	position: absolute;
+	height: 80%;	
+	width: 80%;
+	top: 10%;
+	left: 10%;
+	z-index: 1000;
 }
 
 /* Specialized Styles */
@@ -158,11 +209,7 @@ button {
 	
 	padding: var(--margin-width);
 	box-sizing: border-box;
-}
-
-.dashboard-tile .header .caption {
-	/* because the tiles contain a filter field reset the line height to vertically align the caption centered */
-	line-height: var(--absolute-field-height);
+	position:relative;
 }
 
 .horizontal-layouted-component {
