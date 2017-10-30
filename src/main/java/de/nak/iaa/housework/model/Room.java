@@ -41,6 +41,12 @@ public class Room {
 	public void setCapacity(int capacity) {
 		this.capacity = capacity;
 	}
+	public int getChangeDuration() {
+		return changeDuration;
+	}
+	public void setChangeDuration(int changeDuration) {
+		this.changeDuration = changeDuration;
+	}
 	
 	@Override
 	public int hashCode() {

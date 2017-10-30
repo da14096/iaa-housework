@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.service.DomainService;
+import de.nak.iaa.housework.service.ValidationException;
 
 @RestController
 @RequestMapping("/event")
@@ -28,8 +29,13 @@ public class EventController {
 		return eventService.readAll();
 	}
 
+	@PostMapping(path = "/create")
+	public Event createEvent(@RequestBody final Event event) throws ValidationException {
+		return eventService.persist(event);
+	}
+	
 	@PostMapping(path = "/update")
-	public Event updateEvent(@RequestBody final Event event) {
+	public Event updateEvent(@RequestBody final Event event) throws ValidationException {
 		return eventService.update(event);
 	}
 

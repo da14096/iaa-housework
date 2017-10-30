@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.nak.iaa.housework.model.Room;
-import de.nak.iaa.housework.service.AlreadyExistsException;
 import de.nak.iaa.housework.service.DomainService;
+import de.nak.iaa.housework.service.ValidationException;
+import de.nak.iaa.housework.service.validation.Violation;
 
 @RestController
 @RequestMapping("/room")
@@ -29,7 +30,7 @@ public class RoomController {
     return roomService.readAll();
   }
   @PostMapping
-  public Room createRoom(@RequestBody final Room room) throws AlreadyExistsException {
+  public Room createRoom(@RequestBody final Room room) throws ValidationException {
     return roomService.persist(room);
   }
 }

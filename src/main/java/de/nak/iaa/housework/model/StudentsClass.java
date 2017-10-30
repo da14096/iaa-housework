@@ -55,7 +55,12 @@ public class StudentsClass {
 	public StudentsClassId getId() {
 		return id;
 	}
-	
+	public void setMinimalBreakTime(int minimalBreakTime) {
+		this.minimalBreakTime = minimalBreakTime;
+	}
+	public int getMinimalBreakTime() {
+		return minimalBreakTime;
+	}
 	@Override
 	public int hashCode() {
 		final int prime = 31;

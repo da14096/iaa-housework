@@ -5,13 +5,14 @@ import org.springframework.stereotype.Service;
 
 import de.nak.iaa.housework.model.Lecturer;
 import de.nak.iaa.housework.model.repository.DomainRepository;
+import de.nak.iaa.housework.service.validation.ValidationService;
 
 @Service
 public class LecturerService extends AbstractDomainService<Lecturer> {
 
 	@Autowired
-	protected LecturerService(DomainRepository repository) {
-		super(repository, Lecturer.class);
+	protected LecturerService(DomainRepository repository, ValidationService service) {
+		super(repository, service, Lecturer.class);
 	}
 	
 	@Override

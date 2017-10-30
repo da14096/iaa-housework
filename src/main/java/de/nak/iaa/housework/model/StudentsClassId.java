@@ -16,25 +16,25 @@ public class StudentsClassId implements Serializable {
 	private static final long serialVersionUID = -7238116374329603920L;
 
 	private FieldOfStudy fieldOfStudy;
-	private int yr;
+	private int year;
 	private char form;
 
 	public StudentsClassId() { }
 	
-	public StudentsClassId(FieldOfStudy fieldOfStudy, int yr, char form) {
+	public StudentsClassId(FieldOfStudy fieldOfStudy, int year, char form) {
 		this.fieldOfStudy = fieldOfStudy;
-		this.yr = yr;
+		this.year = year;
 		this.form = form;
 	}
 
 	public String getFormName() {
-		return fieldOfStudy.getIdentifier() + String.valueOf(yr) + form;
+		return fieldOfStudy.getIdentifier() + String.valueOf(year) + form;
 	}
 	public FieldOfStudy getFieldOfStudy() {
 		return fieldOfStudy;
 	}
 	public int getYear() {
-		return yr;
+		return year;
 	}
 	public char getForm() {
 		return form;
@@ -46,7 +46,7 @@ public class StudentsClassId implements Serializable {
 		int result = 1;
 		result = prime * result + ((fieldOfStudy == null) ? 0 : fieldOfStudy.hashCode());
 		result = prime * result + form;
-		result = prime * result + yr;
+		result = prime * result + year;
 		return result;
 	}
 
@@ -63,7 +63,7 @@ public class StudentsClassId implements Serializable {
 			return false;
 		if (form != other.form)
 			return false;
-		if (yr != other.yr)
+		if (year != other.year)
 			return false;
 		return true;
 	}

@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.nak.iaa.housework.model.StudentsClass;
-import de.nak.iaa.housework.service.AlreadyExistsException;
 import de.nak.iaa.housework.service.DomainService;
+import de.nak.iaa.housework.service.ValidationException;
 
 @RestController
 @RequestMapping("/studentsClass")
@@ -29,7 +29,7 @@ public class StudentsClassController {
     return studentsClassService.readAll();
   }
   @PostMapping
-  public StudentsClass create(@RequestBody final StudentsClass event) throws AlreadyExistsException {
-    return studentsClassService.persist(event);
+  public StudentsClass create(@RequestBody final StudentsClass studentsClass) throws ValidationException {
+    return studentsClassService.persist(studentsClass);
   }
 }
