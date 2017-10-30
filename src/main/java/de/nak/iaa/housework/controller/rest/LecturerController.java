@@ -29,7 +29,7 @@ public class LecturerController {
     return lecturerService.readAll();
   }
   @PostMapping
-  public Lecturer create(@RequestBody final Lecturer event) throws AlreadyExistsException {
-    return lecturerService.persist(event);
+  public Lecturer create(@RequestBody final Lecturer lecturer) throws AlreadyExistsException {
+    return lecturerService.persist(lecturer);
   }
 }

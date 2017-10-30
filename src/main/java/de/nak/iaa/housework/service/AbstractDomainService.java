@@ -18,13 +18,8 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 	
 	@Override
 	@Transactional (rollbackFor=Exception.class)
-	public RESPTYPE persist(RESPTYPE item) throws AlreadyExistsException {
-		RESPTYPE persistentItem = repository.find(type, getIdFromItem(item));
-		if (persistentItem == null) {
-			return repository.update(item);
-		} else {
-			throw new IllegalArgumentException();
-		}
+	public RESPTYPE persist(RESPTYPE item) {
+		return repository.create(item);
 	}
 	
 	@Override
