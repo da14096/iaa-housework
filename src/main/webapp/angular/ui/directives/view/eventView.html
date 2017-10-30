@@ -1,0 +1,25 @@
+<div class="header">
+	<span class="caption">Veranstaltungsbearbeitung</span>
+</div>
+<div class="content" style="display:inline-flex">
+	<form name="eventForm">
+		<div class="fieldWrapper" style="display: inline-block">
+			<span class="fieldCaption top-caption">Veranstaltungsdatum</span>
+			<input name="eventStart" type="datetime-local" ng-model="eventToDisplay.start" required
+					ng-min="today" ng-change="autofill(value)"/>
+		</div>
+		<div class="fieldWrapper" style="display: inline-block">
+			<span class="fieldCaption top-caption">Veranstaltungsende</span>
+			<input name="eventEnd" type="datetime-local" ng-model="eventToDisplay.end" required
+					ng-min="today"/>
+		</div>
+		<div class="fieldWrapper">
+			<span class="fieldCaption top-caption">Veranstaltungstyp</span>
+			<input name="eventType" type="enum" ng-model="eventToDisplay.type" required/>
+		</div>
+		<span ng-show="eventForm.eventStart.$valid">Haaaaallo</span>
+	</form>
+	<room-list ng-controller="eventController" style="flex-grow: 1"></room-list>
+	
+</div>
+

@@ -1,41 +1,58 @@
 <div class="header">
-	<div class="caption">Alle Zenturien</div>
+	<span class="caption">Zenturien</span>
+	<button ng-show="newStudentsClassFormVisible" ng-disabled="newStudentsClassForm.$invalid" 
+		ng-click="saveStudentsClass()">
+		<i class="fa fa-floppy-o" aria-hidden="true"></i>
+	</button>
+	<button ng-show="studentsClassListAddable" ng-click="newStudentsClassFormVisible = !newStudentsClassFormVisible">
+		<i class="fa" aria-hidden="true" ng-class="{'fa-plus': !newStudentsClassFormVisible, 
+													'fa-times': newStudentsClassFormVisible}"></i>
+	</button>
 	<input placeholder="Filter" type="text" ng-model="studentsClassSearchQuery">
 </div>
-<table class="content">
+<table name="studentsClassList" class="content" ng-class="{selectable: studentsClassListSelectable}">
 	<thead>
 		<tr>
 			<th>Name</th>
-			<th>Groesse</th>
-			<th>Minimale Pausenzeit</th>
+			<th>Größe</th>
+			<th>Pausenzeit</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr ng-repeat="studentsClass in studentsClasses | filter:studentsClassSearchQuery | 
-				orderBy:['id.fieldOfStudy', 'id.yr', 'id.form']">
+			orderBy:['id.fieldOfStudy', 'id.yr', 'id.form']">
 			<!-- prepare building rep -->
-			<td>{{studentsClass.id.fieldOfStudy}}{{studentsClass.id.yr}}{{studendsClass.id.form}}</td>
-			<td>{{studentsClass.size}}</td>
+			<td>{{studentsClass.id.fieldOfStudy}}{{studentsClass.id.yr}}{{studentsClass.id.form}}</td>
+			<td>{{studentsClass.capacity}}</td>
 			<td>{{studentsClass.minimalBreakTime}}</td>
-		</tr>
-		<tr ng-form name="newStudentsClassForm">
-			<td> 
-				<input name="fieldOfStudy" ng-model="studentsClassToSave.id.fieldOfStudy" required type="text" 
-						placeholder="A/B/I/W" maxlength="1" minlength="1" pattern="[ABIW]" style="width:2.5rem;"/> 
-				<input name="yr" ng-model="studentsClassToSave.id.yr" type="text" placeholder="Jahrgang(YY)"
-						maxlength="2" minlength="1" required pattern="[0-9]{2}" style="width: 5rem;" /> 
-				<input name="form" ng-model="studentsClassToSave.id.form" type="text" placeholder="Kl."
-						maxlength="1" minlength="1" required pattern="[abcdefg]" style="width: 2.5rem;" /> 
-			</td>
-			<td> 
-				<input ng-model="studentsClassToSave.size" type="text"/> 
-			</td>
-			<td> 
-				<input ng-model="studentsClassToSave.minimalBreakTime" type="text"/> 
-				<button type="submit" ng-click="saveStudentsClass()" ng-disabled="newStudentsClassForm.$invalid">
-					<i class="fa fa-plus" aria-hidden="true"></i>
-				</button>
-			</td>
 		</tr>
 	</tbody>
 </table>
+<form name="newStudentsClassForm" class="table-add-entry-form shadowed-container"
+	 ng-class="{'table-add-entry-form-visible': newStudentsClassFormVisible}">
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 20%;">
+		<span class="fieldCaption top-caption">Studienrichtung</span>
+		<input name="fieldOfStudy" ng-model="studentsClassToSave.id.fieldOfStudy" type="text" placeholder="A/B/I/W" 
+			required maxlength="1" minlength="1" pattern="[ABIW]"/>
+	</div>
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
+		<span class="fieldCaption top-caption">Jahrgang</span>
+		<input name="yr" ng-model="studentsClassToSave.id.yr" type="text" placeholder="YY"
+			maxlength="2" minlength="2" required pattern="[0-9]{2}"/>
+	</div>
+ 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
+		<span class="fieldCaption top-caption">Klasse</span>
+		<input name="form" placeholder="a,b,c,d,e,f" ng-model="studentsClassToSave.id.form" type="text" 
+			minlength="1" maxlength="1" required pattern="[abcdef]"/>
+	</div>
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
+		<span class="fieldCaption top-caption">Größe</span>
+		<input name="size" ng-model="studentsClassToSave.size" type="text"
+			minlength="1" maxlength="2" required pattern="[0-9]{2}"/> 
+	</div>
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
+		<span class="fieldCaption top-caption">Pausenzeit</span>
+		<input name="minimalBreakTime" ng-model="studentsClassToSave.minimalBreakTime" type="text" placeholder="Minuten"
+			minlength="1" maxlength="2" required pattern="[0-9]{2}"/> 
+	</div>
+</form>

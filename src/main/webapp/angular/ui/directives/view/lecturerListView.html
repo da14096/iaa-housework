@@ -1,37 +1,46 @@
 <div class="header">
-	<div class="caption">Alle Dozenten</div>
+	<span class="caption">Dozenten</span>
+	<button ng-show="newLecturerFormVisible" ng-disabled="newLecturerForm.$invalid" ng-click="saveLecturer()">
+		<i class="fa fa-floppy-o" aria-hidden="true"></i>
+	</button>
+	<button ng-show="lecturerListAddable" ng-click="newLecturerFormVisible = !newLecturerFormVisible">
+		<i class="fa" aria-hidden="true" ng-class="{'fa-plus': !newLecturerFormVisible,
+													 'fa-times': newLecturerFormVisible}"></i>
+	</button>
 	<input placeholder="Filter" type="text" ng-model="lecturerSearchQuery">
 </div>
-<table class="content">
+<table name="lecturerList" class="content" ng-class="{selectable: lecturerListSelectable}">
 	<thead>
 		<tr>
 			<th>Personalnummer</th>
 			<th>Name</th>
-			<th>Minimale Pausenzeit</th>
+			<th>Pausenzeit</th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="lecturer in lecturers | filter:lecturerSearchQuery | orderBy:['personnelNumber']">
+		<tr ng-repeat="lecturer in lecturers | filter:lecturerSearchQuery | orderBy:['lecturer.surname', 'lecturer.name']">
 			<!-- prepare building rep -->
-			<td>{{personnelNumber}}</td>
-			<td>{{name}} {{surname}}</td>
-			<td>{{minimalBreakTime}}</td>
-		</tr>
-		<tr ng-form name="newLecturerForm">
-			<td/> <!-- Display an empty cell for the personnelNumber (it is generated) -->
-			<td> 
-				<input type="text" ng-model="lecturerToSave.name" placeholder="Vorname"  
-					required minlength="2" ng-pattern="/^[a-zA-Z\s\-]*$/"/> 
-				<input type="text" ng-model="lecturerToSave.surname" placeholder="Nachname"  
-					required minlength="2" ng-pattern="/^[a-zA-Z\s\-]*$/"/> 
-			</td>
-			<td> 
-				<input ng-model="lecturerToSave.minimalBreakTime" type="text"
-					minlength="1" maxlength="3" pattern="[0-9]{3}" /> 
-				<button ng-click="saveLecturer()" ng-disabled="newLecturerForm.$invalid">
-					<i class="fa fa-plus" aria-hidden="true"></i>
-				</button>
-			</td>
+			<td>{{lecturer.personnelNumber}}</td>
+			<td>{{lecturer.surname}}, {{lecturer.name}}</td>
+			<td>{{lecturer.minimalBreakTime}}</td>
 		</tr>
 	</tbody>
 </table>
+<form name="newLecturerForm" class="table-add-entry-form shadowed-container" 
+	ng-class="{'table-add-entry-form-visible': newLecturerFormVisible}">
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 33%;">
+		<span class="fieldCaption top-caption">Vorname</span>
+		<input name="name" ng-model="lecturerToSave.name" type="text" 
+			required minlength="2" pattern="[a-zA-Z\s\-]*"/>
+	</div>
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 33%;">
+		<span class="fieldCaption top-caption">Nachname</span>
+		<input name="surname" ng-model="lecturerToSave.surname" type="text"
+			minlength="2" required pattern="[a-zA-Z\s\-]*"/>
+	</div>
+ 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 33%;">
+		<span class="fieldCaption top-caption">Pausenzeit</span>
+		<input name="minimalPauseTime" ng-model="lecturerToSave.minimalBreakTime" type="text" 
+			minlength="1" maxlength="2" required min="15" pattern="[0-9]{2}"/>
+	</div>
+</form>

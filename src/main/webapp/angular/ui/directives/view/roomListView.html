@@ -1,8 +1,14 @@
 <div class="header">
-	<div class="caption">Alle Raeume</div>
+	<span class="caption">Räume</span>
+	<button ng-show="newRoomFormVisible" ng-disabled="newRoomForm.$invalid" ng-click="saveRoom()">
+		<i class="fa fa-floppy-o" aria-hidden="true"></i>
+	</button>
+	<button ng-show="roomListAddable" ng-click="newRoomFormVisible = !newRoomFormVisible">
+		<i class="fa" aria-hidden="true" ng-class="{'fa-plus': !newRoomFormVisible, 'fa-times': newRoomFormVisible}"></i>
+	</button>
 	<input placeholder="Filter" type="text" ng-model="roomSearchQuery">
 </div>
-<table class="content">
+<table name="roomList" class="content" ng-class="{selectable: roomListSelectable}">
 	<thead>
 		<tr>
 			<th>Raum</th>
@@ -18,24 +24,28 @@
 			<td>{{room.capacity}}</td>
 			<td>{{room.changeDuration}}</td>
 		</tr>
-		<tr ng-form name="newRoomForm">
-			<td> 	
-				<input name="building" ng-model="roomToSave.name.building" required type="text" placeholder="Geb." 
-						maxlength="1" minlength="1" pattern="[ABCDEH]" style="width:2.5rem"/> 
-				<input name="number" ng-model="roomToSave.name.number" type="text" placeholder="Raumnummer"
-						maxlength="3" minlength="3" required pattern="[0-9]{3}" style="width:5rem;" /> 
-			</td>
-			<td> 
-				<input name="capacity" placeholder="Platzanzahl" ng-model="roomToSave.capacity" type="text" 
-						minlength="1" maxlength="3" pattern="[0-9]{3}"/> 
-			</td>
-			<td> 
-				<input name="changeDuration" ng-model="roomToSave.changeDuration" type="text"
-						minlength="1" maxlength="2" pattern="[0-9]{2}"/> 
-				<button ng-click="saveRoom()" ng-disabled="newRoomForm.$invalid">
-					<i class="fa fa-plus" aria-hidden="true"></i>
-				</button>
-			</td>
-		</tr>
 	</tbody>
 </table>
+<form name="newRoomForm" class="table-add-entry-form shadowed-container"
+	 ng-class="{'table-add-entry-form-visible': newRoomFormVisible}">
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 25%;">
+		<span class="fieldCaption top-caption">Gebäude</span>
+		<input name="building" ng-model="roomToSave.name.building" type="text" placeholder="A/B/C/D/E/H" 
+			required maxlength="1" minlength="1" pattern="[ABCDEH]"/>
+	</div>
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 25%;">
+		<span class="fieldCaption top-caption">Raum</span>
+		<input name="number" ng-model="roomToSave.name.number" type="text" placeholder="Nummer"
+			maxlength="3" minlength="3" required pattern="[0-9]{3}"/>
+	</div>
+ 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 25%;">
+		<span class="fieldCaption top-caption">Kapazität</span>
+		<input name="capacity" placeholder="Platzanzahl" ng-model="roomToSave.capacity" type="text" 
+			minlength="1" maxlength="3" pattern="[0-9]{3}"/>
+	</div>
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 25%;">
+		<span class="fieldCaption top-caption">Wechselzeit</span>
+		<input name="changeDuration" ng-model="roomToSave.changeDuration" type="text" placeholder="Minuten"
+			minlength="1" maxlength="2" pattern="[0-9]{2}"/> 
+	</div>
+</form>
