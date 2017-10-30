@@ -15,20 +15,24 @@ import javax.persistence.Table;
  */
 @Entity
 @Table (name = "STUDENT_CLASS")
-public class StudentsClass extends EventParticipant {
+public class StudentsClass {
 
 	@EmbeddedId
-	private final StudentsClassId id;
+	private StudentsClassId id;
 	@Basic
 	private int size;
+	@Basic
+	private int minimalBreakTime;
+	
+	public StudentsClass() { }
 	
 	public StudentsClass(StudentsClassId name) {
 		id = name;
 	}
 	public StudentsClass(StudentsClassId name, int size, int minimalBreakTime) {
 		this (name);
-		super.setMinimalBreakTime(minimalBreakTime);
 		this.size = size;
+		this.minimalBreakTime = minimalBreakTime;
 	}
 	public String getName() {
 		return id.getFormName();

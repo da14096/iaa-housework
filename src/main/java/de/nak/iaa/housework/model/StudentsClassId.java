@@ -19,7 +19,7 @@ public class StudentsClassId implements Serializable {
 	private int yr;
 	private char form;
 
-	public StudentsClassId() { /* necessary for hibernate*/ }
+	public StudentsClassId() { }
 	
 	public StudentsClassId(FieldOfStudy fieldOfStudy, int yr, char form) {
 		this.fieldOfStudy = fieldOfStudy;
