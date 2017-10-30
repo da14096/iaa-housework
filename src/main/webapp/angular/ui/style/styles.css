@@ -132,6 +132,7 @@ th {
     display: inline-flex;
     background-color: white;
     border: 1px solid var(--general-font-size);
+    visibility: hidden;
     opacity: 0;
     transition: opacity ease-in 0.5s;
     border-radius: 2px;
@@ -140,6 +141,7 @@ th {
 
 .table-add-entry-form-visible {
 	opacity: 1;
+	visibility: visible;
 }
 
 .shadowed-container {
