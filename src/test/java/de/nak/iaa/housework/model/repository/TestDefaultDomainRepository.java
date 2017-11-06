@@ -30,7 +30,7 @@ import de.nak.iaa.housework.model.RoomName;
 import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.model.StudentsClassId;
 import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
-import de.nak.iaa.housework.model.repository.PropertyFilterWrapper.Connector;
+import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
 
 
 /**
@@ -118,23 +118,20 @@ public class TestDefaultDomainRepository {
 		
 			
 		/* Test that the relevant filter-operations work correctly */
-		PropertyFilterWrapper fromFilter = 
-				new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.minusDays(5))
-				.wrap(Connector.AND);
-		PropertyFilterWrapper toFilter = 
-				new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.plusDays(5))
-				.wrap(Connector.AND);
+		PropertyFilter fromFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.minusDays(5));
+		PropertyFilter toFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.plusDays(5));
+		PropertyFilterChain chain = PropertyFilterChain.startWith(fromFilter).appendFilter(toFilter, Connector.AND);
 		
-		allEvents = repository.readAll(Event.class, fromFilter, toFilter);
+		allEvents = repository.readAll(Event.class, chain);
 		assertFalse (allEvents.isEmpty());
 		assertEquals (allEvents.get(0), event);
 		
 		
-		fromFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.minusDays(5))
-				.wrap(Connector.AND);
-		toFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.plusDays(5))
-				.wrap(Connector.AND);
-		allEvents = repository.readAll(Event.class, fromFilter, toFilter);
+		fromFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.minusDays(5));
+		toFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.plusDays(5));
+		chain = PropertyFilterChain.startWith(fromFilter).appendFilter(toFilter, Connector.AND);
+		
+		allEvents = repository.readAll(Event.class, chain);
 		assertTrue (allEvents.isEmpty());
 		
 		repository.delete(event);
@@ -218,6 +215,14 @@ public class TestDefaultDomainRepository {
 		Room savedRoom = allRoom.get(0);
 		
 		assertEquals (repository.find(Room.class, roomName), savedRoom);
+		
+		PropertyFilter roomFilter = new PropertyFilter(Operator.EQ, Room.PROPERTY_BUILDING, Building.A);
+		List <Room> matchingRooms = repository.readAll(Room.class, PropertyFilterChain.startWith(roomFilter));
+		assertFalse (matchingRooms.isEmpty());
+		
+		roomFilter = new PropertyFilter(Operator.EQ, Room.PROPERTY_BUILDING, Building.B);
+		matchingRooms = repository.readAll(Room.class, PropertyFilterChain.startWith(roomFilter));
+		assertTrue (matchingRooms.isEmpty());
 		
 		assertEquals (savedRoom, updatedRoom);
 		room.setCapacity(50);

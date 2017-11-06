@@ -11,7 +11,8 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
-import de.nak.iaa.housework.model.repository.PropertyFilterWrapper.Connector;
+import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
+import de.nak.iaa.housework.model.repository.PropertyFilterChain.PropertyFilterConnector;
 
 /**
  * Standard-Implementierung des Repositorys. Da die Methoden des Persistenzkontexts sehr generisch sind, 
@@ -26,8 +27,6 @@ public class DefaultDomainRepository implements DomainRepository {
 	private static final String DATA_VAR_NAME = " e";
 	/** Prefix von Variablen, die als Eingabe für eine Query dienen */
 	private static final String INPUT_VAR_NAME_PREFIX = "iv";
-	/** Notation um über auf ein property einer Entität zuzugreifen */
-	private static final String PROPERTY_NAVIGATOR = ".";
 	/** Notation um einen Input-Parameter zu definieren*/
 	private static final String INPUT_PARAMETER_IDENTIFIER= ":";
 	
@@ -76,16 +75,22 @@ public class DefaultDomainRepository implements DomainRepository {
 		return entityManager.find(targetType, id);
 	}
 	@Override
-	public <TYPE> List<TYPE> readAll(Class <TYPE> targetType, PropertyFilterWrapper... propertyFilters) {
+	public <TYPE> List<TYPE> readAll(Class<TYPE> targetType) {
+		return readAll(targetType, PropertyFilterChain.emptyChain());
+	}
+	@Override
+	public <TYPE> List<TYPE> readAll(Class <TYPE> targetType, PropertyFilterChain propertyFilters) {
 		StringBuilder builder = new StringBuilder(buildReadAllClauseForType(targetType));
 		Map <String, Object> queryParameter = new HashMap <>();
-		if (propertyFilters.length > 0) {
+		if (propertyFilters.hasFilters()) {
 			builder.append(WHERE_CLAUSE_PREFIX);
-			for (int i=0; i < propertyFilters.length; i++) {
-				PropertyFilterWrapper wrapper = propertyFilters [i];
-				PropertyFilter filter = wrapper.getFilter();
+			
+			List <PropertyFilterConnector> filters = propertyFilters.getFilters();		
+			for (int i = 0; i < filters.size(); i++) {
+				PropertyFilterConnector connector = filters.get(i);
+				PropertyFilter filter = connector.getFilter();
 				if (i > 0) {
-					builder.append(parseConnector(wrapper.getConnector()));
+					builder.append(parseConnector(connector.getConnector()));
 				}
 				String inputVarName = INPUT_VAR_NAME_PREFIX + i;
 				builder.append(parsePropertyFilter(filter, inputVarName));

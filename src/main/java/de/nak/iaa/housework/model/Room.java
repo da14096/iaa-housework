@@ -5,6 +5,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import de.nak.iaa.housework.model.repository.DomainRepository;
+
 /**
  * Diese Klasse repräsentiert einen Raum. Dieser kann eindeutig über seinen Namen identifiziert werden.
  * 
@@ -13,6 +15,8 @@ import javax.persistence.Table;
 @Entity
 @Table (name = "ROOM")
 public class Room {
+	
+	public static final String PROPERTY_BUILDING = "name" + DomainRepository.PROPERTY_NAVIGATOR + "building";
 	
 	@EmbeddedId
 	private RoomName name;
@@ -70,5 +74,9 @@ public class Room {
 		} else if (!name.equals(other.name))
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return name.toString();
 	}
 }

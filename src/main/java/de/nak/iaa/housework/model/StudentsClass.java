@@ -1,8 +1,13 @@
 package de.nak.iaa.housework.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 
@@ -27,6 +32,9 @@ public class StudentsClass {
 	private int size;
 	@Basic
 	private int minimalBreakTime;
+	
+	@ManyToMany
+	private List <Event> eventsToAttend = new ArrayList<>();
 	
 	public StudentsClass() { }
 	
@@ -65,6 +73,17 @@ public class StudentsClass {
 	public int getMinimalBreakTime() {
 		return minimalBreakTime;
 	}
+	
+	public void addEvent (Event event) {
+		this.eventsToAttend.add(event);
+	}
+	public void cancelEvent (Event event) {
+		this.eventsToAttend.remove(event);
+	}
+	public List<Event> getEvents() {
+		return Collections.unmodifiableList(eventsToAttend);
+	}	
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -87,5 +106,9 @@ public class StudentsClass {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return id.getFormName();
 	}
 }

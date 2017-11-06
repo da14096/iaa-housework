@@ -12,6 +12,18 @@ import javax.persistence.Id;
  */
 public interface DomainRepository {
 
+	/** Notation um über auf ein property einer Entität zuzugreifen */
+	static final String PROPERTY_NAVIGATOR = ".";
+	
+	
+	/**
+	 * Liefert alle persistenten Objekte zu einem Typ.
+	 * 
+	 * @param targetType der gewünschte Typ
+	 * @return Alle persistenten Objekte vom targetType
+	 */
+	<TYPE> List <TYPE> readAll (Class <TYPE> targetType);
+	
 	/**
 	 * Liefert alle persistenten Objekte zu einem Typ.
 	 * 
@@ -19,7 +31,7 @@ public interface DomainRepository {
 	 * @param propertyFilters optional definierbare Filter-Kriterien
 	 * @return Alle persistenten Objekte vom targetType
 	 */
-	<TYPE> List <TYPE> readAll (Class <TYPE> targetType, PropertyFilterWrapper... propertyFilters);
+	<TYPE> List <TYPE> readAll (Class <TYPE> targetType, PropertyFilterChain filter);
 	
 	
 	/**

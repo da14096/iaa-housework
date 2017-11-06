@@ -1,7 +1,5 @@
 package de.nak.iaa.housework.model.repository;
 
-import de.nak.iaa.housework.model.repository.PropertyFilterWrapper.Connector;
-
 /**
  * Schnittstelle für einen Filter, welcher genutzt werde kann um über das {@link DomainRepository} persistente
  * Entitäten zu lesen, die bestimmten Kriterien entsprechen.
@@ -46,8 +44,4 @@ public class PropertyFilter {
 	public Object getPropertyValue() {
 		return propertyValue;
 	}	
-	
-	public PropertyFilterWrapper wrap (Connector connector) {
-		return new PropertyFilterWrapper(connector, this);
-	}
 }
