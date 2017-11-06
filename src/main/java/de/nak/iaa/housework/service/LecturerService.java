@@ -14,9 +14,4 @@ public class LecturerService extends AbstractDomainService<Lecturer> {
 	protected LecturerService(DomainRepository repository, ValidationService service) {
 		super(repository, service, Lecturer.class);
 	}
-	
-	@Override
-	protected Object getIdFromItem(Lecturer item) {
-		return item.getPersonnelNumber();
-	}
 }

@@ -14,9 +14,4 @@ public class RoomService extends AbstractDomainService<Room> {
 	protected RoomService(DomainRepository repository, ValidationService service) {
 		super(repository, service, Room.class);
 	}
-	
-	@Override
-	protected Object getIdFromItem(Room item) {
-		return item.getName();
-	}
 }

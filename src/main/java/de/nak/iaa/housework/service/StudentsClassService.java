@@ -8,15 +8,10 @@ import de.nak.iaa.housework.model.repository.DomainRepository;
 import de.nak.iaa.housework.service.validation.ValidationService;
 
 @Service
-public class StudentsClassServiceC extends AbstractDomainService<StudentsClass> {
+public class StudentsClassService extends AbstractDomainService<StudentsClass> {
 
 	@Autowired
-	protected StudentsClassServiceC(DomainRepository repository, ValidationService service) {
+	protected StudentsClassService(DomainRepository repository, ValidationService service) {
 		super(repository, service, StudentsClass.class);
-	}
-	
-	@Override
-	protected Object getIdFromItem(StudentsClass item) {
-		return item.getId();
 	}
 }

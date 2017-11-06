@@ -25,11 +25,14 @@ public class Event {
 	public static final String PROPERTY_NAME_START = "start";
 	public static final String PROPERTY_NAME_END = "end";
 	
+	public static final String PROPERTY_NAME_ROOM = "room";
+	public static final String PROPERTY_NAME_LECTURER = "lecturer";
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	@Basic (optional = false)
-	private final EventType type;
+	private EventType type;
 	@Basic (optional = false)
 	private String title;
 	
@@ -44,6 +47,8 @@ public class Event {
 	@ManyToOne
 	private Lecturer lecturer;
 		
+	public Event() { }
+	
 	public Event (EventType type, String title) {
 		this.type = type;
 		this.title = title;
@@ -126,5 +131,9 @@ public class Event {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+	@Override
+	public String toString() {
+		return title;
 	}
 }

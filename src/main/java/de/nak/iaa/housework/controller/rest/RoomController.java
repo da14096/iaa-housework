@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.nak.iaa.housework.model.Building;
 import de.nak.iaa.housework.model.Room;
+import de.nak.iaa.housework.model.repository.PropertyFilter;
+import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
+import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 import de.nak.iaa.housework.service.DomainService;
 import de.nak.iaa.housework.service.ValidationException;
-import de.nak.iaa.housework.service.validation.Violation;
 
 @RestController
 @RequestMapping("/room")
@@ -29,7 +32,13 @@ public class RoomController {
   public Collection<Room> readAll() {
     return roomService.readAll();
   }
-  @PostMapping
+  
+  @PostMapping (path="/subset")
+  public Collection<Room> readRoomsForBuilding(@RequestBody final Building building) {
+	  PropertyFilter roomFilter = new PropertyFilter(Operator.EQ, Room.PROPERTY_BUILDING, building);
+	  return roomService.readAll(PropertyFilterChain.startWith(roomFilter));
+  }
+  @PostMapping (path="/create")
   public Room createRoom(@RequestBody final Room room) throws ValidationException {
     return roomService.persist(room);
   }

@@ -1,12 +1,11 @@
 package de.nak.iaa.housework.service;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.transaction.annotation.Transactional;
 
 import de.nak.iaa.housework.model.repository.DomainRepository;
-import de.nak.iaa.housework.model.repository.PropertyFilterWrapper;
+import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 import de.nak.iaa.housework.service.validation.ValidationService;
 import de.nak.iaa.housework.service.validation.Violation;
 
@@ -30,27 +29,27 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 		validate(item);
 		return repository.create(item);
 	}
-	
 	@Override
 	@Transactional (rollbackFor=Exception.class)
 	public RESPTYPE update(RESPTYPE item) throws ValidationException {
 		validate(item);
 		return repository.update(item);
 	}
-	
 	@Override
 	@Transactional (rollbackFor=Exception.class)
 	public void delete(RESPTYPE item) {
 		repository.delete(item);
 	}
-	
 	@Override
 	@Transactional (readOnly=true)
-	public Collection<RESPTYPE> readAll(PropertyFilterWrapper... filters) {
-		return repository.readAll(type, filters);
+	public List<RESPTYPE> readAll() {
+		return repository.readAll(type);
 	}
-	
-	protected abstract Object getIdFromItem (RESPTYPE item);
+	@Override
+	@Transactional (readOnly=true)
+	public List<RESPTYPE> readAll(PropertyFilterChain filterChain) {
+		return repository.readAll(type, filterChain);
+	}
 	
 	private void validate (RESPTYPE item) throws ValidationException {
 		List <Violation> violations = validationService.validate(item);

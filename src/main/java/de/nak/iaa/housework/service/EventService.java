@@ -14,10 +14,4 @@ public class EventService extends AbstractDomainService<Event> {
 	protected EventService(DomainRepository repository, ValidationService service) {
 		super(repository, service, Event.class);
 	}
-	
-	
-	@Override
-	protected Object getIdFromItem(Event item) {
-		return item.getId();
-	}
 }
