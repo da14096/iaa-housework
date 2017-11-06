@@ -2,26 +2,31 @@
 	<span class="caption">Veranstaltungsbearbeitung</span>
 </div>
 <div class="content" style="display:inline-flex">
-	<form name="eventForm">
-		<div class="fieldWrapper" style="display: inline-block">
+	<form name="eventForm" style="display: inline-flex">
+		<div class="fieldWrapper">
 			<span class="fieldCaption top-caption">Veranstaltungsdatum</span>
 			<input name="eventStart" type="datetime-local" ng-model="eventToDisplay.start" required
 					ng-min="today" ng-change="autofill(value)"/>
 		</div>
-		<div class="fieldWrapper" style="display: inline-block">
+		<div class="fieldWrapper">
 			<span class="fieldCaption top-caption">Veranstaltungsende</span>
 			<input name="eventEnd" type="datetime-local" ng-model="eventToDisplay.end" required
 					ng-min="today"/>
 		</div>
 		<div class="fieldWrapper">
-			<span class="fieldCaption top-caption">Dozent</span>
-			<select name="lecturer" ng-model="eventToDisplay.lecturer" required
-				ng-options='(lecturer.surname + ", " + lecturer.name) for lecturer in lecturers'></select>
+			<span class="fieldCaption top-caption">Veranstaltungstyp</span>
+			<select name="eventType" ng-model="eventToDisplay.type" required ng-change="updateAssignableOrganisatory()"
+				ng-options="eventType for eventType in eventTypes" required></select>
 		</div>
 		<div class="fieldWrapper">
-			<span class="fieldCaption top-caption">Veranstaltungstyp</span>
-			<select name="eventType" ng-model="eventToDisplay.type" required 
-				ng-options="eventType for eventType in eventTypes" required></select>
+			<span class="fieldCaption top-caption">Zuordnung zu</span>
+			<select name="assignment" ng-model="assignTo" ng-disabled="eventForm.eventType.$invalid" required 
+				ng-options="item for item in assignableStudentsClasses" required></select>
+		</div>
+		<div class="fieldWrapper">
+			<span class="fieldCaption top-caption">Raum</span>
+			<select name="building" ng-model="assignTo" required 
+				ng-options="item for item in assignableStudentsClasses" required></select>
 		</div>
 	</form>
 	<room-list ng-controller="eventController" style="flex-grow: 1"></room-list>

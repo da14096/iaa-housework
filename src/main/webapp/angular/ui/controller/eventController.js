@@ -3,7 +3,10 @@
 application.controller('eventController', [
   '$scope',
   'eventService',
-  ($scope, eventService) => {
+  'roomService',
+  'lecturerService',
+  'studentsClassService',
+  ($scope, eventService, roomService, lecturerService, studentsClassService) => {
     $scope.today = new Date();
     
     $scope.roomListAddable = false;
@@ -18,8 +21,15 @@ application.controller('eventController', [
     	$scope.eventToDisplay.end = endDate;
     }
     
-    $scope.log = () => {
-    	console.log($scope.eventToDisplay.lecturer);
+    $scope.updateAssignableOrganisatory = () => {
+    	var chosenEventType = $scope.eventToDisplay.type;
+    	switch (chosenEventType) {
+    	case 'Vorlesung':
+    		studentsClassService.findAll().then(response => $scope.assignableOrganisatory = response.data);
+    		break;
+    	default:
+    		console.log(chosenEventType);
+    	}
     }
   }
 ]);

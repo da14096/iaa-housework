@@ -27,7 +27,7 @@
 	</tbody>
 </table>
 <form name="newLecturerForm" class="table-add-entry-form shadowed-container" 
-	ng-class="{'table-add-entry-form-visible': newLecturerFormVisible}">
+	ng-class="{'table-add-entry-form-hidden': !lecturerListAddable, 'table-add-entry-form-visible': newLecturerFormVisible}">
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 33%;">
 		<span class="fieldCaption top-caption">Vorname</span>
 		<input name="name" ng-model="lecturerToSave.name" type="text" 

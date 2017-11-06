@@ -126,11 +126,11 @@ th {
 /* tables which are addable have a form that can slide in -> styling */
 .table-add-entry-form {
 	position: absolute; 
+	display: inline-flex;
 	top: calc(var(--container-header-height) + var(--margin-width));
     width: calc(100% - var(--container-margin-width));
     box-sizing: border-box;
     padding: var(--margin-width);
-    display: none;
     background-color: white;
     border: 1px solid var(--general-font-size);
     opacity: 0;
@@ -139,9 +139,11 @@ th {
     border: 1px solid var(--general-border-color);
 }
 
+.table-add-entry-form-hidden {
+	display: none;
+}
 .table-add-entry-form-visible {
 	opacity: 1;
-	display: inline-flex;
 }
 
 .shadowed-container {

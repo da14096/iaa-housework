@@ -29,7 +29,8 @@
 	</tbody>
 </table>
 <form name="newStudentsClassForm" class="table-add-entry-form shadowed-container"
-	 ng-class="{'table-add-entry-form-visible': newStudentsClassFormVisible}">
+	ng-class="{'table-add-entry-form-hidden': !studentsClassListAddable,
+				'table-add-entry-form-visible': newStudentsClassFormVisible}">
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 20%;">
 		<span class="fieldCaption top-caption">Studienrichtung</span>
 		<select name="fieldOfStudy" ng-model="studentsClassToSave.id.fieldOfStudy.identifier" required 

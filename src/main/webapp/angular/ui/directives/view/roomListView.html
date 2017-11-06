@@ -12,7 +12,7 @@
 	<thead>
 		<tr>
 			<th>Raum</th>
-			<th>Kapazitaet</th>
+			<th>Kapazität</th>
 			<th>Wechselzeit</th>
 		</tr>
 	</thead>
@@ -26,7 +26,7 @@
 	</tbody>
 </table>
 <form name="newRoomForm" class="table-add-entry-form shadowed-container"
-	 ng-class="{'table-add-entry-form-visible': newRoomFormVisible}">
+	 ng-class="{'table-add-entry-form-hidden': !roomListAddable,'table-add-entry-form-visible': newRoomFormVisible}">
 	<div class="fieldWrapper" style="display: inline-block; max-width: 25%;">
 		<span class="fieldCaption top-caption">Gebäude</span>
 		<select name="building" ng-model="roomToSave.name.building" 
