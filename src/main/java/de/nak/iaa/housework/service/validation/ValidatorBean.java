@@ -19,6 +19,10 @@ import org.springframework.stereotype.Component;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
+@SuppressWarnings("rawtypes")
 public @interface ValidatorBean {
 
+	public static final Class <? extends Validator> NULL_REP = Validator.class;
+	
+	Class<? extends Validator> previentValidator() default Validator.class;
 }

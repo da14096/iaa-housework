@@ -22,9 +22,12 @@ import javax.persistence.Table;
 @Table(name = "EVENT")
 public class Event {
 
+	public static final String PROPERTY_NAME_EVENT_TYPE = "type";
+	public static final String PROPERTY_NAME_TITLE = "title";
+	
 	public static final String PROPERTY_NAME_START = "start";
 	public static final String PROPERTY_NAME_END = "end";
-	
+	public static final String PROPERTY_NAME_CHANGE_DURATION = "changeDuration";
 	public static final String PROPERTY_NAME_ROOM = "room";
 	public static final String PROPERTY_NAME_LECTURER = "lecturer";
 	
@@ -41,7 +44,7 @@ public class Event {
 	@Basic
 	private LocalDateTime end;
 	@Basic
-	private int changeDuration;
+	private Integer changeDuration;
 	@ManyToOne
 	private Room room;
 	@ManyToOne
@@ -102,7 +105,7 @@ public class Event {
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
-	public int getChangeDuration() {
+	public Integer getChangeDuration() {
 		return changeDuration;
 	}
 	public void setChangeDuration(int changeDuration) {

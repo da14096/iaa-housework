@@ -18,7 +18,7 @@ import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
 @ValidatorBean
 public class UniqueEventValidator extends TypeOrientedValidator<Event> {
 
-	private DomainRepository repository;
+	private final DomainRepository repository;
 
 	@Autowired
 	public UniqueEventValidator(DomainRepository repository) {

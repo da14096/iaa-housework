@@ -5,4 +5,5 @@ import java.util.List;
 public interface ValidationService {
 	
 	<ET> List <Violation> validate (ET entity);
+
 }
