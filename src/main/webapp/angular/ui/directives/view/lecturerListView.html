@@ -1,6 +1,6 @@
 <div class="header">
-	<span class="caption">{{lecturerListCaption != null? lecturerListCaption: 'Dozenten'}}</span>
-	<button ng-show="newLecturerFormVisible" ng-disabled="newLecturerForm.$invalid" ng-click="saveLecturer()">
+	<span class="caption">Dozenten</span>
+	<button ng-show="newLecturerFormVisible" ng-disabled="newLecturerForm.$invalid" ng-click="createLecturer()">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>
 	<button ng-show="lecturerListAddable" ng-click="newLecturerFormVisible = !newLecturerFormVisible">
@@ -27,20 +27,20 @@
 	</tbody>
 </table>
 <form name="newLecturerForm" class="table-add-entry-form shadowed-container" 
-	ng-class="{'table-add-entry-form-hidden': !lecturerListAddable, 'table-add-entry-form-visible': newLecturerFormVisible}">
+	ng-class="{'table-add-entry-form-visible': newLecturerFormVisible}">
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 33%;">
 		<span class="fieldCaption top-caption">Vorname</span>
-		<input name="name" ng-model="lecturerToSave.name" type="text" 
+		<input name="name" ng-model="lecturerToCreate.name" type="text" 
 			required minlength="2" pattern="[a-zA-Z\s\-]*"/>
 	</div>
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 33%;">
 		<span class="fieldCaption top-caption">Nachname</span>
-		<input name="surname" ng-model="lecturerToSave.surname" type="text"
+		<input name="surname" ng-model="lecturerToCreate.surname" type="text"
 			minlength="2" required pattern="[a-zA-Z\s\-]*"/>
 	</div>
  	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 33%;">
 		<span class="fieldCaption top-caption">Pausenzeit</span>
-		<input name="minimalPauseTime" ng-model="lecturerToSave.minimalBreakTime" type="text" 
+		<input name="minimalPauseTime" ng-model="lecturerToCreate.minimalBreakTime" type="text" 
 			minlength="1" maxlength="2" required min="15" pattern="[0-9]{2}"/>
 	</div>
 </form>

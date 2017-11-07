@@ -14,7 +14,7 @@ application.service('roomService', [
   '$http',
   function ($http) {
     this.findAll = () => $http.get('/iaa-housework/api/room');
-    this.saveRoom = (room) => $http.post('/iaa-housework/api/room', room);
+    this.createRoom = (room) => $http.post('/iaa-housework/api/room/create', room);
   }
 ]);
 
@@ -22,7 +22,7 @@ application.service('lecturerService', [
   '$http',
   function ($http) {
     this.findAll = () => $http.get('/iaa-housework/api/lecturer');
-    this.saveLecturer = (lecturer) => $http.post('/iaa-housework/api/lecturer', lecturer);
+    this.createLecturer = (lecturer) => $http.post('/iaa-housework/api/lecturer/create', lecturer);
    }
 ]);
 
@@ -30,7 +30,7 @@ application.service('studentsClassService', [
   '$http',
   function ($http) {
     this.findAll = () => $http.get('/iaa-housework/api/studentsClass');
-    this.saveStudentsClass = (studentsClass) => $http.post('/iaa-housework/api/studentsClass', studentsClass);
+    this.createStudentsClass = (studentsClass) => $http.post('/iaa-housework/api/studentsClass/create', studentsClass);
    }
 ]);
 

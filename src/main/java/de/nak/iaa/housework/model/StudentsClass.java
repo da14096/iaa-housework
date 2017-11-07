@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 /**
  * Repräsentation einer Zenturie, welche über ihren Namen eindeutig identifiziert werden kann. Dieser setzt sich
@@ -34,6 +36,7 @@ public class StudentsClass {
 	private int minimalBreakTime;
 	
 	@ManyToMany
+	@JsonIgnore /* ignore the events to prevent that the events are fetched when not needed */ 
 	private List <Event> eventsToAttend = new ArrayList<>();
 	
 	public StudentsClass() { }
@@ -80,7 +83,7 @@ public class StudentsClass {
 	public void cancelEvent (Event event) {
 		this.eventsToAttend.remove(event);
 	}
-	public List<Event> getEvents() {
+	public List<Event> getEventsToAttend() {
 		return Collections.unmodifiableList(eventsToAttend);
 	}	
 	

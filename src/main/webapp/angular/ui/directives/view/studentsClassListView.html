@@ -1,7 +1,6 @@
 <div class="header">
-	<span class="caption">{{studentsClassListCaption != null? studentsClassListCaption: 'Zenturien'}}</span>
-	<button ng-show="newStudentsClassFormVisible" ng-disabled="newStudentsClassForm.$invalid" 
-		ng-click="saveStudentsClass()">
+	<span class="caption">Zenturien</span>
+	<button ng-show="newStudentsClassFormVisible"  ng-click="createStudentsClass()">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>
 	<button ng-show="studentsClassListAddable" ng-click="newStudentsClassFormVisible = !newStudentsClassFormVisible">
@@ -22,38 +21,37 @@
 		<tr ng-repeat="studentsClass in studentsClasses | filter:studentsClassSearchQuery | 
 			orderBy:['id.fieldOfStudy', 'id.year', 'id.form']">
 			<!-- prepare building rep -->
-			<td>{{studentsClass.id.fieldOfStudy.identifier}}{{studentsClass.id.year}}{{studentsClass.id.form}}</td>
+			<td>{{studentsClass.id.fieldOfStudy.abreviation}}{{studentsClass.id.year.toString().substr(studentsClass.id.year.toString().length - 2)}}{{studentsClass.id.form}}</td>
 			<td>{{studentsClass.size}}</td>
 			<td>{{studentsClass.minimalBreakTime}}</td>
 		</tr>
 	</tbody>
 </table>
 <form name="newStudentsClassForm" class="table-add-entry-form shadowed-container"
-	ng-class="{'table-add-entry-form-hidden': !studentsClassListAddable,
-				'table-add-entry-form-visible': newStudentsClassFormVisible}">
+	ng-class="{'table-add-entry-form-visible': newStudentsClassFormVisible}">
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 20%;">
 		<span class="fieldCaption top-caption">Studienrichtung</span>
-		<select name="fieldOfStudy" ng-model="studentsClassToSave.id.fieldOfStudy.identifier" required 
-				ng-options="fieldOfStudy.description for fieldOfStudy in fieldsOfStudy" required></select>
+		<select name="fieldOfStudy" ng-model="studentsClassToCreate.id.fieldOfStudy" required
+				ng-options="fieldOfStudy.description for fieldOfStudy in fieldsOfStudy"></select>
 	</div>
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Jahrgang</span>
-		<input name="yr" ng-model="studentsClassToSave.id.year" type="text" placeholder="YY"
-			maxlength="2" minlength="2" required pattern="[0-9]{2}"/>
+		<input name="yr" ng-model="studentsClassToCreate.id.year" type="text" placeholder="YYYY"
+			maxlength="4" minlength="2" required pattern="[0-9]{4}"/>
 	</div>
  	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Klasse</span>
-		<input name="form" placeholder="a,b,c,d,e,f" ng-model="studentsClassToSave.id.form" type="text" 
+		<input name="form" placeholder="a,b,c,d,e,f" ng-model="studentsClassToCreate.id.form" type="text" 
 			minlength="1" maxlength="1" required pattern="[abcdef]"/>
 	</div>
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Größe</span>
-		<input name="size" ng-model="studentsClassToSave.size" type="text"
+		<input name="size" ng-model="studentsClassToCreate.size" type="text"
 			minlength="1" maxlength="2" required pattern="[0-9]{2}"/> 
 	</div>
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Pausenzeit</span>
-		<input name="minimalBreakTime" ng-model="studentsClassToSave.minimalBreakTime" type="text" placeholder="Minuten"
+		<input name="minimalBreakTime" ng-model="studentsClassToCreate.minimalBreakTime" type="text" placeholder="Minuten"
 			minlength="1" maxlength="2" required pattern="[0-9]{2}"/> 
 	</div>
 </form>

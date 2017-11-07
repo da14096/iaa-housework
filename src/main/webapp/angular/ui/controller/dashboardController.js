@@ -11,7 +11,9 @@ application.controller('dashboardController', [
 	$scope.roomListAddable = true;
     $scope.lecturerListAddable = true;
     $scope.studentsClassListAddable = true;
-
+    
+    $scope.roomListCaption = 'Räume';
+    
 //  Initialize Enums 
     modelService.buildings().then(response => {$scope.buildings = response.data});
     modelService.fieldsOfStudy().then(response => {$scope.fieldsOfStudy = response.data})
@@ -19,12 +21,12 @@ application.controller('dashboardController', [
     
 //  room-operations  
     roomService.findAll().then(response => {$scope.rooms = response.data});
-    $scope.saveRoom = () => {
-        roomService.saveRoom($scope.roomToSave)
+    $scope.createRoom = () => {
+        roomService.createRoom($scope.roomToCreate)
           .then(response => {
             if (response.status === 200) {
               $scope.rooms.push(response.data);
-              $scope.roomToSave = {};
+              $scope.roomToCreate = {};
               $scope.newRoomFormVisible = false;
             } 
         });
@@ -32,12 +34,12 @@ application.controller('dashboardController', [
     
 //  lecturer-operations  
     lecturerService.findAll().then(response => {$scope.lecturers = response.data});
-    $scope.saveLecturer = () => {
-        lecturerService.saveLecturer($scope.lecturerToSave)
+    $scope.createLecturer = () => {
+        lecturerService.createLecturer($scope.lecturerToCreate)
           .then(response => {
             if (response.status === 200) {
               $scope.lecturers.push(response.data);
-              $scope.lecturerToSave = {};
+              $scope.lecturerToCreate = {};
               $scope.newLecturerFormVisible = false;
             } 
         });
@@ -45,12 +47,12 @@ application.controller('dashboardController', [
 
 //  studentsClass-operations  
     studentsClassService.findAll().then(response => {$scope.studentsClasses = response.data});
-    $scope.saveStudentsClass = () => {
-    	studentsClassService.saveStudentsClass($scope.studentsClassToSave)
+    $scope.createStudentsClass = () => {
+    	studentsClassService.createStudentsClass($scope.studentsClassToCreate)
           .then(response => {
             if (response.status === 200) {
               $scope.studentsClasses.push(response.data);
-              $scope.studentsClassToSave = {};
+              $scope.studentsClassToCreate = {};
               $scope.newStudentsClassFormVisible = false;
             } 
         });

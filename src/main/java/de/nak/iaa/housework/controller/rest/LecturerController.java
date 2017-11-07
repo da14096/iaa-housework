@@ -28,7 +28,7 @@ public class LecturerController {
   public Collection<Lecturer> readAll() {
     return lecturerService.readAll();
   }
-  @PostMapping
+  @PostMapping (path="/create")
   public Lecturer create(@RequestBody final Lecturer lecturer) throws ValidationException {
     return lecturerService.persist(lecturer);
   }

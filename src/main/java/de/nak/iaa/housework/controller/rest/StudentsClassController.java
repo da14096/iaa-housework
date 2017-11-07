@@ -1,6 +1,7 @@
 package de.nak.iaa.housework.controller.rest;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,8 @@ public class StudentsClassController {
 
   @GetMapping
   public Collection<StudentsClass> readAll() {
-    return studentsClassService.readAll();
+	List <StudentsClass> all = studentsClassService.readAll();  
+    return all;
   }
   @GetMapping(path="/cohort")
   public Collection<StudentsClass> readAllCohorts() {
@@ -36,7 +38,7 @@ public class StudentsClassController {
   public Collection<StudentsClass> readAllManiples() {
     return studentsClassService.readAll();
   }
-  @PostMapping
+  @PostMapping(path="/create")
   public StudentsClass create(@RequestBody final StudentsClass studentsClass) throws ValidationException {
     return studentsClassService.persist(studentsClass);
   }

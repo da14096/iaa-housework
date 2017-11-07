@@ -118,6 +118,7 @@ public class TestDefaultDomainRepository {
 		
 			
 		/* Test that the relevant filter-operations work correctly */
+		// 1.) find Events in dateRange
 		PropertyFilter fromFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.minusDays(5));
 		PropertyFilter toFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.plusDays(5));
 		PropertyFilterChain chain = PropertyFilterChain.startWith(fromFilter).appendFilter(toFilter, Connector.AND);
@@ -126,13 +127,46 @@ public class TestDefaultDomainRepository {
 		assertFalse (allEvents.isEmpty());
 		assertEquals (allEvents.get(0), event);
 		
-		
+		// 1.1.) Counter-example
 		fromFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.minusDays(5));
 		toFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.plusDays(5));
 		chain = PropertyFilterChain.startWith(fromFilter).appendFilter(toFilter, Connector.AND);
 		
 		allEvents = repository.readAll(Event.class, chain);
 		assertTrue (allEvents.isEmpty());
+		
+		// 2.) find Events by room
+		PropertyFilter roomFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_ROOM, room);
+		chain = PropertyFilterChain.startWith(roomFilter);
+		
+		allEvents = repository.readAll(Event.class, chain);
+		assertFalse (allEvents.isEmpty());
+		assertEquals (event, allEvents.get(0));
+		
+		// 2.1) Counter-example
+		roomFilter = new PropertyFilter(Operator.NOTEQ, Event.PROPERTY_NAME_ROOM, room);
+		chain = PropertyFilterChain.startWith(roomFilter);
+		
+		allEvents = repository.readAll(Event.class, chain);
+		assertTrue (allEvents.isEmpty());
+		
+		
+		// 3.) find Event by lecturer
+		PropertyFilter lecturerFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_LECTURER, lecturer);
+		chain = PropertyFilterChain.startWith(lecturerFilter);
+		
+		allEvents = repository.readAll(Event.class, chain);
+		assertFalse (allEvents.isEmpty());
+		assertEquals (event, allEvents.get(0));
+		
+		// 3.1) Counter-example
+		lecturerFilter = new PropertyFilter(Operator.NOTEQ, Event.PROPERTY_NAME_LECTURER, lecturer);
+		chain = PropertyFilterChain.startWith(lecturerFilter);
+		
+		allEvents = repository.readAll(Event.class, chain);
+		assertTrue (allEvents.isEmpty());
+		
+		
 		
 		repository.delete(event);
 		allEvents = repository.readAll(Event.class);
