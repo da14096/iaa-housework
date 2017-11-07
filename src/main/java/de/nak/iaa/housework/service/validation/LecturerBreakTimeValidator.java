@@ -15,7 +15,7 @@ import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
 
-@ValidatorBean(previentValidator = EventReferencesValidator.class)
+@ValidatorBean(previentValidator = EventPropertyValidator.class)
 public class LecturerBreakTimeValidator extends TypeOrientedValidator<Event> {
 
 	private final DomainRepository repository;

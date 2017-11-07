@@ -18,6 +18,8 @@ public class PropertyFilter {
 
 		EQ,
 		NOTEQ,
+		IN,
+		NOT_IN,
 		LESS,
 		LESSEQ,
 		GREATER,

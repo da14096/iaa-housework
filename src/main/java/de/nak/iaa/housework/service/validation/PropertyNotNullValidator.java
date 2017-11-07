@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public class PropertyValidator <TYPE> extends TypeOrientedValidator<TYPE> {
+public class PropertyNotNullValidator <TYPE> extends TypeOrientedValidator<TYPE> {
 
 	private final Map <String, Function<TYPE, ?>> propertiesToValidate;
 	
-	public PropertyValidator(Class <TYPE> type, Map <String, Function<TYPE, ?>> propertiesToValidate) {
+	public PropertyNotNullValidator(Class <TYPE> type, Map <String, Function<TYPE, ?>> propertiesToValidate) {
 		super (type);
 		this.propertiesToValidate = propertiesToValidate;
 	}

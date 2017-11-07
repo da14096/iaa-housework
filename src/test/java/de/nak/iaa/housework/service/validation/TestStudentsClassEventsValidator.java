@@ -39,9 +39,22 @@ public class TestStudentsClassEventsValidator {
 		List <Violation> violations = validator.validate(clazz);
 		assertTrue (violations.isEmpty());
 		
+		clazz.setMinimalBreakTime(45);
+		violations = validator.validate(clazz);
+		assertFalse (violations.isEmpty());
+		assertEquals (1, violations.size());
+		
+		clazz.setMinimalBreakTime(90);
+		violations = validator.validate(clazz);
+		assertFalse (violations.isEmpty());
+		assertEquals (2, violations.size());
+		/* clear to assert cutting events in the next step */
+		clazz.setMinimalBreakTime(0);
+		
 		event1.setStart(LocalDateTime.of(2017, 11, 6, 11, 25));
 		violations = validator.validate(clazz);
 		assertFalse (violations.isEmpty());
+		assertEquals (1, violations.size());
 		
 		event1.setEnd(LocalDateTime.of(2017, 11, 6, 13, 40));
 		violations = validator.validate(clazz);

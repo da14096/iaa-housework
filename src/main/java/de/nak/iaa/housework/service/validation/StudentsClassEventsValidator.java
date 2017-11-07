@@ -19,7 +19,7 @@ public class StudentsClassEventsValidator extends TypeOrientedValidator<Students
 	@Override
 	public List<Violation> validate(StudentsClass entity) {
 		
-		List <Event> eventsSortedByStart = entity.getEvents()
+		List <Event> eventsSortedByStart = entity.getEventsToAttend()
 													.stream()
 													.sorted((e1, e2) -> e1.getStart().isBefore(e2.getStart())? -1: 1)
 													.collect(Collectors.toList());
@@ -32,12 +32,13 @@ public class StudentsClassEventsValidator extends TypeOrientedValidator<Students
 					violations.add(new Violation("Die beiden Veranstaltungen [" + previousEvent + "] und [" + event + "] "
 						+ " welche der Zenturie [" + entity + "] zugeordnet sind überschneiden sich. Zenturien können "
 								+ "nur an einem Ereignis zur Zeit teilnehmen"));
-				}
-				LocalDateTime maxEndPrevEvent = event.getStart().minus(entity.getMinimalBreakTime(), ChronoUnit.MINUTES);
-				if (maxEndPrevEvent.isBefore(previousEvent.getEnd())) {
-					violations.add(new Violation("Bitte die Pausenzeit der [" + entity + "] beachten. Zwischen den "
-							+ " Veranstaltungen [" + previousEvent + "] und [" + event + "] liegt keine Pause von "
-							+ entity.getMinimalBreakTime() + " Minuten."));
+				} else {
+					LocalDateTime maxPrevEnd = event.getStart().minus(entity.getMinimalBreakTime(), ChronoUnit.MINUTES);
+					if (maxPrevEnd.isBefore(previousEvent.getEnd())) {
+						violations.add(new Violation("Bitte die Pausenzeit der [" + entity + "] beachten. Zwischen den "
+								+ " Veranstaltungen [" + previousEvent + "] und [" + event + "] liegt keine Pause von "
+								+ entity.getMinimalBreakTime() + " Minuten."));
+					}
 				}
 			}
 			previousEvent = event;

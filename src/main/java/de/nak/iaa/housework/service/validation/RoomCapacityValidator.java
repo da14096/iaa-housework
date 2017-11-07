@@ -17,7 +17,7 @@ public class RoomCapacityValidator extends TypeOrientedValidator<StudentsClass> 
 	@Override
 	public List<Violation> validate(StudentsClass entity) {
 		List <Violation> violations = new ArrayList<>();
-		for (Event event: entity.getEvents()) {
+		for (Event event: entity.getEventsToAttend()) {
 			Room room = event.getRoom();
 			if (room != null && entity.getSize() > room.getCapacity()) {
 				violations.add(new Violation("Die Größe des Raums [" + room 

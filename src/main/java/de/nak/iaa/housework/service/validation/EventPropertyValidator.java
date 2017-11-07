@@ -7,9 +7,9 @@ import java.util.function.Function;
 import de.nak.iaa.housework.model.Event;
 
 @ValidatorBean
-public class EventReferencesValidator extends PropertyValidator<Event> {
+public class EventPropertyValidator extends PropertyNotNullValidator<Event> {
 
-	public EventReferencesValidator() {
+	public EventPropertyValidator() {
 		super(Event.class, getPropertiesToValidate());
 	}
 	

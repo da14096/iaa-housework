@@ -18,7 +18,7 @@ public class TestNullValidator {
 		getter.put("field1", Mock::getTestField1);
 		getter.put("field2", Mock::getTestField2);
 		
-		PropertyValidator<Mock> nullValidator = new PropertyValidator<>(Mock.class, getter);
+		PropertyNotNullValidator<Mock> nullValidator = new PropertyNotNullValidator<>(Mock.class, getter);
 		Mock mock = new Mock();
 		List <Violation> violations = nullValidator.validate(mock);
 		assertEquals (2, violations.size());

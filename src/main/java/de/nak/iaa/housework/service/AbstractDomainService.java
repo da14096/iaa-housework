@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.nak.iaa.housework.model.repository.DomainRepository;
-import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 import de.nak.iaa.housework.service.validation.ValidationService;
 import de.nak.iaa.housework.service.validation.Violation;
 
@@ -44,13 +43,7 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 	@Transactional (readOnly=true)
 	public List<RESPTYPE> readAll() {
 		return repository.readAll(type);
-	}
-	@Override
-	@Transactional (readOnly=true)
-	public List<RESPTYPE> readAll(PropertyFilterChain filterChain) {
-		return repository.readAll(type, filterChain);
-	}
-	
+	}	
 	private void validate (RESPTYPE item) throws ValidationException {
 		List <Violation> violations = validationService.validate(item);
 		if (!violations.isEmpty()) {
