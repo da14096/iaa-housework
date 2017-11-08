@@ -58,7 +58,7 @@ public class RoomName implements Serializable {
 	
 	@Override
 	public String toString() {
-		return building.toString() + number;
+		return building.toString() + (number < 10? "00": number < 100? "0": "") + number;
 	}
 	
 }

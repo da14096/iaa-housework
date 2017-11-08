@@ -39,6 +39,9 @@ public class Room {
 	public RoomName getName() {
 		return name;
 	}
+	public String getRoomName() {
+		return name.toString();
+	}
 	public Integer getCapacity() {
 		return capacity;
 	}

@@ -55,7 +55,7 @@ public class StudentsClass {
 	public FieldOfStudy getFieldOfStudy() {
 		return id.getFieldOfStudy();
 	}
-	public int getYr() {
+	public int getYear() {
 		return id.getYear();
 	}
 	public char getForm() {
