@@ -12,7 +12,7 @@
 		
 		<!-- controller -->
 		<script type="application/javascript" src="controller/dashboardController.js"></script>
-		<script type="application/javascript" src="controller/eventController.js"></script>
+		<script type="application/javascript" src="controller/eventFormController.js"></script>
 		
 		<!-- directives -->
 		<script type="application/javascript" src="directives/directives.js"></script>
@@ -31,7 +31,7 @@
 		</div>
 		<div class="content">
 			<div class="horizontal-layouted-component" style="width: 45%">
-				<lecturers-list class="dashboard-tile "></lecturers-list>
+				<lecturers-list ng-controller="dashboardController" class="dashboard-tile "></lecturers-list>
 				<students-class-list class="dashboard-tile "></students-class-list>
 				<room-list ng-controller="dashboardController" class="dashboard-tile "></room-list>
 			</div>

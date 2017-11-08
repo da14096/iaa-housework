@@ -38,6 +38,9 @@ application.service('eventService', [
   '$http',
   function ($http) {
     this.findAll = () => $http.get('/iaa-housework/api/event');
+    this.getAvailableRooms = (event) => $http.post('/iaa-housework/api/event/availableRooms', event);
+    this.create = (event) => $http.post('/iaa-housework/api/event/create', event);
+    this.update = (event) => $http.post('/iaa-housework/api/event/update', event);
    }
 ]);
 

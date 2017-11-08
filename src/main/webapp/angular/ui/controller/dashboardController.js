@@ -6,11 +6,15 @@ application.controller('dashboardController', [
   'roomService',
   'lecturerService',
   'studentsClassService',
-  ($scope, modelService, roomService, lecturerService, studentsClassService) => {
+  'eventService',
+  ($scope, modelService, roomService, lecturerService, studentsClassService, eventService) => {
     
 	$scope.roomListAddable = true;
     $scope.lecturerListAddable = true;
     $scope.studentsClassListAddable = true;
+    
+    $scope.lecturerListSelectable = false;
+    $scope.roomListSelectable = false;
     
     $scope.roomListCaption = 'Räume';
     
@@ -58,10 +62,15 @@ application.controller('dashboardController', [
         });
     }
 
-    
-    
+//  event-operations
+    eventService.findAll().then(response => {$scope.events = response.data});
     $scope.planEvent = () => {
     	$scope.eventViewVisible = true;
+    	$scope.eventToEdit = {};
+    }
+    $scope.editEvent = (event) => {
+    	$scope.eventViewVisible = true;
+    	$scope.eventToEdit = event;
     }
   } 
 ]);

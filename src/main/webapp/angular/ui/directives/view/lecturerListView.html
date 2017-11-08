@@ -18,7 +18,8 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="lecturer in lecturers | filter:lecturerSearchQuery | orderBy:['lecturer.surname', 'lecturer.name']">
+		<tr ng-repeat="lecturer in lecturers | filter:lecturerSearchQuery | orderBy:['lecturer.surname', 'lecturer.name']"
+			ng-click="selectLecturer(lecturer)" ng-class="{selection: selectedLecturer === lecturer}">
 			<!-- prepare building rep -->
 			<td>{{lecturer.personnelNumber}}</td>
 			<td>{{lecturer.surname}}, {{lecturer.name}}</td>
@@ -26,8 +27,8 @@
 		</tr>
 	</tbody>
 </table>
-<form name="newLecturerForm" class="table-add-entry-form shadowed-container" 
-	ng-class="{'table-add-entry-form-visible': newLecturerFormVisible}">
+<form name="newLecturerForm" class="table-add-entry-form shadowed-container animate-show-hide" 
+	ng-show="newLecturerFormVisible">
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 33%;">
 		<span class="fieldCaption top-caption">Vorname</span>
 		<input name="name" ng-model="lecturerToCreate.name" type="text" 

@@ -26,5 +26,5 @@ application.directive('eventView', () => ({
   restrict: 'E',
   transclude: false,
   templateUrl: 'directives/view/eventView.html',
-  controller: 'eventController'
+  controller: 'eventFormController'
 }));

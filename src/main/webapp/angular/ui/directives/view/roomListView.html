@@ -1,3 +1,6 @@
+<head>
+	<meta charset="UTF-8"/>
+</head>
 <div class="header">
 	<span class="caption">{{roomListCaption}}</span>
 	<button ng-show="newRoomFormVisible"  ng-click="createRoom()" ng-disabled="newRoomForm.$invalid">
@@ -12,23 +15,23 @@
 	<thead>
 		<tr>
 			<th>Raum</th>
-			<th>Kapazit‰t</th>
+			<th>Kapazit√§t</th>
 			<th>Wechselzeit</th>
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="room in rooms | filter:roomSearchQuery | orderBy:['name.building', 'name.number']">
+		<tr ng-repeat="room in rooms | filter:roomSearchQuery | orderBy:['name.building', 'name.number']"
+			ng-click="selectRoom(room)" ng-class="{selection: selectedRoom === room}">
 			<!-- prepare building rep -->
-			<td>{{room.name.building}}{{room.name.number<100? '0':''}}{{room.name.number<10? '0':''}}{{room.name.number}}</td>
+			<td>{{room.roomName}}</td>
 			<td>{{room.capacity}}</td>
 			<td>{{room.changeDuration}}</td>
 		</tr>
 	</tbody>
 </table>
-<form name="newRoomForm" class="table-add-entry-form shadowed-container"
-	 ng-class="{'table-add-entry-form-visible': newRoomFormVisible}">
+<form name="newRoomForm" class="table-add-entry-form shadowed-container" ng-show="newRoomFormVisible">
 	<div class="fieldWrapper" style="display: inline-block; max-width: 25%;">
-		<span class="fieldCaption top-caption">Geb‰ude</span>
+		<span class="fieldCaption top-caption">Geb√§ude</span>
 		<select name="building" ng-model="roomToCreate.name.building" 
 				ng-options="building for building in buildings" required></select>
 	</div>
@@ -38,7 +41,7 @@
 			maxlength="3" minlength="3" required pattern="[0-9]{3}"/>
 	</div>
  	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 25%;">
-		<span class="fieldCaption top-caption">Kapazit‰t</span>
+		<span class="fieldCaption top-caption">Kapazit√§t</span>
 		<input name="capacity" placeholder="Platzanzahl" ng-model="roomToCreate.capacity" type="text" 
 			minlength="1" maxlength="3" pattern="[0-9]*"/>
 	</div>

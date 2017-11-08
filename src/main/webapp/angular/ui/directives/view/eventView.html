@@ -1,34 +1,65 @@
+<head>
+	<meta charset="UTF-8"/>
+</head>
 <div class="header">
 	<span class="caption">Veranstaltungsbearbeitung</span>
 </div>
-<div class="content" style="display:inline-flex">
-	<form name="eventForm" style="display: inline-flex">
-		<div class="fieldWrapper">
+<div class="content content-followed-by-footer" style="display:inline-flex">
+	<form name="eventForm" style="max-width: 40%; overflow-y: auto;">
+		<div class="fieldWrapper" style="width: 100%">
+			<span class="fieldCaption top-caption">Veranstaltungsname</span>
+			<input name="eventName" type="text" ng-model="eventToEdit.title" required/>
+		</div>
+		<div class="fieldWrapper" style="display: inline-block">
 			<span class="fieldCaption top-caption">Veranstaltungsdatum</span>
-			<input name="eventStart" type="datetime-local" ng-model="eventToDisplay.start" required
+			<input name="eventStart" type="datetime-local" ng-model="eventToEdit.start" required
 					ng-min="today" ng-change="autofill(value)"/>
 		</div>
-		<div class="fieldWrapper">
+		<div class="fieldWrapper" style="display: inline-block">
 			<span class="fieldCaption top-caption">Veranstaltungsende</span>
-			<input name="eventEnd" type="datetime-local" ng-model="eventToDisplay.end" required
-					ng-min="today"/>
+			<input name="eventEnd" type="datetime-local" ng-model="eventToEdit.end" required ng-min="eventToEdit.start"/>
 		</div>
 		<div class="fieldWrapper">
 			<span class="fieldCaption top-caption">Veranstaltungstyp</span>
-			<select name="eventType" ng-model="eventToDisplay.type" required ng-change="updateAssignableOrganisatory()"
+			<select name="eventType" ng-model="eventToEdit.type" ng-change="updateSelectableValuesForEventType()"
 				ng-options="eventType for eventType in eventTypes" required></select>
 		</div>
-		<div class="fieldWrapper">
-			<span class="fieldCaption top-caption">Zuordnung zu</span>
-			<select name="assignment" ng-model="assignTo" ng-disabled="eventForm.eventType.$invalid" required 
-				ng-options="item for item in assignableStudentsClasses" required></select>
+		<div class="fieldWrapper" ng-show="eventToEdit.type === 'Vorlesung' || eventToEdit.type === 'Klausur'">
+			<span class="fieldCaption top-caption">Zuzuordnender Studiengang</span>
+			<select name="assignment-fieldOfStudy" ng-model="fieldOfStudyToAssignEventTo"
+				ng-options="fieldOfStudy.description for fieldOfStudy in selectableFieldsOfStudy"
+				ng-change="updateYearsForFieldOfStudy()" ></select>
 		</div>
-		<div class="fieldWrapper">
-			<span class="fieldCaption top-caption">Raum</span>
-			<select name="building" ng-model="assignTo" required 
-				ng-options="item for item in assignableStudentsClasses" required></select>
+		<div class="fieldWrapper" ng-show="eventToEdit.type === 'Vorlesung' || eventToEdit.type === 'Klausur' || eventToEdit.type === 'Wahlpflichtkurs'">
+			<span class="fieldCaption top-caption">Zuzuordnender Jahrgang</span>
+			<select name="assignment-year" ng-model="yearToAssignEventTo" ng-disabled="eventToEdit.type !== 'Wahlpflichtkurs' && !fieldOfStudyToAssignEventTo"
+				ng-options="year for year in selectableYears"
+				ng-change="updateFormsForYear()"></select>
+		</div>
+		<div class="fieldWrapper" ng-show="eventToEdit.type === 'Vorlesung'">
+			<span class="fieldCaption top-caption">Zuzuordnende Zenturie</span>
+			<select name="assignment-form" ng-model="formToAssignEventTo" ng-disabled="!yearToAssignEventTo"
+				ng-options="form for form in selectableForms" ></select>
 		</div>
 	</form>
-	<room-list ng-controller="eventController" style="flex-grow: 1"></room-list>
+	<lecturers-list ng-controller="eventFormController" style="flex-grow: 1"></lecturers-list>	
 </div>
+<div class="footer">
+	<button ng-click="closeAndClearDialogue()">
+		<i class="fa fa-times" aria-hidden="true"></i>
+		Abbrechen
+	</button>
+	<button ng-disabled="eventForm.$invalid || !eventToEdit.lecturer" ng-click="toggleRoomSelection()">
+		<i ng-class="{'fa fa-arrow-left': roomSelectionOpened, 'fa fa-share': !roomSelectionOpened}" aria-hidden="true"></i>
+		{{roomSelectionOpened? "Raumauswahl schließen": "Räume auswählen"}}
+	</button>
+	<button ng-disabled="eventForm.$invalid || !eventToEdit.lecturer || !eventToEdit.room" ng-click="saveEvent()">
+		<i class="fa fa-floppy-o" aria-hidden="true"></i>
+		Veranstaltung speichern
+	</button>
+</div>
+<room-list class="content content-followed-by-footer"
+	style="position: absolute; top: -100%; transition: top cubic-bezier(0, 0, 0, 0.96) 1s; background-color: white"
+	ng-style="{'top': roomSelectionOpened? '0': '-100%'}">
+</room-list>
 

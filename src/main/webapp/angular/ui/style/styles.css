@@ -11,7 +11,13 @@
 	--container-width: 100%;
 
 	--container-header-height: calc(var(--absolute-field-height) + var(--container-margin-width));
-	--container-content-height: calc(100% - var(--container-header-height));
+	--container-footer-height: var(--container-header-height);
+	--container-content-height: 100%;
+	--container-content-with-header-height: calc(var(--container-content-height) - var(--container-header-height));
+	--container-content-with-footer-height: calc(var(--container-content-height) - var(--container-footer-height));
+	--container-content-with-header-and-footer-height: calc(var(--container-content-height) - 
+															var(--container-header-height) -
+															var(--container-footer-height)); 
 	
 	--field-height: calc(var(--general-font-size));
 	/* is the absolute height of a field in the dom tree */
@@ -22,6 +28,8 @@
 	--field-border-width: 2px;
 	
 	--general-border-color: rgb(212, 212, 212);
+	
+	--date-time-input-width: 11rem;
 }
 
 /* General Styles */
@@ -36,28 +44,33 @@ body {
 }
 
 /* Styles for a container that has a header and a content */
-.header {
+.header, .footer {
 	background-color: rgb(238, 238, 238);
-	display: flex;
 	width: var(--container-width);
 	
 	padding: var(--margin-width);
 	box-sizing: border-box;
 }
-.header > * {
+.header > *, .footer > * {
 	display: inline-block;
 	vertical-align: middle;
 	margin-right: var(--margin-width);
 }
-.header > *:last-child {
+.header > *:last-child, .footer > *:last-child  {
 	margin-right: 0;
 }
 
+.header {
+	display: flex;
+}
 .header .caption {
 	font-size: var(--container-header-font-size);
 	flex-grow: 1;
 	/* Set to field-height for the case fields or buttons are contained in the header */
 	line-height: var(--absolute-field-height);
+}
+.footer {
+	text-align: right;
 }
 .content {
 	width: var(--container-width);
@@ -66,6 +79,18 @@ body {
 	box-sizing: border-box;
 	padding: var(--margin-width);
 }
+
+.header + .content {
+	height: var(--container-content-with-header-height);
+}
+
+.content-followed-by-footer {
+	height: var(--container-content-with-footer-height);
+}
+.header + .content-followed-by-footer {
+	height: var(--container-content-with-header-and-footer-height);
+}
+
 
 /* table-styling */
 table {
@@ -95,10 +120,10 @@ tr:nth-child(even) {
 	background-color: rgb(245, 245, 245);
 }
 
-.selectable-table tr {
+table.selectable tr {
 	cursor: pointer;
 }
-.selectable-table tr.selection {
+table.selectable tr.selection {
 	background-image: linear-gradient(to bottom,#1b87e3 2%, #166ed5 98%);
 	color: white;
 }
@@ -125,23 +150,16 @@ th {
 }
 /* tables which are addable have a form that can slide in -> styling */
 .table-add-entry-form {
-	position: absolute; 
-	display: none;
+	position: absolute;
+	display: flex; 
 	top: calc(var(--container-header-height) + var(--margin-width));
     width: calc(100% - var(--container-margin-width));
     box-sizing: border-box;
     padding: var(--margin-width);
     background-color: white;
     border: 1px solid var(--general-font-size);
-    opacity: 0;
-    transition: opacity ease-in 0.5s;
     border-radius: 2px;
     border: 1px solid var(--general-border-color);
-}
-
-.table-add-entry-form-visible {
-	display: inline-flex;
-	opacity: 1;
 }
 
 .shadowed-container {
@@ -161,6 +179,9 @@ input {
 	cursor: text;	
 }
 
+input[type="datetime-local"] {
+	width: 11rem;
+}
 input[type="datetime-local"]::-webkit-calendar-picker-indicator {
 	cursor: pointer;
 }
@@ -219,6 +240,7 @@ button {
 	top: 10%;
 	left: 10%;
 	z-index: 1000;
+	overflow: hidden;
 }
 
 /* Specialized Styles */

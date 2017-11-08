@@ -13,13 +13,13 @@
 		</tr>
 	</thead>
 	<tbody>
-		<tr ng-repeat="event in events | filter:eventSearchQuery | orderBy:['start', 'room']">
+		<tr ng-repeat="event in events | filter:eventSearchQuery | orderBy:['start', 'room']"
+			ng-click="editEvent(event)" style="cursor: pointer">
 			<!-- prepare building rep -->
-			<td>{{event.start}}</td>
-			<td>{{event.end}}</td>
+			<td>{{event.start[2]}}.{{event.start[1]}}.{{event.start[0]}} {{event.start[3]}}:{{event.start[4]}}</td>
+			<td>{{event.end[2]}}.{{event.end[1]}}.{{event.end[0]}} {{event.end[3]}}:{{event.end[4]}}</td>
 			<td>{{event.title}}</td>
-			<td>{{event.room.building}}{{event.room.name.number<100? '0':''}}
-				{{event.room.name.number<10? '0':''}}{{event.room.name.number}}</td>
+			<td>{{event.room.roomName}}</td>
 			<td>{{event.lecturer.surname}}
 		</tr>
 	</tbody>

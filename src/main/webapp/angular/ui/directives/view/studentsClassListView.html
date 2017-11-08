@@ -1,3 +1,6 @@
+<head>
+	<meta charset="UTF-8"/>
+</head>
 <div class="header">
 	<span class="caption">Zenturien</span>
 	<button ng-show="newStudentsClassFormVisible"  ng-click="createStudentsClass()">
@@ -13,7 +16,7 @@
 	<thead>
 		<tr>
 			<th>Name</th>
-			<th>Größe</th>
+			<th>GrÃ¶ÃŸe</th>
 			<th>Pausenzeit</th>
 		</tr>
 	</thead>
@@ -21,14 +24,13 @@
 		<tr ng-repeat="studentsClass in studentsClasses | filter:studentsClassSearchQuery | 
 			orderBy:['id.fieldOfStudy', 'id.year', 'id.form']">
 			<!-- prepare building rep -->
-			<td>{{studentsClass.id.fieldOfStudy.abreviation}}{{studentsClass.id.year.toString().substr(studentsClass.id.year.toString().length - 2)}}{{studentsClass.id.form}}</td>
+			<td>{{studentsClass.name}}</td>
 			<td>{{studentsClass.size}}</td>
 			<td>{{studentsClass.minimalBreakTime}}</td>
 		</tr>
 	</tbody>
 </table>
-<form name="newStudentsClassForm" class="table-add-entry-form shadowed-container"
-	ng-class="{'table-add-entry-form-visible': newStudentsClassFormVisible}">
+<form name="newStudentsClassForm" class="table-add-entry-form shadowed-container" ng-show="newStudentsClassFormVisible">
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:1; max-width: 20%;">
 		<span class="fieldCaption top-caption">Studienrichtung</span>
 		<select name="fieldOfStudy" ng-model="studentsClassToCreate.id.fieldOfStudy" required
@@ -45,7 +47,7 @@
 			minlength="1" maxlength="1" required pattern="[abcdef]"/>
 	</div>
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
-		<span class="fieldCaption top-caption">Größe</span>
+		<span class="fieldCaption top-caption">GrÃ¶ÃŸe</span>
 		<input name="size" ng-model="studentsClassToCreate.size" type="text"
 			minlength="1" maxlength="2" required pattern="[0-9]{2}"/> 
 	</div>
