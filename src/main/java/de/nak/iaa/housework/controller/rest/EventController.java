@@ -35,7 +35,7 @@ public class EventController {
 		return eventService.readAll();
 	}
 
-	@PostMapping(path = "/available")
+	@PostMapping(path = "/availableRooms")
 	public List<Room> getAvailableRooms(@RequestBody final Event event) {
 		return event == null ? Collections.emptyList(): roomService.getAvailableRooms(event.getStart(), event.getEnd());
 	}

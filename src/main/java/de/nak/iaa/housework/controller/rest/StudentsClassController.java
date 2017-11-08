@@ -30,14 +30,6 @@ public class StudentsClassController {
 	List <StudentsClass> all = studentsClassService.readAll();  
     return all;
   }
-  @GetMapping(path="/cohort")
-  public Collection<StudentsClass> readAllCohorts() {
-    return studentsClassService.readAll();
-  }
-  @GetMapping(path="/maniple")
-  public Collection<StudentsClass> readAllManiples() {
-    return studentsClassService.readAll();
-  }
   @PostMapping(path="/create")
   public StudentsClass create(@RequestBody final StudentsClass studentsClass) throws ValidationException {
     return studentsClassService.persist(studentsClass);
