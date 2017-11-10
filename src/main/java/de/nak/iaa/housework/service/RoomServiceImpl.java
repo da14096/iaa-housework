@@ -28,25 +28,30 @@ public class RoomServiceImpl extends AbstractDomainService<Room> implements Room
 	@Transactional(readOnly=true)
 	public List<Room> getAvailableRooms(LocalDateTime start, LocalDateTime end) {
 		List <Room> allRooms = this.readAll();
-		PropertyFilterChain chain = PropertyFilterChain.emptyChain();
-		if (start!= null) {
-			PropertyFilter startFilter = new PropertyFilter(Operator.GREATEREQ, 
-															Event.PROPERTY_NAME_START, 
-															start);
-			chain.appendFilter(startFilter, Connector.AND);
+		
+		if (start != null && end != null) {
+	//		get the events that start in the interval
+			PropertyFilter startGrStartFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, start);
+			PropertyFilter startLessEndFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, end);	
+			PropertyFilterChain chain = PropertyFilterChain
+											.startWith(startGrStartFilter)
+											.appendFilter(startLessEndFilter, Connector.AND);
+			List <Event> eventsInInterval = repository.readAll(Event.class, chain);
+			
+//			get the events that end in the interval
+			PropertyFilter endGrStartFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_END, start);
+			PropertyFilter endLessEndFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_END, end);
+			chain = PropertyFilterChain.startWith(endGrStartFilter).appendFilter(endLessEndFilter, Connector.AND);
+			eventsInInterval.addAll(repository.readAll(Event.class, chain));
+			
+//			get the events that start before and end after the interval
+			PropertyFilter startBefStartFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, start);
+			PropertyFilter endAftEndFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_END, end);
+			chain = PropertyFilterChain.startWith(startBefStartFilter).appendFilter(endAftEndFilter, Connector.AND);
+			eventsInInterval.addAll(repository.readAll(Event.class, chain));
+			
+			eventsInInterval.stream().map(event -> event.getRoom()).forEach(event -> allRooms.remove(event));
 		}
-		if (end != null) {
-			PropertyFilter endFilter = new PropertyFilter(Operator.LESSEQ, 
-															Event.PROPERTY_NAME_END, 
-															end);
-			chain.appendFilter(endFilter, Connector.AND);
-		}
-		if (!chain.hasFilters()) {
-			repository.readAll(Event.class, chain)
-						.stream()
-						.map(event -> event.getRoom())
-						.forEach(blockedRoom -> allRooms.remove(blockedRoom));
-		}  
 		return allRooms;
 	}
 }

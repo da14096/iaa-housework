@@ -59,7 +59,9 @@ public class DefaultDomainRepository implements DomainRepository {
 	
 	@Override
 	public <TYPE> void delete(final TYPE item) {
-		entityManager.remove(item);
+//		first merge the item to get the correct persistent entity, then delete it
+		final TYPE persistentInstance = entityManager.merge(item);
+		entityManager.remove(persistentInstance);
 	}
 	@Override
 	public <TYPE> TYPE update(final TYPE item) {
