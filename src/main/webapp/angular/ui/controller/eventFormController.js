@@ -4,8 +4,9 @@ application.controller('eventFormController', [
   '$scope',
   'lecturerService',
   'eventService',
+  'studentsClassService',
   'eventBus',
-  ($scope, lecturerService, eventService, eventBus) => {
+  ($scope, lecturerService, eventService, studentsClassService, eventBus) => {
     
 	$scope.today = new Date();
     $scope.lecturerListAddable = false;
@@ -20,7 +21,7 @@ application.controller('eventFormController', [
     
     eventBus.onEditEvent(function (eventToEdit) {
 //    	reset to initial state
-    	$scope.eventToEdit = eventToEdit;
+    	$scope.eventToEdit = JSON.parse(JSON.stringify(eventToEdit));
     	$scope.roomSelectionOpened = false;
     	
     	if (eventToEdit.lecturer !== undefined) {

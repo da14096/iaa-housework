@@ -31,6 +31,8 @@ application.service('studentsClassService', [
   function ($http) {
     this.findAll = () => $http.get('/iaa-housework/api/studentsClass');
     this.createStudentsClass = (studentsClass) => $http.post('/iaa-housework/api/studentsClass/create', studentsClass);
+    this.addEvent = (studentClass, event) => $http.post('/iaa-housework/api/studentsClass/applyStudentsClass', 
+    														{studentsClass: studentsClass, event: event});
    }
 ]);
 

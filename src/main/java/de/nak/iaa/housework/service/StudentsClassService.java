@@ -6,4 +6,6 @@ import de.nak.iaa.housework.model.StudentsClass;
 public interface StudentsClassService extends DomainService<StudentsClass> {
 
 	void addEvent (StudentsClass clazz, Event event);
+	
+	void removeEvent (StudentsClass clazz, Event event);
 }

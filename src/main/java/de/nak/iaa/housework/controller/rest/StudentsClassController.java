@@ -14,22 +14,22 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
-import antlr.debug.Event;
+import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.StudentsClass;
-import de.nak.iaa.housework.service.DomainService;
+import de.nak.iaa.housework.service.StudentsClassService;
 import de.nak.iaa.housework.service.ValidationException;
 
 @RestController
 @RequestMapping("/studentsClass")
 public class StudentsClassController {
 
-	private final DomainService<StudentsClass> studentsClassService;
+	private final StudentsClassService studentsClassService;
 
 	private static final String JSON_PARAMETER_STUDENTS_CLASS = "studentsClass";
 	private static final String JSON_PARAMETER_EVENT = "event";
 
 	@Autowired
-	public StudentsClassController(final DomainService<StudentsClass> studentsClassService) {
+	public StudentsClassController(final StudentsClassService studentsClassService) {
 		this.studentsClassService = studentsClassService;
 	}
 
@@ -44,12 +44,18 @@ public class StudentsClassController {
 		return studentsClassService.persist(studentsClass);
 	}
 
-	@PostMapping(path = "/applyStudentsClass")
+	@PostMapping(path = "/applyEvent")
 	public void addEvent(@RequestBody ObjectNode node) throws JsonProcessingException {
 		ObjectMapper mapper = new ObjectMapper();
 		StudentsClass clazz = mapper.treeToValue(node.get(JSON_PARAMETER_STUDENTS_CLASS), StudentsClass.class);
 		Event event = mapper.treeToValue(node.get(JSON_PARAMETER_EVENT), Event.class);
-		
-		
+		studentsClassService.addEvent(clazz, event);
+	}
+	@PostMapping(path = "/removeEvent")
+	public void removeEvent(@RequestBody ObjectNode node) throws JsonProcessingException {
+		ObjectMapper mapper = new ObjectMapper();
+		StudentsClass clazz = mapper.treeToValue(node.get(JSON_PARAMETER_STUDENTS_CLASS), StudentsClass.class);
+		Event event = mapper.treeToValue(node.get(JSON_PARAMETER_EVENT), Event.class);
+		studentsClassService.removeEvent(clazz, event);
 	}
 }

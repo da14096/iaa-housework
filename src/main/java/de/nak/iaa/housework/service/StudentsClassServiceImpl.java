@@ -25,4 +25,11 @@ public class StudentsClassServiceImpl extends AbstractDomainService<StudentsClas
 		persistentStudentsClass.addEvent(event);
 		repository.update(persistentStudentsClass);
 	}
+	@Override
+	@Transactional
+	public void removeEvent(final StudentsClass clazz, Event event) {
+		StudentsClass persistentStudentsClass = repository.find(StudentsClass.class, clazz.getId());
+		persistentStudentsClass.cancelEvent(event);
+		repository.update(persistentStudentsClass);
+	}
 }
