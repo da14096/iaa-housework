@@ -26,12 +26,12 @@ public enum FieldOfStudy {
 		return abreviation;
 	}	
 	@JsonCreator
-	public static FieldOfStudy parse (@JsonProperty(value="identifier") char identifier) {
+	public static FieldOfStudy parse (@JsonProperty(value="abreviation") char identifier) {
 		for (FieldOfStudy type: values()) {
 			if (type.getAbreviation() == identifier) {
 				return type;
 			}
 		}
-		return A;
+		return null;
 	}
 }
