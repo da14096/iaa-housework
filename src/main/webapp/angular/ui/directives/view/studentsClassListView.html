@@ -3,7 +3,8 @@
 </head>
 <div class="header">
 	<span class="caption">Zenturien</span>
-	<button ng-show="newStudentsClassFormVisible"  ng-click="createStudentsClass(studentsClassToCreate)">
+	<button ng-show="newStudentsClassFormVisible" ng-disabled="newStudentsClassForm.$invalid"
+			ng-click="createStudentsClass(studentsClassToCreate)">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>
 	<button ng-show="studentsClassListAddable" ng-click="newStudentsClassFormVisible = !newStudentsClassFormVisible">
@@ -39,7 +40,7 @@
 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Jahrgang</span>
 		<input name="yr" ng-model="studentsClassToCreate.id.year" type="text" placeholder="YYYY"
-			maxlength="4" minlength="2" required pattern="[0-9]{4}"/>
+			maxlength="4" minlength="4" required pattern="[0-9]{4}"/>
 	</div>
  	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Klasse</span>
