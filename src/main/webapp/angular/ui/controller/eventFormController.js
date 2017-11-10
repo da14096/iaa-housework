@@ -2,8 +2,10 @@
 
 application.controller('eventFormController', [
   '$scope',
+  'lecturerService',
   'eventService',
-  ($scope, eventService) => {
+  'eventBus',
+  ($scope, lecturerService, eventService, eventBus) => {
     
 	$scope.today = new Date();
     $scope.lecturerListAddable = false;
@@ -14,16 +16,49 @@ application.controller('eventFormController', [
     $scope.roomListCaption = "Verfügbare Räume";
     $scope.roomSelectionOpened = false;
     
-    $scope.saveEvent = () => {
-    	var eventToSave = $scope.eventToEdit;
-    	var callback = function (response) {
-    		console.log(response.data);
+    lecturerService.findAll().then(response => $scope.lecturers = response.data);
+    
+    eventBus.onEditEvent(function (eventToEdit) {
+//    	reset to initial state
+    	$scope.eventToEdit = eventToEdit;
+    	$scope.roomSelectionOpened = false;
+    	
+    	if (eventToEdit.lecturer !== undefined) {
+    		var lecturerFilter = function (lecturer) {
+    			return lecturer.personnelNumber == eventToEdit.lecturer.personnelNumber
+    		};
+    		$scope.selectedLecturer = $scope.lecturers.filter(lecturerFilter)[0];
+    	} else {
+    		$scope.selectedLecturer = {};
+    	}
+    	
+    });
+    
+    $scope.saveEvent = (eventToSave) => {
+    	var callback = (response, flagCreated) => {
+    		if (response.status === 200) {
+    			eventBus.publishUpdateEvent(response, flagCreated);
+    			eventBus.publishEndEventEdit();
+			}
     	};
     	if (eventToSave.id) {
-    		eventService.update(eventToSave).then(callback);
+    		eventService.update(eventToSave).then(response => callback(response, false));
     	} else {
-    		eventService.create(eventToSave).then(callback);
+    		eventService.create(eventToSave).then(response => callback(response, true));
     	}
+    }
+    
+    $scope.deleteEvent = (eventToDelete) => {
+    	eventService.deleteEvent(eventToDelete).then(response => {
+    		if (response.status === 200) {
+    			eventBus.publishDeleteEvent(response.data);
+    			eventBus.publishEndEventEdit();
+    		}
+    	});
+    }
+    
+    $scope.cancel = () => {
+    	eventBus.publishEndEventEdit();
     }
     
     $scope.autofill = () => {
@@ -54,18 +89,18 @@ application.controller('eventFormController', [
     $scope.toggleRoomSelection = () => {
     	$scope.roomSelectionOpened = !$scope.roomSelectionOpened;
     	if ($scope.roomSelectionOpened) {
-    		eventService.getAvailableRooms($scope.eventToEdit).then(response => {$scope.rooms = response.data});
+    		eventService.getAvailableRooms($scope.eventToEdit)
+    			.then(response => {
+    				$scope.rooms = response.data;
+    				var roomOfEvent = $scope.eventToEdit.room;
+    				if (roomOfEvent !== undefined) {
+    					$scope.rooms.push(roomOfEvent);
+    					$scope.selectedRoom = roomOfEvent;
+    				}
+    			});
     	}
     }
-    
-    $scope.closeAndClearDialogue = () => {
-    	$scope.eventToEdit = {};
-    	$scope.roomSelectionOpened = false;
-    	$scope.eventViewVisible = false;
-    	$scope.selectedLecturer = {};
-    	$scope.selectedRoom = {};
-    }
-    
+        
     $scope.updateSelectableValuesForEventType = () => {
     	var chosenEventType = $scope.eventToEdit.type;
     	switch (chosenEventType) {

@@ -1,46 +1,45 @@
-'use strict';
-
-application.service('modelService', [
-  '$http',
-  function ($http) {
-    this.buildings = () => $http.get('/iaa-housework/api/model/buildings');
-    this.eventTypes = () => $http.get('/iaa-housework/api/model/eventTypes');
-    this.fieldsOfStudy = () => $http.get('/iaa-housework/api/model/fieldsOfStudy');
-    
-  }
+application.service('eventBus', [
+	function () {
+		var _editEventListener = [];
+		this.onEditEvent = (callback) => {
+			_editEventListener.push(callback);
+		}
+		this.publishEditEvent = (eventToEdit) => {
+			for (var listener of _editEventListener) {
+				listener(eventToEdit);
+			}
+		}
+		
+		var _updateEventListener = [];
+		this.onUpdateEvent = (callback) => {
+			_updateEventListener.push(callback);
+		}
+		this.publishUpdateEvent = (updatedEvent, flagCreated) => {
+			for (var listener of _updateEventListener) {
+				listener(updatedEvent, flagCreated);
+			}
+		}
+		
+		var _deleteEventListener = [];
+		this.onDeleteEvent = (callback) => {
+			_deleteEventListener.push(callback);
+		}
+		this.publishDeleteEvent = (eventToDelete) => {
+			for (var listener of _deleteEventListener) {
+				listener(eventToDelete);
+			}
+		}
+		
+		var _endEventEditListener = [];
+		this.onEndEventEdit = (callback) => {
+			_endEventEditListener.push(callback);
+		}
+		this.publishEndEventEdit = () => {
+			for (var listener of _endEventEditListener) {
+				listener();
+			}
+		}
+		
+		
+	}
 ]);
-
-application.service('roomService', [
-  '$http',
-  function ($http) {
-    this.findAll = () => $http.get('/iaa-housework/api/room');
-    this.createRoom = (room) => $http.post('/iaa-housework/api/room/create', room);
-  }
-]);
-
-application.service('lecturerService', [
-  '$http',
-  function ($http) {
-    this.findAll = () => $http.get('/iaa-housework/api/lecturer');
-    this.createLecturer = (lecturer) => $http.post('/iaa-housework/api/lecturer/create', lecturer);
-   }
-]);
-
-application.service('studentsClassService', [
-  '$http',
-  function ($http) {
-    this.findAll = () => $http.get('/iaa-housework/api/studentsClass');
-    this.createStudentsClass = (studentsClass) => $http.post('/iaa-housework/api/studentsClass/create', studentsClass);
-   }
-]);
-
-application.service('eventService', [
-  '$http',
-  function ($http) {
-    this.findAll = () => $http.get('/iaa-housework/api/event');
-    this.getAvailableRooms = (event) => $http.post('/iaa-housework/api/event/availableRooms', event);
-    this.create = (event) => $http.post('/iaa-housework/api/event/create', event);
-    this.update = (event) => $http.post('/iaa-housework/api/event/update', event);
-   }
-]);
-

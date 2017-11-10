@@ -45,7 +45,7 @@
 	<lecturers-list ng-controller="eventFormController" style="flex-grow: 1"></lecturers-list>	
 </div>
 <div class="footer">
-	<button ng-click="closeAndClearDialogue()">
+	<button ng-click="cancel()">
 		<i class="fa fa-times" aria-hidden="true"></i>
 		Abbrechen
 	</button>
@@ -53,7 +53,11 @@
 		<i ng-class="{'fa fa-arrow-left': roomSelectionOpened, 'fa fa-share': !roomSelectionOpened}" aria-hidden="true"></i>
 		{{roomSelectionOpened? "Raumauswahl schließen": "Räume auswählen"}}
 	</button>
-	<button ng-disabled="eventForm.$invalid || !eventToEdit.lecturer || !eventToEdit.room" ng-click="saveEvent()">
+	<button ng-show="eventToEdit.id" ng-click="deleteEvent(eventToEdit)">
+		<i class="fa fa-trash-o" aria-hidden="true"></i>
+		Veranstaltung löschen
+	</button>
+	<button ng-disabled="eventForm.$invalid || !eventToEdit.lecturer || !eventToEdit.room" ng-click="saveEvent(eventToEdit)">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 		Veranstaltung speichern
 	</button>

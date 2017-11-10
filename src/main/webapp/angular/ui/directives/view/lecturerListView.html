@@ -1,6 +1,6 @@
 <div class="header">
 	<span class="caption">Dozenten</span>
-	<button ng-show="newLecturerFormVisible" ng-disabled="newLecturerForm.$invalid" ng-click="createLecturer()">
+	<button ng-show="newLecturerFormVisible" ng-disabled="newLecturerForm.$invalid" ng-click="createLecturer(lecturerToCreate)">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>
 	<button ng-show="lecturerListAddable" ng-click="newLecturerFormVisible = !newLecturerFormVisible">

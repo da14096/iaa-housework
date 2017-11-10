@@ -3,7 +3,7 @@
 </head>
 <div class="header">
 	<span class="caption">{{roomListCaption}}</span>
-	<button ng-show="newRoomFormVisible"  ng-click="createRoom()" ng-disabled="newRoomForm.$invalid">
+	<button ng-show="newRoomFormVisible"  ng-click="createRoom(roomToCreate)" ng-disabled="newRoomForm.$invalid">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>
 	<button ng-show="roomListAddable" ng-click="newRoomFormVisible = !newRoomFormVisible">
