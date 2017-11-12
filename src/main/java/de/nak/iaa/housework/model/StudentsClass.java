@@ -11,6 +11,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
 /**
@@ -22,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
  */
 @Entity
 @Table (name = "STUDENT_CLASS")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class StudentsClass {
 
 	public static final String PROPERTY_ID_FIELD_OF_STUDY = "id.fieldOfStudy";

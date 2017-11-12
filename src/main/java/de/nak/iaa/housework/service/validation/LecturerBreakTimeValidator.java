@@ -32,11 +32,11 @@ public class LecturerBreakTimeValidator extends TypeOrientedValidator<Event> {
 		int breakTime = lecturer.getMinimalBreakTime();
 		
 		LocalDateTime maxEndPreviousEvent = entity.getStart().minus(breakTime, ChronoUnit.MINUTES);
-		PropertyFilter startFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_END, entity.getStart()); 
-		PropertyFilter lecturerFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_LECTURER, lecturer);
-		PropertyFilter previousEndEventFilter = new PropertyFilter(Operator.GREATEREQ, 
-																	Event.PROPERTY_NAME_END, 
-																	maxEndPreviousEvent);
+		PropertyFilter startFilter = new PropertyFilter(entity.getStart(), Operator.GREATEREQ, Event.PROPERTY_NAME_END); 
+		PropertyFilter lecturerFilter = new PropertyFilter(lecturer, Operator.EQ, Event.PROPERTY_NAME_LECTURER);
+		PropertyFilter previousEndEventFilter = new PropertyFilter(maxEndPreviousEvent, 
+																	Operator.LESSEQ, 
+																	Event.PROPERTY_NAME_END);
 		
 		PropertyFilterChain filter = PropertyFilterChain.startWith(startFilter)
 															.appendFilter(previousEndEventFilter, Connector.AND)
@@ -51,7 +51,7 @@ public class LecturerBreakTimeValidator extends TypeOrientedValidator<Event> {
 					maxEndPreviousEvent));
 		}
 		
-		PropertyFilter roomFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_ROOM, entity.getRoom());
+		PropertyFilter roomFilter = new PropertyFilter(entity.getRoom(), Operator.EQ, Event.PROPERTY_NAME_ROOM);
 		filter = PropertyFilterChain.startWith(startFilter)
 									.appendFilter(previousEndEventFilter, Connector.AND)
 									.appendFilter(roomFilter, Connector.AND);

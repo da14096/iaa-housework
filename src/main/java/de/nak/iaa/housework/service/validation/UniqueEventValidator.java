@@ -3,6 +3,7 @@ package de.nak.iaa.housework.service.validation;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -12,8 +13,7 @@ import de.nak.iaa.housework.model.Room;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 import de.nak.iaa.housework.model.repository.PropertyFilter;
 import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
-import de.nak.iaa.housework.model.repository.PropertyFilterChain;
-import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
+import de.nak.iaa.housework.service.FilterUtils;
 
 @ValidatorBean
 public class UniqueEventValidator extends TypeOrientedValidator<Event> {
@@ -34,27 +34,21 @@ public class UniqueEventValidator extends TypeOrientedValidator<Event> {
 		Lecturer lecturer = entity.getLecturer();
 		Room room = entity.getRoom();
 		
-		PropertyFilter startFilter = new PropertyFilter(Operator.GREATER, Event.PROPERTY_NAME_START, start);
-		PropertyFilter endFilter = new PropertyFilter(Operator.LESS, Event.PROPERTY_NAME_END, end);
-		PropertyFilter sameRoomFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_ROOM, room);
-		PropertyFilter sameLecturerFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_LECTURER, lecturer);
+		PropertyFilter notTheEventToValidate = new PropertyFilter(entity, Operator.NOTEQ);
 		
+		PropertyFilter sameRoomFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOM);	
+		Set <Event> eventsWithSameRoom = FilterUtils.instance(repository)
+											.getAllOverlappingEvents(start, end, sameRoomFilter, notTheEventToValidate);
 		
-		PropertyFilterChain chain = PropertyFilterChain.startWith(startFilter)
-														.appendFilter(endFilter, Connector.AND)
-														.appendFilter(sameRoomFilter, Connector.AND);
-		List <Event> eventsWithSameRoom = repository.readAll(Event.class, chain);
 		List <Violation> violations = new ArrayList<>();
 		if (!eventsWithSameRoom.isEmpty()) {
 			violations.add(new Violation("Räume können nur einer Veranstaltung zur Zeit zugeordnet sein. Der Raum ["
 					+ room + "] ist in dem Zeitraum vom " + start + " bis " + end + " bereits belegt."));
 		}
 		
-		
-		chain = PropertyFilterChain.startWith(startFilter)
-									.appendFilter(endFilter, Connector.AND)
-									.appendFilter(sameLecturerFilter, Connector.AND);
-		List <Event> eventsWithSameLecturer = repository.readAll(Event.class, chain);		
+		PropertyFilter sameLecturerFilter = new PropertyFilter(lecturer, Operator.EQ, Event.PROPERTY_NAME_LECTURER);
+		Set <Event> eventsWithSameLecturer = FilterUtils.instance(repository)
+										.getAllOverlappingEvents(start, end, sameLecturerFilter, notTheEventToValidate);
 		if (!eventsWithSameLecturer.isEmpty()) {
 			violations.add(new Violation("Dozenten können nur einer Veranstaltung zur Zeit zugeordnet sein. Der Dozent ["
 					+ lecturer + "] ist in dem Zeitraum vom " + start + " bis " + end + " bereits zugeordnet."));

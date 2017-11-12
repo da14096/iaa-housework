@@ -3,6 +3,12 @@
 </head>
 <div class="header">
 	<span class="caption">{{roomListCaption}}</span>
+	<button	ng-show="createWeekViewForRoom"
+			ng-disabled="!selectedRoom"
+			ng-click="createWeekViewForRoom(selectedRoom)">
+			<i class="fa fa-calendar" aria-hidden="true"></i>
+			 Wochenübersicht erstellen
+	</button>
 	<button ng-show="newRoomFormVisible"  ng-click="createRoom(roomToCreate)" ng-disabled="newRoomForm.$invalid">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>

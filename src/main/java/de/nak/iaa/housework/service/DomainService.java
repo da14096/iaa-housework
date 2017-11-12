@@ -6,9 +6,13 @@ public interface DomainService <RESPTYPE> {
 
 	List <RESPTYPE> readAll ();
 	
+	RESPTYPE persist (RESPTYPE item, boolean validate) throws ValidationException;
+	
 	RESPTYPE persist (RESPTYPE item) throws ValidationException;
 	
-	RESPTYPE update (RESPTYPE item) throws ValidationException;
+	RESPTYPE update (RESPTYPE item, boolean validate) throws ValidationException;
 	
+	RESPTYPE update (RESPTYPE item) throws ValidationException;
+ 	
 	void delete (RESPTYPE item);
 }

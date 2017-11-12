@@ -23,19 +23,33 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 	}
 	
 	@Override
-	@Transactional (rollbackFor=Exception.class)
-	public RESPTYPE persist(RESPTYPE item) throws ValidationException {
-		validate(item);
+	@Transactional
+	public RESPTYPE persist(RESPTYPE item, boolean validate) throws ValidationException {
+		if (validate) {
+			validate(item);
+		}
 		return repository.create(item);
 	}
 	@Override
-	@Transactional (rollbackFor=Exception.class)
-	public RESPTYPE update(RESPTYPE item) throws ValidationException {
-		validate(item);
+	@Transactional
+	public RESPTYPE persist(RESPTYPE item) throws ValidationException {
+		return persist (item, true);
+	}
+	@Override
+	@Transactional
+	public RESPTYPE update(RESPTYPE item, boolean validate) throws ValidationException {
+		if (validate) {
+			validate(item);
+		}
 		return repository.update(item);
 	}
 	@Override
-	@Transactional (rollbackFor=Exception.class)
+	@Transactional
+	public RESPTYPE update(RESPTYPE item) throws ValidationException {
+		return update (item, true);
+	}
+	@Override
+	@Transactional
 	public void delete(RESPTYPE item) {
 		repository.delete(item);
 	}
@@ -44,7 +58,7 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 	public List<RESPTYPE> readAll() {
 		return repository.readAll(type);
 	}	
-	private void validate (RESPTYPE item) throws ValidationException {
+	protected void validate (RESPTYPE item) throws ValidationException {
 		List <Violation> violations = validationService.validate(item);
 		if (!violations.isEmpty()) {
 			throw new ValidationException(violations);

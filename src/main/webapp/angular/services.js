@@ -41,5 +41,14 @@ application.service('eventBus', [
 		}
 		
 		
+		var _fillWeekViewListener = [];
+		this.onFillWeekView = (callback) => {
+			_fillWeekViewListener.push(callback);
+		}
+		this.publishFillWeekView = (serviceMethod, weekViewObj, caption) => {
+			for (var listener of _fillWeekViewListener) {
+				listener(serviceMethod, weekViewObj, caption);
+			}
+		}
 	}
 ]);

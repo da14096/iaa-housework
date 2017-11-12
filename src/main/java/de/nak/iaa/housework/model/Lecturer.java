@@ -79,6 +79,10 @@ public class Lecturer {
 			return false;
 		return true;
 	}
+	@Override
+	public String toString() {
+		return name + " " + surname + "(" + personnelNumber + ")";
+	}
 	
 	
 }

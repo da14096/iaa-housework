@@ -28,7 +28,7 @@ public class DefaultDomainRepository implements DomainRepository {
 	/** Prefix von Variablen, die als Eingabe für eine Query dienen */
 	private static final String INPUT_VAR_NAME_PREFIX = "iv";
 	/** Notation um einen Input-Parameter zu definieren*/
-	private static final String INPUT_PARAMETER_IDENTIFIER= ":";
+	private static final String INPUT_PARAMETER_IDENTIFIER= " :";
 	
 	/** Prefix eines Select-Statements in der jpQuery-Language*/
 	private static final String SELECT_CLAUSE_PREFIX = "SELECT" + DATA_VAR_NAME + " FROM ";
@@ -41,14 +41,14 @@ public class DefaultDomainRepository implements DomainRepository {
 	/** Connects where or between clause*/
 	private static final String OR_CONNECTOR = " OR";
 	
-	private static final String EQ_OPERATOR = " = ";
-	private static final String NOTEQ_OPERATOR = " != ";
-	private static final String LESS_EQ_OPERATOR = " <= ";
-	private static final String GREATER_EQ_OPERATOR = " >= ";
-	private static final String LESS_OPERATOR = " < ";
-	private static final String GREATER_OPERATOR = " > ";
-	private static final String IN_OPERATOR = " IN ";
-	private static final String NOT_IN_OPERATOR = " NOT IN ";
+	private static final String EQ_OPERATOR = " =";
+	private static final String NOTEQ_OPERATOR = " !=";
+	private static final String LESS_EQ_OPERATOR = " <=";
+	private static final String GREATER_EQ_OPERATOR = " >=";
+	private static final String LESS_OPERATOR = " <";
+	private static final String GREATER_OPERATOR = " >";
+	private static final String IN_OPERATOR = " IN";
+	private static final String NOT_IN_OPERATOR = " NOT IN";
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -116,12 +116,15 @@ public class DefaultDomainRepository implements DomainRepository {
 	}
 	
 	private String parsePropertyFilter (PropertyFilter filter, String inputParameterName) {
-		StringBuilder builder = new StringBuilder(DATA_VAR_NAME);
-		builder.append(PROPERTY_NAVIGATOR);
-		builder.append(filter.getPropertyName());
-		builder.append(parseOperator(filter.getOperator()));
-		builder.append(INPUT_PARAMETER_IDENTIFIER);
+		StringBuilder builder = new StringBuilder(INPUT_PARAMETER_IDENTIFIER);
 		builder.append(inputParameterName);
+		builder.append(parseOperator(filter.getOperator()));
+		builder.append(DATA_VAR_NAME);
+		String propertyName = filter.getPropertyName();
+		if (propertyName != null && !propertyName.isEmpty()) {
+			builder.append(PROPERTY_NAVIGATOR);
+			builder.append(propertyName);
+		}		
 		return builder.toString();
 	}
 	
@@ -135,14 +138,14 @@ public class DefaultDomainRepository implements DomainRepository {
 			return IN_OPERATOR;
 		case NOT_IN:
 			return NOT_IN_OPERATOR;
-		case GREATER:
-			return GREATER_OPERATOR;
-		case GREATEREQ:
-			return GREATER_EQ_OPERATOR;
 		case LESS:
 			return LESS_OPERATOR;
 		case LESSEQ:
 			return LESS_EQ_OPERATOR;
+		case GREATER:
+			return GREATER_OPERATOR;
+		case GREATEREQ:
+			return GREATER_EQ_OPERATOR;
 		default: 
 			throw new IllegalArgumentException("No Operator defined for FilterType [" + type + "]");
 		}

@@ -119,8 +119,8 @@ public class TestDefaultDomainRepository {
 			
 		/* Test that the relevant filter-operations work correctly */
 		// 1.) find Events in dateRange
-		PropertyFilter fromFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.minusDays(5));
-		PropertyFilter toFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.plusDays(5));
+		PropertyFilter fromFilter = new PropertyFilter(START.minusDays(5), Operator.LESSEQ, Event.PROPERTY_NAME_START);
+		PropertyFilter toFilter = new PropertyFilter(START.plusDays(5), Operator.GREATEREQ, Event.PROPERTY_NAME_START);
 		PropertyFilterChain chain = PropertyFilterChain.startWith(fromFilter).appendFilter(toFilter, Connector.AND);
 		
 		allEvents = repository.readAll(Event.class, chain);
@@ -128,15 +128,15 @@ public class TestDefaultDomainRepository {
 		assertEquals (allEvents.get(0), event);
 		
 		// 1.1.) Counter-example
-		fromFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_START, START.minusDays(5));
-		toFilter = new PropertyFilter(Operator.GREATEREQ, Event.PROPERTY_NAME_START, START.plusDays(5));
+		fromFilter = new PropertyFilter(START.minusDays(5), Operator.GREATEREQ, Event.PROPERTY_NAME_START);
+		toFilter = new PropertyFilter(START.plusDays(5), Operator.LESSEQ, Event.PROPERTY_NAME_START);
 		chain = PropertyFilterChain.startWith(fromFilter).appendFilter(toFilter, Connector.AND);
 		
 		allEvents = repository.readAll(Event.class, chain);
 		assertTrue (allEvents.isEmpty());
 		
 		// 2.) find Events by room
-		PropertyFilter roomFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_ROOM, room);
+		PropertyFilter roomFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOM);
 		chain = PropertyFilterChain.startWith(roomFilter);
 		
 		allEvents = repository.readAll(Event.class, chain);
@@ -144,7 +144,7 @@ public class TestDefaultDomainRepository {
 		assertEquals (event, allEvents.get(0));
 		
 		// 2.1) Counter-example
-		roomFilter = new PropertyFilter(Operator.NOTEQ, Event.PROPERTY_NAME_ROOM, room);
+		roomFilter = new PropertyFilter(room, Operator.NOTEQ, Event.PROPERTY_NAME_ROOM);
 		chain = PropertyFilterChain.startWith(roomFilter);
 		
 		allEvents = repository.readAll(Event.class, chain);
@@ -152,7 +152,7 @@ public class TestDefaultDomainRepository {
 		
 		
 		// 3.) find Event by lecturer
-		PropertyFilter lecturerFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_LECTURER, lecturer);
+		PropertyFilter lecturerFilter = new PropertyFilter(lecturer, Operator.EQ, Event.PROPERTY_NAME_LECTURER);
 		chain = PropertyFilterChain.startWith(lecturerFilter);
 		
 		allEvents = repository.readAll(Event.class, chain);
@@ -160,7 +160,7 @@ public class TestDefaultDomainRepository {
 		assertEquals (event, allEvents.get(0));
 		
 		// 3.1) Counter-example
-		lecturerFilter = new PropertyFilter(Operator.NOTEQ, Event.PROPERTY_NAME_LECTURER, lecturer);
+		lecturerFilter = new PropertyFilter(lecturer, Operator.NOTEQ, Event.PROPERTY_NAME_LECTURER);
 		chain = PropertyFilterChain.startWith(lecturerFilter);
 		
 		allEvents = repository.readAll(Event.class, chain);
@@ -250,11 +250,11 @@ public class TestDefaultDomainRepository {
 		
 		assertEquals (repository.find(Room.class, roomName), savedRoom);
 		
-		PropertyFilter roomFilter = new PropertyFilter(Operator.EQ, Room.PROPERTY_BUILDING, Building.A);
+		PropertyFilter roomFilter = new PropertyFilter(Building.A, Operator.EQ, Room.PROPERTY_BUILDING);
 		List <Room> matchingRooms = repository.readAll(Room.class, PropertyFilterChain.startWith(roomFilter));
 		assertFalse (matchingRooms.isEmpty());
 		
-		roomFilter = new PropertyFilter(Operator.EQ, Room.PROPERTY_BUILDING, Building.B);
+		roomFilter = new PropertyFilter(Building.B, Operator.EQ, Room.PROPERTY_BUILDING);
 		matchingRooms = repository.readAll(Room.class, PropertyFilterChain.startWith(roomFilter));
 		assertTrue (matchingRooms.isEmpty());
 		

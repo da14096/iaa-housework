@@ -32,11 +32,11 @@ public class RoomChangeTimeValidator extends TypeOrientedValidator<Event> {
 		int changeTime = room.getChangeDuration();
 		
 		LocalDateTime maxEndPreviousEvent = entity.getStart().minus(changeTime, ChronoUnit.MINUTES);
-		PropertyFilter startFilter = new PropertyFilter(Operator.LESSEQ, Event.PROPERTY_NAME_END, entity.getStart()); 
-		PropertyFilter roomFilter = new PropertyFilter(Operator.EQ, Event.PROPERTY_NAME_ROOM, room);
-		PropertyFilter previousEndEventFilter = new PropertyFilter(Operator.GREATEREQ, 
-																	Event.PROPERTY_NAME_END, 
-																	maxEndPreviousEvent);
+		PropertyFilter startFilter = new PropertyFilter(entity.getStart(), Operator.GREATEREQ, Event.PROPERTY_NAME_END); 
+		PropertyFilter roomFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOM);
+		PropertyFilter previousEndEventFilter = new PropertyFilter(maxEndPreviousEvent, 
+																	Operator.LESSEQ, 
+																	Event.PROPERTY_NAME_END);
 		
 		PropertyFilterChain filter = PropertyFilterChain.startWith(startFilter)
 															.appendFilter(previousEndEventFilter, Connector.AND)

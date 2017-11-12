@@ -44,7 +44,7 @@ public class Event {
 	@Basic
 	private LocalDateTime end;
 	@Basic
-	private Integer changeDuration;
+	private int changeDuration;
 	@ManyToOne
 	private Room room;
 	@ManyToOne
@@ -105,7 +105,7 @@ public class Event {
 	public void setEnd(LocalDateTime end) {
 		this.end = end;
 	}
-	public Integer getChangeDuration() {
+	public int getChangeDuration() {
 		return changeDuration;
 	}
 	public void setChangeDuration(int changeDuration) {

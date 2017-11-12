@@ -3,6 +3,12 @@
 </head>
 <div class="header">
 	<span class="caption">Zenturien</span>
+	<button	ng-show="createWeekViewForStudentsClass"
+			ng-disabled="!selectedStudentsClass"
+			ng-click="createWeekViewForStudentsClass(selectedStudentsClass)">
+			<i class="fa fa-calendar" aria-hidden="true"></i>
+			 Wochenübersicht erstellen
+		</button>
 	<button ng-show="newStudentsClassFormVisible" ng-disabled="newStudentsClassForm.$invalid"
 			ng-click="createStudentsClass(studentsClassToCreate)">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
@@ -23,7 +29,8 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="studentsClass in studentsClasses | filter:studentsClassSearchQuery | 
-			orderBy:['id.fieldOfStudy', 'id.year', 'id.form']">
+			orderBy:['id.fieldOfStudy', 'id.year', 'id.form']" ng-click="selectStudentsClass(studentsClass)"
+			ng-class="{selection: selectedStudentsClass === studentsClass}">
 			<!-- prepare building rep -->
 			<td>{{studentsClass.name}}</td>
 			<td>{{studentsClass.size}}</td>

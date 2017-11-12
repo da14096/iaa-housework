@@ -6,18 +6,23 @@
 </div>
 <div class="content content-followed-by-footer" style="display:inline-flex">
 	<form name="eventForm" style="max-width: 40%; overflow-y: auto;">
-		<div class="fieldWrapper" style="width: 100%">
+		<div class="fieldWrapper" style="display: inline-block; width: 49%">
 			<span class="fieldCaption top-caption">Veranstaltungsname</span>
 			<input name="eventName" type="text" ng-model="eventToEdit.title" required/>
 		</div>
-		<div class="fieldWrapper" style="display: inline-block">
+		<div class="fieldWrapper" ng-style="{'visibility': (!eventToEdit.id)? 'visible': 'hidden'}" 
+			style="display: inline-block; width: 49%">
+			<span class="fieldCaption top-caption">Wiederholung(Wochen)</span>
+			<input name="repetition" type="number" ng-max="9" maxlength="1" ng-model="repetition"/>
+		</div>
+		<div class="fieldWrapper" style="display: inline-block; width: 49%">
 			<span class="fieldCaption top-caption">Veranstaltungsdatum</span>
 			<input name="eventStart" type="datetime-local" ng-model="eventToEdit.start" required
 					ng-min="today" ng-change="autofill(value)"/>
 		</div>
-		<div class="fieldWrapper" style="display: inline-block">
+		<div class="fieldWrapper" style="display: inline-block; width: 49%">
 			<span class="fieldCaption top-caption">Veranstaltungsende</span>
-			<input name="eventEnd" type="datetime-local" ng-model="eventToEdit.end" required ng-min="eventToEdit.start"/>
+			<input name="eventEnd" type="datetime-local" ng-model="eventToEdit.end" required/>
 		</div>
 		<div class="fieldWrapper">
 			<span class="fieldCaption top-caption">Veranstaltungstyp</span>

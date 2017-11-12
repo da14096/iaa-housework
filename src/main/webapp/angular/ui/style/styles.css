@@ -43,6 +43,22 @@ body {
 	color: rgb(70,70,70);
 }
 
+.errorWindow {
+	position: absolute;
+	z-index: 9999;
+	padding: var(--margin-width);
+	box-sizing: border-box;
+	background-color: rgb(255, 92, 92);
+	color: white;
+	top: 30%;
+    left: 10%;
+    width: 80%;
+    max-height: 40%;
+    overflow-y: overlay;
+    font-size: 1.1rem;
+    cursor: pointer;
+}
+
 /* Styles for a container that has a header and a content */
 .header, .footer {
 	background-color: rgb(238, 238, 238);

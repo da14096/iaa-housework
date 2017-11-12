@@ -14,8 +14,14 @@ application.controller('dashboardController', [
     $scope.lecturerListAddable = true;
     $scope.studentsClassListAddable = true;
     
-    $scope.lecturerListSelectable = false;
-    $scope.roomListSelectable = false;
+    $scope.lecturerListSelectable = true;
+    $scope.createWeekViewForLecturer = true;
+    
+    $scope.roomListSelectable = true;
+    $scope.createWeekViewForRoom = true;
+    
+    $scope.studentsClassListSelectable = true;
+    $scope.createWeekViewForStudentsClass = true;
     
     $scope.roomListCaption = 'Räume';
     $scope.dateFormatter = {year:"2-digit", month:"2-digit", day:"2-digit", hour: "2-digit", minute: "2-digit"};
@@ -91,10 +97,10 @@ application.controller('dashboardController', [
 		var end = event.end;
 //		months start by 0 so substract 1
 		if (Array.isArray(start)) {
-			event.start = new Date(start[0], start[1] - 1, start[2], start[3], start[4]);
+			event.start = new Date(Date.UTC(start[0], start[1] - 1, start[2], start[3], start[4]));
 		}
 		if (Array.isArray(end)) {
-			event.end = new Date(end[0], end[1] - 1, end[2], end[3], end[4]);
+			event.end = new Date(Date.UTC(end[0], end[1] - 1, end[2], end[3], end[4]));
 		}
     }
     
@@ -105,6 +111,37 @@ application.controller('dashboardController', [
     $scope.editEvent = (event) => {
     	$scope.eventViewVisible = true;
     	eventBus.publishEditEvent(event);
+    }
+    
+    $scope.selectLecturer = (lecturer) => {
+    	if ($scope.selectedLecturer === lecturer) {
+    		$scope.selectedLecturer = null;
+    	} else {
+    		$scope.selectedLecturer = lecturer;
+    	}
+    }
+    $scope.selectRoom = (room) => {
+    	if ($scope.selectedRoom === room) {
+    		$scope.selectedRoom = null;
+    	} else {
+    		$scope.selectedRoom = room;
+    	}
+    }
+    $scope.selectStudentsClass = (studentsClass) => {
+    	if ($scope.selectedStudentsClass === studentsClass) {
+    		$scope.selectedStudentsClass = null;
+    	} else {
+    		$scope.selectedStudentsClass = studentsClass;
+    	}
+    }
+    $scope.createWeekViewForLecturer = (lecturer) => {
+    	eventBus.publishFillWeekView(lecturerService.getEventsForWeek, lecturer, "Dozent " + lecturer.surname);
+    }
+    $scope.createWeekViewForRoom = (room) => {
+    	eventBus.publishFillWeekView(roomService.getEventsForWeek, room, "Raum " + room.roomName);
+    }
+    $scope.createWeekViewForStudentsClass = (studentsClass) => {
+    	eventBus.publishFillWeekView(studentsClassService.getEventsForWeek, studentsClass, "Zenturie " + studentsClass.name);
     }
   } 
 ]);

@@ -3,14 +3,37 @@
 </head>
 <div class="header">
 	<span class="caption">Wochenübersicht für {{caption}}</span>
+	<input type="date" ng-model="selDate" required ng-change="fillWeekView()">
 </div>
-<div class="content content-followed-by-footer">
-		
-</div>
+<table class="content content-followed-by-footer">
+	<thead>
+		<tr>
+			<th>{{visibleDates[0].toLocaleDateString(undefined, dateFormatter)}}</th>
+			<th>{{visibleDates[1].toLocaleDateString(undefined, dateFormatter)}}</th>
+			<th>{{visibleDates[2].toLocaleDateString(undefined, dateFormatter)}}</th>
+			<th>{{visibleDates[3].toLocaleDateString(undefined, dateFormatter)}}</th>
+			<th>{{visibleDates[4].toLocaleDateString(undefined, dateFormatter)}}</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr ng-repeat="i in maxEventAmount">
+			<!-- prepare building rep -->
+			<td>{{eventsMatchingVisibleDates[0][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[0][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[1][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[1][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[2][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[2][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[3][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[3][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[4][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[4][i].title}}</td>
+		</tr>
+	</tbody>
+</table>
 <div class="footer">
-	<button ng-click="cancel()">
+	<button ng-click="close()">
 		<i class="fa fa-times" aria-hidden="true"></i>
 		Zurück
 	</button>
 </div>
+<span ng-show="!maxEventAmount || maxEventAmount.length == 0"
+	style="position: absolute; width: 100%; top: 30%; text-align: center;">
+	In dieser Woche sind noch keine Ereignisse geplant
+</span>
 

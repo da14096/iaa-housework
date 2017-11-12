@@ -1,46 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" ng-app="scheduleManagement" style="height:100%">
-	<head>
-		<meta charset="UTF-8"/>
-		<title>Stundenplanung - Dashboard</title>
-				
-		<!-- application & library -->
-		<script type="application/javascript" src="../lib/angular.js"></script>
-		<script type="application/javascript" src="../application.js"></script>
-		<!-- services -->
-		<script type="application/javascript" src="../modelServices.js"></script>
-		<script type="application/javascript" src="../services.js"></script>
-		
-		<!-- controller -->
-		<script type="application/javascript" src="controller/dashboardController.js"></script>
-		<script type="application/javascript" src="controller/eventFormController.js"></script>
-		
-		<!-- directives -->
-		<script type="application/javascript" src="directives/directives.js"></script>
-		
-		<!-- styles -->
-		<link rel="stylesheet" href="style/font-awesome.min.css">
-		<link rel="stylesheet" type="text/css" href="style/styles.css">
-	</head>
-	<body style="height: 100%; margin: 0px" ng-controller="dashboardController">
-		<div class="header">
-			<div class="caption">Dashboard</div>
-			<button ng-click="planEvent()">
-				<i class="fa fa-plus" aria-hidden="true"></i>
-				Neue Veranstaltung planen
-			</button>
+<html lang="en" ng-app="scheduleManagement" style="height: 100%">
+<head>
+<meta charset="UTF-8" />
+<title>Stundenplanung - Dashboard</title>
+
+<!-- application & library -->
+<script type="application/javascript" src="../lib/angular.js"></script>
+<script type="application/javascript" src="../application.js"></script>
+<!-- services -->
+<script type="application/javascript" src="../modelServices.js"></script>
+<script type="application/javascript" src="../services.js"></script>
+
+<!-- controller -->
+<script type="application/javascript"
+	src="controller/dashboardController.js"></script>
+<script type="application/javascript"
+	src="controller/eventFormController.js"></script>
+<script type="application/javascript"
+	src="controller/weekViewController.js"></script>
+
+<!-- directives -->
+<script type="application/javascript" src="directives/directives.js"></script>
+
+<!-- styles -->
+<link rel="stylesheet" href="style/font-awesome.min.css">
+<link rel="stylesheet" type="text/css" href="style/styles.css">
+</head>
+<body style="height: 100%; margin: 0px"
+	ng-controller="dashboardController">
+	<div class="header">
+		<div class="caption">Dashboard</div>
+		<button ng-click="planEvent()">
+			<i class="fa fa-plus" aria-hidden="true"></i> 
+			Neue Veranstaltung planen
+		</button>
+	</div>
+	<div class="content">
+		<div class="horizontal-layouted-component" style="width: 45%">
+			<lecturers-list ng-controller="dashboardController"
+				class="dashboard-tile "></lecturers-list>
+			<students-class-list class="dashboard-tile "></students-class-list>
+			<room-list ng-controller="dashboardController"
+				class="dashboard-tile "></room-list>
 		</div>
-		<div class="content">
-			<div class="horizontal-layouted-component" style="width: 45%">
-				<lecturers-list ng-controller="dashboardController" class="dashboard-tile "></lecturers-list>
-				<students-class-list class="dashboard-tile "></students-class-list>
-				<room-list ng-controller="dashboardController" class="dashboard-tile "></room-list>
-			</div>
-			<div class="horizontal-layouted-component" style="width: 55%">
-				<event-list class="dashboard-tile" style="height:100%"></event-list>
-			</div>
-		</div>	
-		<div ng-show="eventViewVisible" class="modal-curtain"></div>
-		<event-view ng-show="eventViewVisible" class="window"></event-view>	
-	</body>
+		<div class="horizontal-layouted-component" style="width: 55%">
+			<event-list class="dashboard-tile" style="height:100%"></event-list>
+		</div>
+	</div>
+	<div ng-show="eventViewVisible || weekViewVisible"
+		class="modal-curtain"></div>
+	<event-view ng-show="eventViewVisible" class="window"></event-view>
+	<week-view ng-show="weekViewVisible" class="window"></week-view>
+</body>
 </html>

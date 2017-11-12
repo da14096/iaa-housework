@@ -5,6 +5,8 @@ import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import de.nak.iaa.housework.model.repository.DomainRepository;
 
 /**
@@ -14,12 +16,15 @@ import de.nak.iaa.housework.model.repository.DomainRepository;
  */
 @Entity
 @Table (name = "ROOM")
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Room {
 	
 	public static final String PROPERTY_BUILDING = "name" + DomainRepository.PROPERTY_NAVIGATOR + "building";
 	
 	@EmbeddedId
 	private RoomName name;
+	@Basic
+	private RoomType type;
 	@Basic
 	private Integer capacity;
 	@Basic
@@ -41,6 +46,12 @@ public class Room {
 	}
 	public String getRoomName() {
 		return name.toString();
+	}
+	public RoomType getType() {
+		return type;
+	}
+	public void setType(RoomType type) {
+		this.type = type;
 	}
 	public Integer getCapacity() {
 		return capacity;

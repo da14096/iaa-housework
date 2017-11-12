@@ -1,5 +1,14 @@
+<head>
+	<meta charset="UTF-8"/>
+</head>
 <div class="header">
 	<span class="caption">Dozenten</span>
+	<button	ng-show="createWeekViewForLecturer"
+			ng-disabled="!selectedLecturer"
+			ng-click="createWeekViewForLecturer(selectedLecturer)">
+			<i class="fa fa-calendar" aria-hidden="true"></i>
+			 Wochenübersicht erstellen
+		</button>
 	<button ng-show="newLecturerFormVisible" ng-disabled="newLecturerForm.$invalid" ng-click="createLecturer(lecturerToCreate)">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 	</button>

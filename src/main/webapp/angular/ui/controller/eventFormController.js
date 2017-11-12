@@ -2,50 +2,124 @@
 
 application.controller('eventFormController', [
   '$scope',
+  'modelService',
   'lecturerService',
   'eventService',
   'studentsClassService',
   'eventBus',
-  ($scope, lecturerService, eventService, studentsClassService, eventBus) => {
+  'errorHandler',
+  ($scope, modelService, lecturerService, eventService, studentsClassService, eventBus, errorHandler) => {
     
+	  var _orgEvent;
+	  
 	$scope.today = new Date();
     $scope.lecturerListAddable = false;
     $scope.lecturerListSelectable = true;
+    $scope.createWeekViewForLecturer = false;
     
     $scope.roomListAddable = false;
     $scope.roomListSelectable = true;
     $scope.roomListCaption = "Verfügbare Räume";
     $scope.roomSelectionOpened = false;
     
-    lecturerService.findAll().then(response => $scope.lecturers = response.data);
+    modelService.fieldsOfStudy().then(response => $scope.allFieldsOfStudy = response.data);
+    studentsClassService.findAll().then(response => $scope.studentsClasses = response.data);   
     
     eventBus.onEditEvent(function (eventToEdit) {
-//    	reset to initial state
-    	$scope.eventToEdit = JSON.parse(JSON.stringify(eventToEdit));
+    	lecturerService.findAll().then(response => {
+    		$scope.lecturers = response.data;
+    		if ($scope.eventToEdit.lecturer !== undefined) {
+        		var lecturerFilter = function (lecturer) {
+        			return lecturer.personnelNumber == eventToEdit.lecturer.personnelNumber
+        		};
+        		$scope.selectedLecturer = $scope.lecturers.filter(lecturerFilter)[0];
+        	} else {
+        		$scope.selectedLecturer = {};
+        	}
+    	});
+// reset to initial state
     	$scope.roomSelectionOpened = false;
+    	$scope.repetitions = undefined;
     	
-    	if (eventToEdit.lecturer !== undefined) {
-    		var lecturerFilter = function (lecturer) {
-    			return lecturer.personnelNumber == eventToEdit.lecturer.personnelNumber
-    		};
-    		$scope.selectedLecturer = $scope.lecturers.filter(lecturerFilter)[0];
-    	} else {
-    		$scope.selectedLecturer = {};
+    	_orgEvent = eventToEdit;
+    	$scope.eventToEdit = eventToEdit;
+    	if (eventToEdit.type) {
+    		$scope.updateSelectableValuesForEventType();
     	}
-    	
     });
     
     $scope.saveEvent = (eventToSave) => {
-    	var callback = (response, flagCreated) => {
-    		if (response.status === 200) {
-    			eventBus.publishUpdateEvent(response, flagCreated);
-    			eventBus.publishEndEventEdit();
-			}
-    	};
     	if (eventToSave.id) {
-    		eventService.update(eventToSave).then(response => callback(response, false));
+    		_updateEvent(eventToSave);
+    	} else if ($scope.repetition > 0){
+    		_createRepeated(eventToSave);
     	} else {
-    		eventService.create(eventToSave).then(response => callback(response, true));
+    		_createEvent(eventToSave);
+    	}
+    }
+    
+    function _updateEvent (eventToUpdate) {
+    	var callback = (response) => {
+    		var updatedEvent = response.data;
+    		eventBus.publishUpdateEvent(updatedEvent, false);
+    		_assignEventToSelectedStudentsClasses(updatedEvent);
+			eventBus.publishEndEventEdit();
+    	};
+    	eventService.update(eventToUpdate).then(
+    			callback, 
+    			response => _requestForce(eventService.forceUpdate, eventToUpdate, callback));
+    }
+    function _createRepeated (eventToCreate) {
+    	var callback = (response) => {
+			for (var createdEvent of response.data) {
+				eventBus.publishUpdateEvent(createdEvent, true);
+				_assignEventToSelectedStudentsClasses(createdEvent);
+    		}
+			eventBus.publishEndEventEdit();
+		}
+    	eventService.createRepeated(eventToCreate, $scope.repetition).then(
+    		callback,
+			response => _requestForce(eventService.forceRepeatedCreate, eventToCreate, callback));
+    }
+    function _createEvent (eventToCreate) {
+    	var callback = (response) => {
+    		var createdEvent = response.data;
+    		eventBus.publishUpdateEvent(createdEvent, true);
+    		_assignEventToSelectedStudentsClasses(createdEvent);
+			eventBus.publishEndEventEdit();	
+    	};
+    	eventService.create(eventToCreate).then(
+    		callback,
+    		response => _requestForce(eventService.forceCreate, eventToCreate, callback));
+    }
+    
+    function _requestForce (method, param, callback) {
+    	setTimeout(function () {
+	    	if (confirm("Bitte beachten Sie die Fehlermeldungen, welche beim Speichern der Veranstaltung aufgetreten sind. " +
+	    			"Möchten Sie die Veranstaltung dennoch speichern?")) {
+	    		method(param).then(callback);
+	    		errorHandler.removeMessageWindow();
+	    	}
+    	}, 200);
+    }
+    
+    function _assignEventToSelectedStudentsClasses (eventToAssign) {
+    	if ($scope.yearToAssignEventTo !== undefined) {
+	    	var studentsClassesToAssignEventTo = $scope.studentsClasses.filter(studentsClass => {
+	    		var studentsClassId = studentsClass.id;
+	    		
+	    		var yearMatches = $scope.yearToAssignEventTo == studentsClassId.year;
+	    		var fieldOfStudyMatches = $scope.fieldOfStudyToAssignEventTo == undefined || 
+	    					$scope.fieldOfStudyToAssignEventTo.abreviation == studentsClassId.fieldOfStudy.abreviation;
+	    		var formMatches = $scope.formToAssignEventTo == undefined || 
+	    					$scope.formToAssignEventTo == studentsClassId.form;
+	    		return fieldOfStudyMatches && yearMatches && formMatches;
+	    	});
+	    	
+	    	
+	    	for (var studentsClass of studentsClassesToAssignEventTo) {
+	    		studentsClassService.addEvent(studentsClass, eventToAssign);
+	    	}
     	}
     }
     
@@ -65,9 +139,11 @@ application.controller('eventFormController', [
     $scope.autofill = () => {
     	var startDate = $scope.eventToEdit.start;
     	var endDate = new Date(startDate);
-    	endDate.setHours(startDate.getHours() + 1);
-    	endDate.setMinutes(startDate.getMinutes() + 30);
-    	$scope.eventToEdit.end = endDate;
+    	if (startDate !== undefined) {
+	    	endDate.setHours(startDate.getHours() + 1);
+	    	endDate.setMinutes(startDate.getMinutes() + 30);
+	    	$scope.eventToEdit.end = endDate;
+    	}
     }
     
     $scope.selectLecturer = (lecturer) => {
@@ -94,7 +170,7 @@ application.controller('eventFormController', [
     			.then(response => {
     				$scope.rooms = response.data;
     				var roomOfEvent = $scope.eventToEdit.room;
-    				if (roomOfEvent !== undefined) {
+    				if ($scope.eventToEdit.id !== undefined && roomOfEvent !== undefined) {
     					$scope.rooms.push(roomOfEvent);
     					$scope.selectedRoom = roomOfEvent;
     				}
@@ -129,17 +205,20 @@ application.controller('eventFormController', [
     }
     
     function _getUniqueFieldsOfStudy () {
-    	var uniqueFieldsOfStudy = new Set();
-		for (var studentsClass of $scope.studentsClasses) {
-			uniqueFieldsOfStudy.add(studentsClass.fieldOfStudy);
-		}
-		return Array.from(uniqueFieldsOfStudy);
+    	return $scope.allFieldsOfStudy.filter(fieldOfStudy => {
+    		for (var studentsClass of $scope.studentsClasses) {
+    			if (studentsClass.id.fieldOfStudy.abreviation == fieldOfStudy.abreviation) {
+    				return true;
+    			}
+    		}
+    		return false;
+    	});
     }
     
     function _getUniqueYears (fieldOfStudy) {
     	var uniqueYears = new Set();
 		for (var studentsClass of $scope.studentsClasses) {
-			if (fieldOfStudy && fieldOfStudy !== studentsClass.fieldOfStudy) {
+			if (fieldOfStudy && fieldOfStudy.abreviation !== studentsClass.fieldOfStudy.abreviation) {
 				continue;
 			}
 			uniqueYears.add(studentsClass.year);
@@ -150,7 +229,7 @@ application.controller('eventFormController', [
     function _getForms (fieldOfStudy, year) {
     	var forms = [];
     	for (var studentsClass of $scope.studentsClasses) {
-			if (fieldOfStudy === studentsClass.fieldOfStudy && year === studentsClass.year) {
+			if (fieldOfStudy.abreviation === studentsClass.fieldOfStudy.abreviation && year === studentsClass.year) {
 				forms.push(studentsClass.form);
 			}
 		}

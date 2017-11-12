@@ -8,6 +8,10 @@ package de.nak.iaa.housework.model.repository;
  */
 public class PropertyFilter { 
 
+	/** Dieser String identifiziert die Entität und kann genutzt werden um beispielsweise bei der Suche zweier Räume
+	 * einen bestimmtem Raum auszuschließen */
+	private static final String PROPERTY_NAME_ENTITY = "";
+	
 	/**
 	 * Definiert den Operator welcher zum Filtern über das {@link DomainRepository} mittels {@link PropertyFilter}
 	 * genutzt wird.
@@ -20,21 +24,24 @@ public class PropertyFilter {
 		NOTEQ,
 		IN,
 		NOT_IN,
-		LESS,
-		LESSEQ,
 		GREATER,
-		GREATEREQ;
+		GREATEREQ,
+		LESS,
+		LESSEQ;
 	}
 	
 	private final Operator operator;
 	private final String propertyName;
 	private final Object propertyValue;
 	
-	public PropertyFilter(Operator operator, String propertyName, Object propertyValue) {
+	public PropertyFilter(Object propertyValue, Operator operator, String propertyName) {
 		super();
 		this.operator = operator;
 		this.propertyName = propertyName;
 		this.propertyValue = propertyValue;
+	}
+	public PropertyFilter(Object propertyValue, Operator operator) {
+		this (propertyValue, operator, PROPERTY_NAME_ENTITY);
 	}
 	
 	public Operator getOperator() {

@@ -21,6 +21,14 @@ public class EventPropertyValidator extends PropertyNotNullValidator<Event> {
 			return EventType.EXAMN == entity.getType() && entity.getChangeDuration() < 30? 
 					new Violation("Bei der Klausur [" + entity + "] beträgt die Wechselzeit mindestens 30 Minuten"):
 					null;
+		case Event.PROPERTY_NAME_END:
+			Violation violation = super.validate(entity, propertyName);
+			if (violation == null && entity.getStart() != null) {
+				return entity.getStart().isAfter(entity.getEnd())? 
+						new Violation("Das Ende der Veranstaltung [" + entity + "] darf nicht vor dessen Start sein.")
+						: null;
+			}
+			return violation;
 		default:
 			return super.validate(entity, propertyName);
 		}

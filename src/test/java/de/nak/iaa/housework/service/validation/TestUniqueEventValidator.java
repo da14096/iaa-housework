@@ -3,6 +3,7 @@ package de.nak.iaa.housework.service.validation;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -47,6 +48,8 @@ public class TestUniqueEventValidator {
 		Room room = new Room(name);
 		
 		Event event = new Event();
+		event.setStart(LocalDateTime.now());
+		event.setEnd(LocalDateTime.now());
 		event.setRoom(room);
 		event.setLecturer(lecturer);
 		

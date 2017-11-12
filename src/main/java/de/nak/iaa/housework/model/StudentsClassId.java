@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.persistence.Embeddable;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 /**
  * Diese Klasse wird verwendet um den komplexen Schlüssel der Zenturiennamen abzubilden
@@ -11,6 +13,7 @@ import javax.persistence.Embeddable;
  * @author Nico Kriebel
  */
 @Embeddable
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class StudentsClassId implements Serializable {
 
 	private static final long serialVersionUID = -7238116374329603920L;
@@ -26,7 +29,7 @@ public class StudentsClassId implements Serializable {
 		this.year = year;
 		this.form = form;
 	}
-
+	
 	public String getFormName() {
 		String yearAsString = String.valueOf(year);
 		return fieldOfStudy + yearAsString.substring(yearAsString.length() - 2) + form;
