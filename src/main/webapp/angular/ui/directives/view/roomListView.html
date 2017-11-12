@@ -21,6 +21,7 @@
 	<thead>
 		<tr>
 			<th>Raum</th>
+			<th>Raumtyp</th>
 			<th>Kapazität</th>
 			<th>Wechselzeit</th>
 		</tr>
@@ -30,28 +31,34 @@
 			ng-click="selectRoom(room)" ng-class="{selection: selectedRoom === room}">
 			<!-- prepare building rep -->
 			<td>{{room.roomName}}</td>
+			<td>{{room.type}}</td>
 			<td>{{room.capacity}}</td>
 			<td>{{room.changeDuration}}</td>
 		</tr>
 	</tbody>
 </table>
 <form name="newRoomForm" class="table-add-entry-form shadowed-container" ng-show="newRoomFormVisible">
-	<div class="fieldWrapper" style="display: inline-block; max-width: 25%;">
+	<div class="fieldWrapper" style="display: inline-block; max-width: 20%;">
 		<span class="fieldCaption top-caption">Gebäude</span>
 		<select name="building" ng-model="roomToCreate.name.building" 
 				ng-options="building for building in buildings" required></select>
 	</div>
-	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 25%;">
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Raum</span>
 		<input name="number" ng-model="roomToCreate.name.number" type="text" placeholder="Nummer"
 			maxlength="3" minlength="3" required pattern="[0-9]{3}"/>
 	</div>
- 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 25%;">
+	<div class="fieldWrapper" style="display: inline-block; max-width: 20%;">
+		<span class="fieldCaption top-caption">Typ</span>
+		<select name="type" ng-model="roomToCreate.type" 
+				ng-options="type for type in roomTypes" required></select>
+	</div>
+ 	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Kapazität</span>
 		<input name="capacity" placeholder="Platzanzahl" ng-model="roomToCreate.capacity" type="text" 
 			minlength="1" maxlength="3" pattern="[0-9]*"/>
 	</div>
-	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 25%;">
+	<div class="fieldWrapper" style="display: inline-block; flex-grow:2; max-width: 20%;">
 		<span class="fieldCaption top-caption">Wechselzeit</span>
 		<input name="changeDuration" ng-model="roomToCreate.changeDuration" type="text" placeholder="Minuten"
 			minlength="1" maxlength="2" pattern="[0-9]*"/> 

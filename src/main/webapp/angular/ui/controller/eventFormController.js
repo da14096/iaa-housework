@@ -10,12 +10,13 @@ application.controller('eventFormController', [
   'errorHandler',
   ($scope, modelService, lecturerService, eventService, studentsClassService, eventBus, errorHandler) => {
     
-	  var _orgEvent;
+	  var _currentlyAssignedStudentsClasses = [];
 	  
 	$scope.today = new Date();
     $scope.lecturerListAddable = false;
     $scope.lecturerListSelectable = true;
     $scope.createWeekViewForLecturer = false;
+    $scope.createWeekViewForRoom = false;
     
     $scope.roomListAddable = false;
     $scope.roomListSelectable = true;
@@ -37,11 +38,30 @@ application.controller('eventFormController', [
         		$scope.selectedLecturer = {};
         	}
     	});
+    	if (eventToEdit.id) {
+	    	eventService.getAssignedStudentsClasses(eventToEdit).then(response => {
+	    		_currentlyAssignedStudentsClasses = response.data;
+	    		if (_currentlyAssignedStudentsClasses.length > 0) {
+	    			var example = _currentlyAssignedStudentsClasses[0];
+	    			$scope.updateSelectableValuesForEventType();
+	    			$scope.fieldOfStudyToAssignEventTo = 
+	    				$scope.allFieldsOfStudy.filter(function(fos){
+	    					return fos.abreviation == example.id.fieldOfStudy.abreviation
+	    				})[0];
+	    			$scope.updateYearsForFieldOfStudy();
+	    			$scope.yearToAssignEventTo = example.id.year;
+	    			$scope.updateFormsForYear();
+	    			$scope.formToAssignEventTo = example.id.form;
+	    		}
+	    	});
+    	}
 // reset to initial state
     	$scope.roomSelectionOpened = false;
     	$scope.repetitions = undefined;
+    	$scope.fieldOfStudyToAssignEventTo = undefined;
+		$scope.yearToAssignEventTo = undefined;
+		$scope.formToAssignEventTo = undefined;
     	
-    	_orgEvent = eventToEdit;
     	$scope.eventToEdit = eventToEdit;
     	if (eventToEdit.type) {
     		$scope.updateSelectableValuesForEventType();
@@ -49,84 +69,86 @@ application.controller('eventFormController', [
     });
     
     $scope.saveEvent = (eventToSave) => {
-    	if (eventToSave.id) {
-    		_updateEvent(eventToSave);
-    	} else if ($scope.repetition > 0){
-    		_createRepeated(eventToSave);
+		var studentsClassesToAssignEventTo = $scope.studentsClasses.filter(studentsClass => {
+    		var studentsClassId = studentsClass.id;
+    		
+    		var yearMatches = $scope.yearToAssignEventTo == studentsClassId.year;
+    		var fieldOfStudyMatches = $scope.fieldOfStudyToAssignEventTo == undefined || 
+    					$scope.fieldOfStudyToAssignEventTo.abreviation == studentsClassId.fieldOfStudy.abreviation;
+    		var formMatches = $scope.formToAssignEventTo == undefined || 
+    					$scope.formToAssignEventTo == studentsClassId.form;
+    		return fieldOfStudyMatches && yearMatches && formMatches;
+    	});
+    	if (studentsClassesToAssignEventTo.length > 0) {
+    		_assignToStudentsClasses(eventToSave, studentsClassesToAssignEventTo);
     	} else {
-    		_createEvent(eventToSave);
+    		var success = (response) => {
+        		for (var event of response.data) {
+    				eventBus.publishUpdateEvent(event, eventToSave.id == undefined);
+        		}
+    			eventBus.publishEndEventEdit();
+        	}
+    		eventService.saveEvent(eventToSave, $scope.repetitions)
+    		.then(success, response => _requestForceForSave(eventToSave, $scope.repetitions, success));
     	}
     }
     
-    function _updateEvent (eventToUpdate) {
-    	var callback = (response) => {
-    		var updatedEvent = response.data;
-    		eventBus.publishUpdateEvent(updatedEvent, false);
-    		_assignEventToSelectedStudentsClasses(updatedEvent);
-			eventBus.publishEndEventEdit();
-    	};
-    	eventService.update(eventToUpdate).then(
-    			callback, 
-    			response => _requestForce(eventService.forceUpdate, eventToUpdate, callback));
-    }
-    function _createRepeated (eventToCreate) {
-    	var callback = (response) => {
-			for (var createdEvent of response.data) {
-				eventBus.publishUpdateEvent(createdEvent, true);
-				_assignEventToSelectedStudentsClasses(createdEvent);
+    function _assignToStudentsClasses (eventToSave, studentsClassesToAssignEventTo) {
+    	var success = (response) => {
+    		for (var event of response.data) {
+				eventBus.publishUpdateEvent(event, eventToSave.id == undefined);
+				_cancelEventForPreviouslyAssignedStudentsClasses(studentsClassesToAssignEventTo, event);
     		}
-			eventBus.publishEndEventEdit();
-		}
-    	eventService.createRepeated(eventToCreate, $scope.repetition).then(
-    		callback,
-			response => _requestForce(eventService.forceRepeatedCreate, eventToCreate, callback));
-    }
-    function _createEvent (eventToCreate) {
-    	var callback = (response) => {
-    		var createdEvent = response.data;
-    		eventBus.publishUpdateEvent(createdEvent, true);
-    		_assignEventToSelectedStudentsClasses(createdEvent);
-			eventBus.publishEndEventEdit();	
-    	};
-    	eventService.create(eventToCreate).then(
-    		callback,
-    		response => _requestForce(eventService.forceCreate, eventToCreate, callback));
+    		eventBus.publishEndEventEdit();
+    	}
+    	var repetitions = $scope.repetitions;
+		for (var studentsClass of studentsClassesToAssignEventTo) {
+    		if (repetitions > 0) {
+    			studentsClassService.addEvent(studentsClass, eventToSave, repetitions)
+    				.then(success, response => _requestForce(studentsClass, eventToSave, repetitions, success));
+    		} else {
+    			studentsClassService.addEvent(studentsClass, eventToSave)
+    				.then(success, response => _requestForce(studentsClass, eventToSave, success))
+    		}
+    	}
     }
     
-    function _requestForce (method, param, callback) {
+    function _requestForce (studentsClass, eventToAssign, weeks, callback) {
     	setTimeout(function () {
 	    	if (confirm("Bitte beachten Sie die Fehlermeldungen, welche beim Speichern der Veranstaltung aufgetreten sind. " +
 	    			"Möchten Sie die Veranstaltung dennoch speichern?")) {
-	    		method(param).then(callback);
+	    		studentsClassService.addEvent(studentsClass, eventToAssign, false, weeks).then(callback);
 	    		errorHandler.removeMessageWindow();
 	    	}
     	}, 200);
     }
-    
-    function _assignEventToSelectedStudentsClasses (eventToAssign) {
-    	if ($scope.yearToAssignEventTo !== undefined) {
-	    	var studentsClassesToAssignEventTo = $scope.studentsClasses.filter(studentsClass => {
-	    		var studentsClassId = studentsClass.id;
-	    		
-	    		var yearMatches = $scope.yearToAssignEventTo == studentsClassId.year;
-	    		var fieldOfStudyMatches = $scope.fieldOfStudyToAssignEventTo == undefined || 
-	    					$scope.fieldOfStudyToAssignEventTo.abreviation == studentsClassId.fieldOfStudy.abreviation;
-	    		var formMatches = $scope.formToAssignEventTo == undefined || 
-	    					$scope.formToAssignEventTo == studentsClassId.form;
-	    		return fieldOfStudyMatches && yearMatches && formMatches;
-	    	});
-	    	
-	    	
-	    	for (var studentsClass of studentsClassesToAssignEventTo) {
-	    		studentsClassService.addEvent(studentsClass, eventToAssign);
-	    	}
-    	}
+    function _cancelEventForPreviouslyAssignedStudentsClasses(newAssignedStudentsClasses, eventToCancel) {
+    	var effectiveStudentsClasesToCancel = _currentlyAssignedStudentsClasses.filter(function (clazz) {
+    		for (var sc of newAssignedStudentsClasses) {
+    			if (sc.name == clazz.name) {
+    				return false;
+    			}
+    		}
+    		return true;
+    	});
+		for (var scToCancel of effectiveStudentsClasesToCancel) {
+			studentsClassService.removeEvent(scToCancel, eventToCancel);
+		}
     }
-    
+    function _requestForceForSave (eventToSave, weeks, callback) {
+    	setTimeout(function () {
+	    	if (confirm("Bitte beachten Sie die Fehlermeldungen, welche beim Speichern der Veranstaltung aufgetreten sind. " +
+	    			"Möchten Sie die Veranstaltung dennoch speichern?")) {
+	    		eventService.forceSaveEvent(eventToAssign, weeks).then(callback);
+	    		errorHandler.removeMessageWindow();
+	    	}
+    	}, 200);
+    }
+       
     $scope.deleteEvent = (eventToDelete) => {
     	eventService.deleteEvent(eventToDelete).then(response => {
     		if (response.status === 200) {
-    			eventBus.publishDeleteEvent(response.data);
+    			eventBus.publishDeleteEvent(eventToDelete);
     			eventBus.publishEndEventEdit();
     		}
     	});

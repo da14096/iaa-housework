@@ -8,21 +8,21 @@
 <table class="content content-followed-by-footer">
 	<thead>
 		<tr>
-			<th>{{visibleDates[0].toLocaleDateString(undefined, dateFormatter)}}</th>
-			<th>{{visibleDates[1].toLocaleDateString(undefined, dateFormatter)}}</th>
-			<th>{{visibleDates[2].toLocaleDateString(undefined, dateFormatter)}}</th>
-			<th>{{visibleDates[3].toLocaleDateString(undefined, dateFormatter)}}</th>
-			<th>{{visibleDates[4].toLocaleDateString(undefined, dateFormatter)}}</th>
+			<th>{{visibleDates[0].toLocaleDateString(undefined, dateFormat)}}</th>
+			<th>{{visibleDates[1].toLocaleDateString(undefined, dateFormat)}}</th>
+			<th>{{visibleDates[2].toLocaleDateString(undefined, dateFormat)}}</th>
+			<th>{{visibleDates[3].toLocaleDateString(undefined, dateFormat)}}</th>
+			<th>{{visibleDates[4].toLocaleDateString(undefined, dateFormat)}}</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr ng-repeat="i in maxEventAmount">
 			<!-- prepare building rep -->
-			<td>{{eventsMatchingVisibleDates[0][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[0][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[1][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[1][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[2][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[2][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[3][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[3][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[4][i].start.toLocaleTimeString(undefined, timeFormatter)}} {{eventsMatchingVisibleDates[4][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[0][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[0][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[1][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[1][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[2][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[2][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[3][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[3][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[4][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[4][i].title}}</td>
 		</tr>
 	</tbody>
 </table>

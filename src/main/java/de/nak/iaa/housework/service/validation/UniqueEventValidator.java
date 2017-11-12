@@ -34,12 +34,10 @@ public class UniqueEventValidator extends TypeOrientedValidator<Event> {
 		Lecturer lecturer = entity.getLecturer();
 		Room room = entity.getRoom();
 		
-		PropertyFilter notTheEventToValidate = new PropertyFilter(entity, Operator.NOTEQ);
-		
 		PropertyFilter sameRoomFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOM);	
 		Set <Event> eventsWithSameRoom = FilterUtils.instance(repository)
-											.getAllOverlappingEvents(start, end, sameRoomFilter, notTheEventToValidate);
-		
+											.getAllOverlappingEvents(start, end, sameRoomFilter);
+		eventsWithSameRoom.remove(entity);
 		List <Violation> violations = new ArrayList<>();
 		if (!eventsWithSameRoom.isEmpty()) {
 			violations.add(new Violation("Räume können nur einer Veranstaltung zur Zeit zugeordnet sein. Der Raum ["
@@ -48,7 +46,8 @@ public class UniqueEventValidator extends TypeOrientedValidator<Event> {
 		
 		PropertyFilter sameLecturerFilter = new PropertyFilter(lecturer, Operator.EQ, Event.PROPERTY_NAME_LECTURER);
 		Set <Event> eventsWithSameLecturer = FilterUtils.instance(repository)
-										.getAllOverlappingEvents(start, end, sameLecturerFilter, notTheEventToValidate);
+										.getAllOverlappingEvents(start, end, sameLecturerFilter);
+		eventsWithSameLecturer.remove(entity);
 		if (!eventsWithSameLecturer.isEmpty()) {
 			violations.add(new Violation("Dozenten können nur einer Veranstaltung zur Zeit zugeordnet sein. Der Dozent ["
 					+ lecturer + "] ist in dem Zeitraum vom " + start + " bis " + end + " bereits zugeordnet."));

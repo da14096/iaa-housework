@@ -3,10 +3,10 @@ package de.nak.iaa.housework.service;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,37 +33,53 @@ public class EventServiceImpl extends AbstractDomainService<Event> implements Ev
 	}
 	
 	@Override
+	@Transactional
+	public void delete(Event item) {
+		PropertyFilter studentsClassesFilter = 
+				new PropertyFilter(item, Operator.MEMBER, StudentsClass.PROPERTY_NAME_EVENTS_TO_ATTEND);
+		PropertyFilterChain chain = PropertyFilterChain.startWith(studentsClassesFilter);
+		repository.readAll(StudentsClass.class, chain).forEach(clazz -> {
+			clazz.cancelEvent(item);
+			repository.update(clazz);
+		});;
+		super.delete(item);
+	}
+	
+	@Override
 	@Transactional(rollbackFor=ValidationException.class)
-	public List<Event> persistRepeated(Event event, int weeks, boolean force) throws ValidationException {
-		List <Violation> allViolations = new ArrayList<>();
-		List <Event> allEvents = new ArrayList<>();
-		for (int i = 0; i <= weeks; i++) {
-			Event clone = new Event(event.getType(), event.getTitle(), event.getStart().plus(i, ChronoUnit.WEEKS), 
-									event.getEnd().plus(i, ChronoUnit.WEEKS), event.getRoom(), 
-									event.getLecturer(), event.getChangeDuration());
-			try {
-				allEvents.add(persist(clone, force));
-			} catch (ValidationException e) {
-				allViolations.addAll(e.getViolations());
+	public List<Event> saveEvent(Event event, int weeks, boolean validate) throws ValidationException {
+		if (event.getId() != null) {
+			return Arrays.asList(update(event, validate));
+		} else {
+			List <Violation> allViolations = new ArrayList<>();
+			List <Event> allEvents = new ArrayList<>();
+			for (int i = 0; i <= weeks; i++) {
+				Event clone = new Event(event.getType(), event.getTitle(), event.getStart().plus(i, ChronoUnit.WEEKS), 
+										event.getEnd().plus(i, ChronoUnit.WEEKS), event.getRoom(), 
+										event.getLecturer(), event.getChangeDuration());
+				try {
+					allEvents.add(persist(clone, validate));
+				} catch (ValidationException e) {
+					allViolations.addAll(e.getViolations());
+				}
 			}
+			if (!allViolations.isEmpty()) {
+				throw new ValidationException(allViolations);
+			}
+			return allEvents;
 		}
-		if (!allViolations.isEmpty()) {
-			throw new ValidationException(allViolations);
-		}
-		return allEvents;
+		
 	}
 	
 	@Override
 	@Transactional(readOnly=true)
-	public Map<LocalDate, List<Event>> getEventsForStudentsClass(StudentsClass clazz, LocalDate start, LocalDate end) {
-//		lazily fetch the events from the database
-		StudentsClass persistentStudentsClass = repository.find(StudentsClass.class, clazz.getId());
-		List <Event> allEvents = persistentStudentsClass.getEventsToAttend();
-		List <Event> requestedEvents = allEvents.parallelStream()
-					.filter(event -> event.getStart().isAfter(start.atStartOfDay()) && 
-										event.getStart().isBefore(end.plus(1, ChronoUnit.DAYS).atStartOfDay()))
-					.collect(Collectors.toList());
-		return mapEvents(requestedEvents);
+	public List<StudentsClass> getAssignedStudentsClasses(Event event) {
+		if (event.getId() == null) {
+			return Collections.emptyList();
+		}
+		PropertyFilter filter = new PropertyFilter(event, Operator.MEMBER, StudentsClass.PROPERTY_NAME_EVENTS_TO_ATTEND);
+		PropertyFilterChain chain = PropertyFilterChain.startWith(filter);
+		return repository.readAll(StudentsClass.class, chain);
 	}
 	@Override
 	@Transactional(readOnly=true)
@@ -91,19 +107,6 @@ public class EventServiceImpl extends AbstractDomainService<Event> implements Ev
 														.appendFilter(customFilter, Connector.AND);
 		
 		List <Event> allEventsInInterval = repository.readAll(Event.class, chain);
-		return mapEvents(allEventsInInterval);
-	}
-
-	private Map<LocalDate, List<Event>> mapEvents(List<Event> allEventsInInterval) {
-		Map <LocalDate, List<Event>> result = new HashMap<>();
-		allEventsInInterval.forEach(event -> {
-			List <Event> group = result.get(event.getStart().toLocalDate());
-			if (group == null) {
-				group = new ArrayList<>();
-				result.put(event.getStart().toLocalDate(), group);
-			}
-			group.add(event);
-		});
-		return result;
+		return FilterUtils.mapEvents(allEventsInInterval);
 	}
 }

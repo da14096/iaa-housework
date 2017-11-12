@@ -11,11 +11,11 @@ import de.nak.iaa.housework.model.StudentsClass;
 
 public interface EventService extends DomainService<Event> {
 
-	List <Event> persistRepeated (Event event, int weeks, boolean force) throws ValidationException;
+	List <Event> saveEvent (Event event, int weeks, boolean validate) throws ValidationException;
 	
 	Map <LocalDate, List<Event>> getEventsForRoom (Room room, LocalDate start, LocalDate end);
 	
 	Map <LocalDate, List<Event>> getEventsForLecturer (Lecturer lecturer, LocalDate start, LocalDate end);
 	
-	Map <LocalDate, List<Event>> getEventsForStudentsClass(StudentsClass clazz, LocalDate start, LocalDate end);
+	List <StudentsClass> getAssignedStudentsClasses (Event event);
 }

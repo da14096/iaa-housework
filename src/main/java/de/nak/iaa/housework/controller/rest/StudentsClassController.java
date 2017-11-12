@@ -22,7 +22,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.StudentsClass;
-import de.nak.iaa.housework.service.EventService;
 import de.nak.iaa.housework.service.StudentsClassService;
 import de.nak.iaa.housework.service.ValidationException;
 
@@ -33,15 +32,13 @@ public class StudentsClassController {
 	private static final ObjectMapper OBJECT_MAPPER = getObjectMapper();
 	
 	private final StudentsClassService studentsClassService;
-	private final EventService eventService;
 	
 	private static final String JSON_PARAMETER_STUDENTS_CLASS = "studentsClass";
 	private static final String JSON_PARAMETER_EVENT = "event";
 
 	@Autowired
-	public StudentsClassController(final StudentsClassService studentsClassService, EventService eventService) {
+	public StudentsClassController(final StudentsClassService studentsClassService) {
 		this.studentsClassService = studentsClassService;
-		this.eventService = eventService;
 	}
 
 	@GetMapping
@@ -58,16 +55,19 @@ public class StudentsClassController {
 	public Map <LocalDate, List <Event>> getOverview (@RequestBody StudentsClass studentsClass, 
 						@RequestParam (name="start", required=true)@DateTimeFormat(iso=ISO.DATE_TIME) LocalDate start, 
 						@RequestParam (name="end", required=true)@DateTimeFormat(iso=ISO.DATE_TIME) LocalDate end) {
-		return eventService.getEventsForStudentsClass(studentsClass, start, end);
+		return studentsClassService.resolveEventsMapped(studentsClass, start, end);
 	}
 	@PostMapping(path = "/applyEvent")
-	public void addEvent(@RequestBody ObjectNode node, 
-						@RequestParam(name="validate", defaultValue="true") boolean validate) 
+	public List <Event> addEvent(@RequestBody ObjectNode node, 
+						@RequestParam(name="validate", defaultValue="true") boolean validate,
+						@RequestParam(name="weeks", defaultValue="0") int weeks) 
 								throws JsonProcessingException, ValidationException {
+		
 		StudentsClass clazz = OBJECT_MAPPER.treeToValue(node.get(JSON_PARAMETER_STUDENTS_CLASS), StudentsClass.class);
 		Event event = OBJECT_MAPPER.treeToValue(node.get(JSON_PARAMETER_EVENT), Event.class);
-		studentsClassService.addEvent(clazz, event, validate);
+		return studentsClassService.addEvent(clazz, event, validate, weeks);
 	}
+	
 	@PostMapping(path = "/removeEvent")
 	public void removeEvent(@RequestBody ObjectNode node) throws JsonProcessingException, ValidationException {
 		StudentsClass clazz = OBJECT_MAPPER.treeToValue(node.get(JSON_PARAMETER_STUDENTS_CLASS), StudentsClass.class);

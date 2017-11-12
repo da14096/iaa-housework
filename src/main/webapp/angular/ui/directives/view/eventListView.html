@@ -16,8 +16,8 @@
 		<tr ng-repeat="event in events | filter:eventSearchQuery | orderBy:['start', 'room']"
 			ng-click="editEvent(event)" style="cursor: pointer">
 			<!-- prepare building rep -->
-			<td>{{event.start.toLocaleDateString(undefined, dateFormatter)}}</td>
-			<td>{{event.end.toLocaleDateString(undefined, dateFormatter)}}</td>
+			<td>{{event.start.toLocaleDateString(undefined, dateTimeFormat)}}</td>
+			<td>{{event.end.toLocaleDateString(undefined, dateTimeFormat)}}</td>
 			<td>{{event.title}}</td>
 			<td>{{event.room.roomName}}</td>
 			<td>{{event.lecturer.surname}}

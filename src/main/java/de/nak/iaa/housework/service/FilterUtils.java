@@ -1,7 +1,12 @@
 package de.nak.iaa.housework.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import de.nak.iaa.housework.model.Event;
@@ -49,6 +54,22 @@ public class FilterUtils {
 		return overlappingEvents;
 	}
 	
+	
+	public static final Map <LocalDate, List<Event>> mapEvents (List <Event> events) {
+		Map <LocalDate, List<Event>> result = new HashMap<>();
+		events.forEach(event -> {
+			List <Event> group = result.get(event.getStart().toLocalDate());
+			if (group == null) {
+				group = new ArrayList<>();
+				result.put(event.getStart().toLocalDate(), group);
+			}
+			group.add(event);
+		});
+//		sort the events
+		result.values().forEach(list -> list.sort((e1, e2) -> e1.getStart().isBefore(e2.getStart())? 1: -1));
+		return result;
+	}
+
 	private PropertyFilterChain appendFilters(PropertyFilterChain chain, PropertyFilter... filters) {
 		for (PropertyFilter filter: filters) {
 			chain.appendFilter(filter, Connector.AND);

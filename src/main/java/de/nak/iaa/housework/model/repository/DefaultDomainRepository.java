@@ -47,8 +47,7 @@ public class DefaultDomainRepository implements DomainRepository {
 	private static final String GREATER_EQ_OPERATOR = " >=";
 	private static final String LESS_OPERATOR = " <";
 	private static final String GREATER_OPERATOR = " >";
-	private static final String IN_OPERATOR = " IN";
-	private static final String NOT_IN_OPERATOR = " NOT IN";
+	private static final String MEMBER_OPERATOR = " MEMBER";
 	
 	@PersistenceContext
 	private EntityManager entityManager;
@@ -134,10 +133,8 @@ public class DefaultDomainRepository implements DomainRepository {
 			return EQ_OPERATOR;
 		case NOTEQ:
 			return NOTEQ_OPERATOR;
-		case IN:
-			return IN_OPERATOR;
-		case NOT_IN:
-			return NOT_IN_OPERATOR;
+		case MEMBER:
+			return MEMBER_OPERATOR;
 		case LESS:
 			return LESS_OPERATOR;
 		case LESSEQ:

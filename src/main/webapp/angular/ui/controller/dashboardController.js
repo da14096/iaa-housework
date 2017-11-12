@@ -24,10 +24,13 @@ application.controller('dashboardController', [
     $scope.createWeekViewForStudentsClass = true;
     
     $scope.roomListCaption = 'Räume';
-    $scope.dateFormatter = {year:"2-digit", month:"2-digit", day:"2-digit", hour: "2-digit", minute: "2-digit"};
+    $scope.dateTimeFormat = {year:"2-digit", month:"2-digit", day:"2-digit", hour: "2-digit", minute: "2-digit"};
+    $scope.dateFormat = {year:"2-digit", month:"2-digit", day:"2-digit"};
+	$scope.timeFormat = {hour: "2-digit", minute: "2-digit"};
+	  
     
     eventBus.onDeleteEvent(function (deletedEvent) {
-    	$scope.events = $scope.events.filter(function (event) {event.id !== deletedEvent.id});
+    	$scope.events = $scope.events.filter(function (event) {return event.id !== deletedEvent.id});
     });
     
     eventBus.onUpdateEvent(function (updatedEvent, flagCreated) {
@@ -37,12 +40,15 @@ application.controller('dashboardController', [
     	}
     });
     
-    eventBus.onEndEventEdit (function () {$scope.eventViewVisible = false});
+    eventBus.onEndEventEdit (function () {
+    	$scope.eventViewVisible = false;
+    });
     
 //  Initialize Enums 
     modelService.buildings().then(response => {$scope.buildings = response.data});
     modelService.fieldsOfStudy().then(response => {$scope.fieldsOfStudy = response.data})
     modelService.eventTypes().then(response => {$scope.eventTypes = response.data})
+    modelService.roomTypes().then(response => {$scope.roomTypes = response.data});
     
 //  room-operations  
     roomService.findAll().then(response => {$scope.rooms = response.data});

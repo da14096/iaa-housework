@@ -1,10 +1,12 @@
 package de.nak.iaa.housework.model;
 
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -29,6 +31,7 @@ public class StudentsClass {
 	public static final String PROPERTY_ID_FIELD_OF_STUDY = "id.fieldOfStudy";
 	public static final String PROPERTY_ID_YEAR = "id.year";
 	public static final String PROPERTY_ID_FORM = "id.form";
+	public static final String PROPERTY_NAME_EVENTS_TO_ATTEND = "eventsToAttend";
 	
 	@EmbeddedId
 	private StudentsClassId id;
@@ -37,9 +40,9 @@ public class StudentsClass {
 	@Basic
 	private int minimalBreakTime;
 	
-	@ManyToMany
+	@ManyToMany(cascade=CascadeType.ALL)
 	@JsonIgnore /* ignore the events to prevent that the events are fetched when not needed */ 
-	private List <Event> eventsToAttend = new ArrayList<>();
+	private Set <Event> eventsToAttend = new HashSet<>();
 	
 	public StudentsClass() { }
 	
@@ -82,11 +85,14 @@ public class StudentsClass {
 	public void addEvent (Event event) {
 		this.eventsToAttend.add(event);
 	}
+	public void addEvents (List <Event> events) {
+		this.eventsToAttend.addAll(events);
+	}
 	public void cancelEvent (Event event) {
 		this.eventsToAttend.remove(event);
 	}
-	public List<Event> getEventsToAttend() {
-		return Collections.unmodifiableList(eventsToAttend);
+	public Set<Event> getEventsToAttend() {
+		return Collections.unmodifiableSet(eventsToAttend);
 	}	
 	
 	@Override

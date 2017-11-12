@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import de.nak.iaa.housework.model.Building;
 import de.nak.iaa.housework.model.EventType;
 import de.nak.iaa.housework.model.FieldOfStudy;
+import de.nak.iaa.housework.model.RoomType;
 
 @RestController
 @RequestMapping("/model")
@@ -23,5 +24,9 @@ public class ModelController {
 	@GetMapping(path="/eventTypes")
 	public EventType[] readEventTypes() {
 		return EventType.values();
+	}
+	@GetMapping(path="/roomTypes")
+	public RoomType[] readRoomTypes() {
+		return RoomType.values();
 	}
 }

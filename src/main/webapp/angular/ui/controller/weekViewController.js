@@ -5,9 +5,6 @@ application.controller('weekViewController', [
   'eventBus',
   ($scope, eventBus) => {
     
-	  $scope.dateFormatter = {year:"2-digit", month:"2-digit", day:"2-digit"};
-	  $scope.timeFormatter = {hour: "2-digit", minute: "2-digit"};
-	  
 	  var _serviceMethod;
 	  var _overviewObject;
 	  
@@ -32,7 +29,6 @@ application.controller('weekViewController', [
 		  		$scope.eventsMatchingVisibleDates = [];
 		  		var maxEventsPerDay = 0;
 		  		for (var date of $scope.visibleDates) {
-		  			console.log(date.toLocaleTimeString(undefined, $scope.timeFormatter));
 		  			var eventsForDate = response.data[date.toISOString().split("T")[0]];
 		  			$scope.eventsMatchingVisibleDates.push(eventsForDate);
 		  			if (eventsForDate) {

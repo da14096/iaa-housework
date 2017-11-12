@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.Room;
+import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.service.EventService;
 import de.nak.iaa.housework.service.RoomService;
 import de.nak.iaa.housework.service.ValidationException;
@@ -41,28 +42,20 @@ public class EventController {
 		return event == null ? Collections.emptyList(): roomService.getAvailableRooms(event.getStart(), event.getEnd());
 	}
 	
-	@PostMapping(path = "/create")
-	public Event createEvent(@RequestBody final Event event, 
-							@RequestParam(name="validate", defaultValue="true") boolean validate) 
-									throws ValidationException {
-		return eventService.persist(event, !validate);
-	}
-	@PostMapping(path = "/createRepeated")
-	public List <Event> createEvent (@RequestBody Event event, 
+	@PostMapping(path = "/save")
+	public List <Event> saveEvent (@RequestBody Event event, 
 									@RequestParam(name="weeks", defaultValue="0") int weeks,
 									@RequestParam(name="validate", defaultValue="true") boolean validate) 
 											throws ValidationException {
-		return eventService.persistRepeated(event, weeks, validate);
-	}
-	
-	@PostMapping(path = "/update")
-	public Event updateEvent(@RequestBody final Event event,
-							@RequestParam(name="validate", defaultValue="true") boolean validate) 
-									throws ValidationException {
-		return eventService.update(event, validate);
+		return eventService.saveEvent(event, weeks, validate);
 	}
 	@PostMapping(path = "/delete")
 	public void deleteEvent(@RequestBody final Event event) {
 		eventService.delete(event);
+	}
+	@PostMapping(path = "/studentsClasses")
+	public List <StudentsClass> getAssignedStudentsClasses (@RequestBody Event event) {
+		List <StudentsClass> result = eventService.getAssignedStudentsClasses(event);
+		return result;		
 	}
 }
