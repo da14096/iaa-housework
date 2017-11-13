@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.nak.iaa.housework.model.Event;
+import de.nak.iaa.housework.model.EventType;
 import de.nak.iaa.housework.model.Lecturer;
 import de.nak.iaa.housework.model.Room;
 import de.nak.iaa.housework.model.StudentsClass;
@@ -32,6 +33,13 @@ public class EventServiceImpl extends AbstractDomainService<Event> implements Ev
 		super(repository, service, Event.class);
 	}
 	
+	@Override
+	public Event persist(Event item) throws ValidationException {
+		if (item.getType() == EventType.EXAMN) {
+			item.setChangeDuration(30);
+		}
+		return super.persist(item);
+	}
 	@Override
 	@Transactional
 	public void delete(Event item) {

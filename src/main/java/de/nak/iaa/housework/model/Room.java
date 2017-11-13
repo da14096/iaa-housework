@@ -20,13 +20,17 @@ import de.nak.iaa.housework.model.repository.DomainRepository;
 public class Room {
 	
 	public static final String PROPERTY_BUILDING = "name" + DomainRepository.PROPERTY_NAVIGATOR + "building";
+	public static final String PROPERTY_ROOM_NUMBER = "name" + DomainRepository.PROPERTY_NAVIGATOR + "number";
+	public static final String PROPERTY_TYPE = "type";
+	public static final String PROPERTY_CAPACITY = "capacity";
+	public static final String PROPERTY_CHANGE_DURATION = "changeDuration";
 	
 	@EmbeddedId
 	private RoomName name;
 	@Basic
 	private RoomType type;
 	@Basic
-	private Integer capacity;
+	private int capacity;
 	@Basic
 	private int changeDuration;
 	
@@ -44,6 +48,12 @@ public class Room {
 	public RoomName getName() {
 		return name;
 	}
+	public Building getBuilding() {
+		return name.getBuilding();
+	}
+	public int getRoomNumber () {
+		return name.getNumber();
+	}
 	public String getRoomName() {
 		return name.toString();
 	}
@@ -53,7 +63,7 @@ public class Room {
 	public void setType(RoomType type) {
 		this.type = type;
 	}
-	public Integer getCapacity() {
+	public int getCapacity() {
 		return capacity;
 	}
 	public void setCapacity(int capacity) {

@@ -11,6 +11,7 @@ application.controller('eventFormController', [
   ($scope, modelService, lecturerService, eventService, studentsClassService, eventBus, errorHandler) => {
     
 	  var _currentlyAssignedStudentsClasses = [];
+	  var _initialEventState;
 	  
 	$scope.today = new Date();
     $scope.lecturerListAddable = false;
@@ -31,7 +32,7 @@ application.controller('eventFormController', [
     		$scope.lecturers = response.data;
     		if ($scope.eventToEdit.lecturer !== undefined) {
         		var lecturerFilter = function (lecturer) {
-        			return lecturer.personnelNumber == eventToEdit.lecturer.personnelNumber
+        			return lecturer.personnelNumber == $scope.eventToEdit.lecturer.personnelNumber
         		};
         		$scope.selectedLecturer = $scope.lecturers.filter(lecturerFilter)[0];
         	} else {
@@ -62,7 +63,8 @@ application.controller('eventFormController', [
 		$scope.yearToAssignEventTo = undefined;
 		$scope.formToAssignEventTo = undefined;
     	
-    	$scope.eventToEdit = {
+    	$scope.eventToEdit = eventToEdit;
+    	_initialEventState =  {
     		id: eventToEdit.id,
     		type: eventToEdit.type,
     		title: eventToEdit.title,
@@ -71,7 +73,7 @@ application.controller('eventFormController', [
     		changeDuration: eventToEdit.changeDuration,
     		rooms: eventToEdit.rooms,
     		lecturer: eventToEdit.lecturer
-    	};
+        };
     	if (eventToEdit.type) {
     		$scope.updateSelectableValuesForEventType();
     	}
@@ -164,6 +166,15 @@ application.controller('eventFormController', [
     }
     
     $scope.cancel = () => {
+//    	restore the initial values on abort
+    	if ($scope.eventToEdit.id) {
+    		$scope.eventToEdit.type = _initialEventState.type;
+    		$scope.eventToEdit.title = _initialEventState.title;
+    		$scope.eventToEdit.start = _initialEventState.start;
+    		$scope.eventToEdit.end = _initialEventState.end;
+    		$scope.eventToEdit.rooms = _initialEventState.rooms;
+    		$scope.eventToEdit.lecturer = _initialEventState.lecturer;	
+    	}
     	eventBus.publishEndEventEdit();
     }
     
@@ -187,19 +198,21 @@ application.controller('eventFormController', [
     }
     $scope.selectRoom = (room) => {
     	var contained = false;
-    	for (var i = 0; i < $scope.eventToEdit.rooms.length; i++) {
-    		if ($scope.eventToEdit.rooms[i].roomName == room.roomName) {
-    			$scope.eventToEdit.rooms.splice(i, 1);
-    			contained = true;
-    			break;
-    		}
+    	if ($scope.eventToEdit.rooms) {
+	    	for (var i = 0; i < $scope.eventToEdit.rooms.length; i++) {
+	    		if ($scope.eventToEdit.rooms[i].roomName == room.roomName) {
+	    			$scope.eventToEdit.rooms.splice(i, 1);
+	    			contained = true;
+	    			break;
+	    		}
+	    	}
     	}
     	if (!contained) {
     		$scope.eventToEdit.rooms.push(room);
     	}
     }
     $scope.isRoomSelected = (room) => {
-    	return $scope.eventToEdit && 
+    	return $scope.eventToEdit && $scope.eventToEdit.rooms &&
     			$scope.eventToEdit.rooms.filter(function (r) {return room.roomName == r.roomName}).length > 0;
     }
     

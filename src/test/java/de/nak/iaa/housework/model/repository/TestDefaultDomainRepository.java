@@ -253,7 +253,7 @@ public class TestDefaultDomainRepository {
 		allRoom = repository.readAll(Room.class);
 		assertFalse (allRoom.isEmpty());
 		savedRoom = allRoom.get(0);
-		assertEquals (Integer.valueOf(50), savedRoom.getCapacity());
+		assertEquals (Integer.valueOf(50), (Integer) savedRoom.getCapacity());
 		
 		repository.delete(room);
 		allRoom = repository.readAll(Room.class);
