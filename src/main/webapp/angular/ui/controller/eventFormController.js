@@ -62,7 +62,16 @@ application.controller('eventFormController', [
 		$scope.yearToAssignEventTo = undefined;
 		$scope.formToAssignEventTo = undefined;
     	
-    	$scope.eventToEdit = eventToEdit;
+    	$scope.eventToEdit = {
+    		id: eventToEdit.id,
+    		type: eventToEdit.type,
+    		title: eventToEdit.title,
+    		start: eventToEdit.start,
+    		end: eventToEdit.end,
+    		changeDuration: eventToEdit.changeDuration,
+    		rooms: eventToEdit.rooms,
+    		lecturer: eventToEdit.lecturer
+    	};
     	if (eventToEdit.type) {
     		$scope.updateSelectableValuesForEventType();
     	}
@@ -117,7 +126,7 @@ application.controller('eventFormController', [
     	setTimeout(function () {
 	    	if (confirm("Bitte beachten Sie die Fehlermeldungen, welche beim Speichern der Veranstaltung aufgetreten sind. " +
 	    			"Möchten Sie die Veranstaltung dennoch speichern?")) {
-	    		studentsClassService.addEvent(studentsClass, eventToAssign, false, weeks).then(callback);
+	    		studentsClassService.forceAdd(studentsClass, eventToAssign, false, weeks).then(callback);
 	    		errorHandler.removeMessageWindow();
 	    	}
     	}, 200);
@@ -177,12 +186,21 @@ application.controller('eventFormController', [
     	$scope.eventToEdit.lecturer = $scope.selectedLecturer;
     }
     $scope.selectRoom = (room) => {
-    	if ($scope.selectedRoom === room) {
-    		$scope.selectedRoom = null;
-    	} else {
-    		$scope.selectedRoom = room;
+    	var contained = false;
+    	for (var i = 0; i < $scope.eventToEdit.rooms.length; i++) {
+    		if ($scope.eventToEdit.rooms[i].roomName == room.roomName) {
+    			$scope.eventToEdit.rooms.splice(i, 1);
+    			contained = true;
+    			break;
+    		}
     	}
-    	$scope.eventToEdit.room = $scope.selectedRoom;
+    	if (!contained) {
+    		$scope.eventToEdit.rooms.push(room);
+    	}
+    }
+    $scope.isRoomSelected = (room) => {
+    	return $scope.eventToEdit && 
+    			$scope.eventToEdit.rooms.filter(function (r) {return room.roomName == r.roomName}).length > 0;
     }
     
     $scope.toggleRoomSelection = () => {
@@ -191,10 +209,11 @@ application.controller('eventFormController', [
     		eventService.getAvailableRooms($scope.eventToEdit)
     			.then(response => {
     				$scope.rooms = response.data;
-    				var roomOfEvent = $scope.eventToEdit.room;
-    				if ($scope.eventToEdit.id !== undefined && roomOfEvent !== undefined) {
-    					$scope.rooms.push(roomOfEvent);
-    					$scope.selectedRoom = roomOfEvent;
+    				var selectedRooms = $scope.eventToEdit.rooms;
+    				if ($scope.eventToEdit.id !== undefined && selectedRooms !== undefined) {
+    					for (var room of selectedRooms) {
+    						$scope.rooms.push(room);
+        				}
     				}
     			});
     	}

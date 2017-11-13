@@ -1,9 +1,9 @@
 package de.nak.iaa.housework.service.validation;
 
-import java.util.List;
+import java.util.Set;
 
 public interface ValidationService {
 	
-	<ET> List <Violation> validate (ET entity);
+	<ET> Set <Violation> validate (ET entity);
 
 }

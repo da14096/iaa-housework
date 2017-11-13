@@ -22,7 +22,7 @@ application.controller('weekViewController', [
 		  var dayOfWeek = selDate.getDay();
 		  var difference =  selDate.getDate() - dayOfWeek + (dayOfWeek == 0 ? -6: 1);
 		  selDate.setDate(difference);
-		  var end = new Date(selDate).setDate(selDate.getDate() + 5);
+		  var end = new Date(selDate).setDate(selDate.getDate() + 7);
 		  $scope.selDate = selDate;
 		  _serviceMethod(_overviewObject, selDate.toJSON(), new Date(end).toJSON())
 		  	.then(response => {
@@ -46,7 +46,7 @@ application.controller('weekViewController', [
 	  function _fillDates (selDate) {
 		  $scope.selDate = selDate;
 		  $scope.visibleDates = [selDate];
-		  for (var i = 1; i < 5; i++) {
+		  for (var i = 1; i < 7; i++) {
 			  var newDate = new Date(selDate);
 			  newDate.setDate(selDate.getDate() + i);
 			  $scope.visibleDates.push(newDate);

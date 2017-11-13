@@ -29,6 +29,10 @@ public class EventPropertyValidator extends PropertyNotNullValidator<Event> {
 						: null;
 			}
 			return violation;
+		case Event.PROPERTY_NAME_ROOMS:
+			return entity.getRooms().isEmpty()? 
+					new Violation("Die Veranstaltung [" + entity + "] muss mindestens einem Raum zugeordnet sein!"):
+					null;
 		default:
 			return super.validate(entity, propertyName);
 		}
@@ -41,7 +45,6 @@ public class EventPropertyValidator extends PropertyNotNullValidator<Event> {
 		result.put(Event.PROPERTY_NAME_START, Event::getStart);
 		result.put(Event.PROPERTY_NAME_END, Event::getEnd);
 		result.put(Event.PROPERTY_NAME_CHANGE_DURATION, Event::getChangeDuration);
-		result.put(Event.PROPERTY_NAME_ROOM, Event::getRoom);
 		result.put(Event.PROPERTY_NAME_LECTURER, Event::getLecturer);
 		return result;
 	}

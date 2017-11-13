@@ -24,7 +24,7 @@ public class TestRoomCapacityValidator {
 		Room room = new Room(name, 20);
 		
 		Event event = new Event(EventType.LECTURE, "Test");
-		event.setRoom(room);
+		event.addRoom(room);
 		
 		StudentsClassId id = new StudentsClassId(FieldOfStudy.I, 14, 'c');
 		StudentsClass clazz = new StudentsClass(id);

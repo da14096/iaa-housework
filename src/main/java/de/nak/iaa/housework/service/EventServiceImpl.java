@@ -55,7 +55,7 @@ public class EventServiceImpl extends AbstractDomainService<Event> implements Ev
 			List <Event> allEvents = new ArrayList<>();
 			for (int i = 0; i <= weeks; i++) {
 				Event clone = new Event(event.getType(), event.getTitle(), event.getStart().plus(i, ChronoUnit.WEEKS), 
-										event.getEnd().plus(i, ChronoUnit.WEEKS), event.getRoom(), 
+										event.getEnd().plus(i, ChronoUnit.WEEKS), event.getRooms(), 
 										event.getLecturer(), event.getChangeDuration());
 				try {
 					allEvents.add(persist(clone, validate));
@@ -89,7 +89,7 @@ public class EventServiceImpl extends AbstractDomainService<Event> implements Ev
 	}
 	@Override
 	public Map<LocalDate, List<Event>> getEventsForRoom(Room room, LocalDate start, LocalDate end) {
-		PropertyFilter lecturerFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOM);
+		PropertyFilter lecturerFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOMS);
 		return getAllEvents(start, end, lecturerFilter);
 	}
 	

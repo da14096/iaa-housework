@@ -50,7 +50,7 @@ public class TestUniqueEventValidator {
 		Event event = new Event();
 		event.setStart(LocalDateTime.now());
 		event.setEnd(LocalDateTime.now());
-		event.setRoom(room);
+		event.addRoom(room);
 		event.setLecturer(lecturer);
 		
 		UniqueEventValidator validator = new UniqueEventValidator(repository);
@@ -70,7 +70,8 @@ public class TestUniqueEventValidator {
 								chain.getFilters()
 										.stream()
 										.anyMatch(fc -> lecturer.equals(fc.getFilter().getPropertyValue()));
-						return lecturerSearch? Arrays.asList(new Event()): Collections.emptyList();
+						
+						return lecturerSearch? Arrays.asList(TestUtils.getEventWithIdForTest(1)): Collections.emptyList();
 					}
 				});
 		violations = validator.validate(event);
@@ -86,7 +87,7 @@ public class TestUniqueEventValidator {
 								chain.getFilters()
 										.stream()
 										.anyMatch(fc -> room.equals(fc.getFilter().getPropertyValue()));
-						return roomSearch? Arrays.asList(new Event()): Collections.emptyList();
+						return roomSearch? Arrays.asList(TestUtils.getEventWithIdForTest(1)): Collections.emptyList();
 					}
 				});
 		violations = validator.validate(event);

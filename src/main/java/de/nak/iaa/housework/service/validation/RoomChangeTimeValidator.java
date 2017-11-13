@@ -28,27 +28,28 @@ public class RoomChangeTimeValidator extends TypeOrientedValidator<Event> {
 	
 	@Override
 	public List<Violation> validate(Event entity) {
-		Room room = entity.getRoom();
-		int changeTime = room.getChangeDuration();
-		
-		LocalDateTime maxEndPreviousEvent = entity.getStart().minus(changeTime, ChronoUnit.MINUTES);
-		PropertyFilter startFilter = new PropertyFilter(entity.getStart(), Operator.GREATEREQ, Event.PROPERTY_NAME_END); 
-		PropertyFilter roomFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOM);
-		PropertyFilter previousEndEventFilter = new PropertyFilter(maxEndPreviousEvent, 
-																	Operator.LESSEQ, 
-																	Event.PROPERTY_NAME_END);
-		
-		PropertyFilterChain filter = PropertyFilterChain.startWith(startFilter)
-															.appendFilter(previousEndEventFilter, Connector.AND)
-															.appendFilter(roomFilter, Connector.AND);
-		
-		
-		List <Event> matchingEvents = repository.readAll(Event.class, filter);
 		List <Violation> violations = new ArrayList<>();
-		if (!matchingEvents.isEmpty()) {
-			violations.add(new Violation("Bitte Wechselzeit des Raumes [" + room + "] von " + changeTime + 
-					" Minuten beachten. Der frühestmögliche Beginn der Veranstaltung [" + entity + "] ist um " +
-					maxEndPreviousEvent));
+		for (Room room: entity.getRooms()) {
+			LocalDateTime maxEndPreviousEvent = entity.getStart().minus(room.getChangeDuration(), ChronoUnit.MINUTES);
+			PropertyFilter previousEndEventFilter = new PropertyFilter(maxEndPreviousEvent, 
+																		Operator.LESSEQ, 
+																		Event.PROPERTY_NAME_END);
+			PropertyFilter startFilter = new PropertyFilter(entity.getStart(), Operator.GREATEREQ, Event.PROPERTY_NAME_END);
+			PropertyFilterChain filter = PropertyFilterChain.startWith(startFilter)
+										.appendFilter(previousEndEventFilter, Connector.AND);
+			
+//			unfortunately we have to filter for the room at this point again because h2-database does not support
+//			MEMBER-Filter on Composed Keys.
+			boolean violation = repository.readAll(Event.class, filter)
+								.stream().map(event -> event.getRooms())
+								.collect(() -> new ArrayList<>(), (l1, l2) -> l1.addAll(l2), (l1, l2) -> l1.addAll(l2))
+								.stream()
+								.anyMatch(room::equals);
+			if (violation) {
+				violations.add(new Violation("Bitte die Wechselzeit des Raumes [" + room + "] von " + room.getChangeDuration() + 
+						" Minuten beachten. Der frühestmögliche Beginn der Veranstaltung [" + entity + "] ist um " +
+						maxEndPreviousEvent));
+			}
 		}
 		return violations;
 	}

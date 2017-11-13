@@ -19,7 +19,7 @@
 			<td>{{event.start.toLocaleDateString(undefined, dateTimeFormat)}}</td>
 			<td>{{event.end.toLocaleDateString(undefined, dateTimeFormat)}}</td>
 			<td>{{event.title}}</td>
-			<td>{{event.room.roomName}}</td>
+			<td>{{event.rooms[0].roomName}}{{event.rooms.length > 1? ' und ' + (event.rooms.length - 1) + ' Weitere': ''}}</td>
 			<td>{{event.lecturer.surname}}
 		</tr>
 	</tbody>

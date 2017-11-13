@@ -30,20 +30,18 @@ public class UniqueEventValidator extends TypeOrientedValidator<Event> {
 	public List<Violation> validate(Event entity) {
 		LocalDateTime start = entity.getStart();
 		LocalDateTime end = entity.getEnd();
-		
-		Lecturer lecturer = entity.getLecturer();
-		Room room = entity.getRoom();
-		
-		PropertyFilter sameRoomFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOM);	
-		Set <Event> eventsWithSameRoom = FilterUtils.instance(repository)
-											.getAllOverlappingEvents(start, end, sameRoomFilter);
-		eventsWithSameRoom.remove(entity);
+	
 		List <Violation> violations = new ArrayList<>();
-		if (!eventsWithSameRoom.isEmpty()) {
-			violations.add(new Violation("Räume können nur einer Veranstaltung zur Zeit zugeordnet sein. Der Raum ["
-					+ room + "] ist in dem Zeitraum vom " + start + " bis " + end + " bereits belegt."));
+		Set <Event> overlappingEvents = FilterUtils.instance(repository).getAllOverlappingEvents(start, end);
+		overlappingEvents.remove(entity);
+		for (Room room: entity.getRooms()) {
+			if (overlappingEvents.stream().anyMatch(event -> event.getRooms().contains(room))) {
+				violations.add(new Violation("Räume können nur einer Veranstaltung zur Zeit zugeordnet sein. Der Raum ["
+						+ room + "] ist in dem Zeitraum vom " + start + " bis " + end + " bereits belegt."));
+			}
 		}
 		
+		Lecturer lecturer = entity.getLecturer();
 		PropertyFilter sameLecturerFilter = new PropertyFilter(lecturer, Operator.EQ, Event.PROPERTY_NAME_LECTURER);
 		Set <Event> eventsWithSameLecturer = FilterUtils.instance(repository)
 										.getAllOverlappingEvents(start, end, sameLecturerFilter);

@@ -62,7 +62,8 @@
 		<i class="fa fa-trash-o" aria-hidden="true"></i>
 		Veranstaltung löschen
 	</button>
-	<button ng-disabled="eventForm.$invalid || !eventToEdit.lecturer || !eventToEdit.room" ng-click="saveEvent(eventToEdit)">
+	<button ng-disabled="eventForm.$invalid || !eventToEdit.lecturer || !eventToEdit.rooms.length > 0"
+		 ng-click="saveEvent(eventToEdit)">
 		<i class="fa fa-floppy-o" aria-hidden="true"></i>
 		Veranstaltung speichern
 	</button>

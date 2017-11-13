@@ -1,6 +1,7 @@
 package de.nak.iaa.housework.service;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +60,7 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 		return repository.readAll(type);
 	}	
 	protected void validate (RESPTYPE item) throws ValidationException {
-		List <Violation> violations = validationService.validate(item);
+		Set <Violation> violations = validationService.validate(item);
 		if (!violations.isEmpty()) {
 			throw new ValidationException(violations);
 		}

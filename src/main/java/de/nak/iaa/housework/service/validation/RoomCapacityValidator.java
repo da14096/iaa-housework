@@ -18,10 +18,11 @@ public class RoomCapacityValidator extends TypeOrientedValidator<StudentsClass> 
 	public List<Violation> validate(StudentsClass entity) {
 		List <Violation> violations = new ArrayList<>();
 		for (Event event: entity.getEventsToAttend()) {
-			Room room = event.getRoom();
-			if (room != null && entity.getSize() > room.getCapacity()) {
-				violations.add(new Violation("Die Größe des Raums [" + room 
-						+ "] reicht nicht für die Zenturie [" + entity + "]"));
+			for (Room room: event.getRooms()) {
+				if (entity.getSize() > room.getCapacity()) {
+					violations.add(new Violation("Die Größe des Raums [" + room 
+							+ "] reicht nicht für die Zenturie [" + entity + "]"));
+				}
 			}
 		}
 		return violations;

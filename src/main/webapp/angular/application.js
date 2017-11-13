@@ -11,8 +11,7 @@ application.service('errorHandler', [
 				_errorWindow.innerHTML = "Beim Verarbeiten Ihrer Anfrage kam es zu folgenden Fehlern:"
 				for (var i in error.data.violations) {
 					var message = document.createElement('div');
-					var indxPlusOne = i + 1;
-					message.innerHTML = indxPlusOne + ".) " + error.data.violations[i].message;
+					message.innerHTML = (Number(i) + 1) + ".) " + error.data.violations[i].message;
 					_errorWindow.appendChild(message);
 				}
 				_errorWindow.className = "errorWindow shadowed-container";			

@@ -133,6 +133,9 @@ application.controller('dashboardController', [
     		$scope.selectedRoom = room;
     	}
     }
+    $scope.isRoomSelected = (room) => {
+    	return $scope.selectedRoom == room;
+    }
     $scope.selectStudentsClass = (studentsClass) => {
     	if ($scope.selectedStudentsClass === studentsClass) {
     		$scope.selectedStudentsClass = null;

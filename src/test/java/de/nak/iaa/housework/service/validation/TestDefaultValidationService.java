@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -33,7 +34,7 @@ public class TestDefaultValidationService {
 	@Test
 	public void testValidation () {
 		Object objToValidate = new Object();
-		List <Violation> violations = validationService.validate(objToValidate);
+		Set <Violation> violations = validationService.validate(objToValidate);
 		assertTrue (violations.isEmpty());
 		assertEquals (1, simpleValidator.validationInvocations);
 		assertEquals (1, startingValidator.validationInvocations);

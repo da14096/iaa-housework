@@ -18,14 +18,20 @@ import de.nak.iaa.housework.model.StudentsClassId;
 public class TestStudentsClassEventsValidator {
 	
 	@Test
-	public void testValidator () {
-		Event event = new Event(EventType.LECTURE, "Test");
+	public void testValidator () throws Exception {
+		Event event = TestUtils.getEventWithIdForTest(0);
+		event.setTitle("Test");
+		event.setType(EventType.LECTURE);
 		event.setStart(LocalDateTime.of(2017, 11, 6, 10, 30));
 		event.setEnd(LocalDateTime.of(2017, 11, 6, 11, 30));
-		Event event1 = new Event(EventType.LECTURE, "Test1");
+		Event event1 = TestUtils.getEventWithIdForTest(1);
+		event1.setTitle("Test1");
+		event1.setType(EventType.LECTURE);
 		event1.setStart(LocalDateTime.of(2017, 11, 6, 12, 30));
 		event1.setEnd(LocalDateTime.of(2017, 11, 6, 13, 30));
-		Event event2 = new Event(EventType.LECTURE, "Test2");
+		Event event2 = TestUtils.getEventWithIdForTest(2);
+		event2.setTitle("Test2");
+		event2.setType(EventType.LECTURE);
 		event2.setStart(LocalDateTime.of(2017, 11, 6, 13, 30));
 		event2.setEnd(LocalDateTime.of(2017, 11, 6, 15, 30));
 		

@@ -46,7 +46,7 @@ public class TestRoomChangeTimeValidator {
 		room.setChangeDuration(30);
 		
 		Event event = new Event();
-		event.setRoom(room);
+		event.addRoom(room);
 		LocalDateTime start = LocalDateTime.now();
 		event.setStart(start);
 		

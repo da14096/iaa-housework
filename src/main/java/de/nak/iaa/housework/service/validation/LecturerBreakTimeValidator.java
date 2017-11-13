@@ -2,7 +2,8 @@ package de.nak.iaa.housework.service.validation;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,8 @@ public class LecturerBreakTimeValidator extends TypeOrientedValidator<Event> {
 		int breakTime = lecturer.getMinimalBreakTime();
 		
 		LocalDateTime maxEndPreviousEvent = entity.getStart().minus(breakTime, ChronoUnit.MINUTES);
-		PropertyFilter startFilter = new PropertyFilter(entity.getStart(), Operator.GREATEREQ, Event.PROPERTY_NAME_END); 
 		PropertyFilter lecturerFilter = new PropertyFilter(lecturer, Operator.EQ, Event.PROPERTY_NAME_LECTURER);
+		PropertyFilter startFilter = new PropertyFilter(entity.getStart(), Operator.GREATEREQ, Event.PROPERTY_NAME_END);
 		PropertyFilter previousEndEventFilter = new PropertyFilter(maxEndPreviousEvent, 
 																	Operator.LESSEQ, 
 																	Event.PROPERTY_NAME_END);
@@ -42,26 +43,12 @@ public class LecturerBreakTimeValidator extends TypeOrientedValidator<Event> {
 															.appendFilter(previousEndEventFilter, Connector.AND)
 															.appendFilter(lecturerFilter, Connector.AND);
 		
-		
 		List <Event> matchingEvents = repository.readAll(Event.class, filter);
-		List <Violation> violations = new ArrayList<>();
-		if (!matchingEvents.isEmpty()) {
-			violations.add(new Violation("Bitte Pausenzeiten des Dozenten [" + lecturer + "] von " + breakTime + 
+		return !matchingEvents.isEmpty()?
+			Arrays.asList(new Violation("Bitte Pausenzeiten des Dozenten [" + lecturer + "] von " + breakTime + 
 					" Minuten beachten. Der frühestmögliche Beginn der Veranstaltung [" + entity + "] ist um " +
-					maxEndPreviousEvent));
-		}
-		
-		PropertyFilter roomFilter = new PropertyFilter(entity.getRoom(), Operator.EQ, Event.PROPERTY_NAME_ROOM);
-		filter = PropertyFilterChain.startWith(startFilter)
-									.appendFilter(previousEndEventFilter, Connector.AND)
-									.appendFilter(roomFilter, Connector.AND);
-		matchingEvents = repository.readAll(Event.class, filter);
-		if (!matchingEvents.isEmpty()) {
-			violations.add(new Violation("Bitte die Wechselzeit des Raumes [" + entity.getRoom() + "] von " + breakTime + 
-					" Minuten beachten. Der frühestmögliche Beginn der Veranstaltung [" + entity + "] ist um " +
-					maxEndPreviousEvent));
-		}
-		return violations;
+					maxEndPreviousEvent)):
+			Collections.emptyList();
 	}
 
 }

@@ -23,6 +23,7 @@ public class PropertyFilter {
 		EQ,
 		NOTEQ,
 		MEMBER,
+		NOTMEMBER,
 		GREATER,
 		GREATEREQ,
 		LESS,

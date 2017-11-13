@@ -3,8 +3,10 @@ package de.nak.iaa.housework.service.validation;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +25,10 @@ public class DefaultValidationService implements ValidationService {
 	}
 	
 	@Override
-	public <ET> List<Violation> validate(ET entity) {
+	public <ET> Set<Violation> validate(ET entity) {
 		ValidatorQueue queue = getOrCreateValidatorQueue(entity);
 		
-		List <Violation> violations = new ArrayList<>();
+		Set <Violation> violations = new HashSet<>();
 		List <Validator> validators = new ArrayList<>(queue.getStartingValidators());
 		while (!validators.isEmpty()) {
 			Validator validator = validators.remove(0);

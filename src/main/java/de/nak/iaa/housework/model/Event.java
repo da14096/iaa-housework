@@ -1,12 +1,17 @@
 package de.nak.iaa.housework.model;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -28,7 +33,7 @@ public class Event {
 	public static final String PROPERTY_NAME_START = "start";
 	public static final String PROPERTY_NAME_END = "end";
 	public static final String PROPERTY_NAME_CHANGE_DURATION = "changeDuration";
-	public static final String PROPERTY_NAME_ROOM = "room";
+	public static final String PROPERTY_NAME_ROOMS = "rooms";
 	public static final String PROPERTY_NAME_LECTURER = "lecturer";
 	
 	@Id
@@ -45,8 +50,8 @@ public class Event {
 	private LocalDateTime end;
 	@Basic
 	private int changeDuration;
-	@ManyToOne
-	private Room room;
+	@ManyToMany(fetch=FetchType.EAGER)
+	private Set<Room> rooms = new HashSet<>();
 	@ManyToOne
 	private Lecturer lecturer;
 		
@@ -62,15 +67,18 @@ public class Event {
 		this.end = end;
 	}
 	public Event(EventType type, String title, LocalDateTime start, LocalDateTime end, 
-			Room room, Lecturer lecturer, int changeDurationInMinutes) {
+			Set<Room> rooms, Lecturer lecturer, int changeDurationInMinutes) {
 		this (type, title, start, end);
-		this.room = room;
 		this.lecturer = lecturer;
 		this.changeDuration = changeDurationInMinutes;
+		this.rooms.addAll(rooms);
 	}
 	
 	public Long getId() {
 		return id;
+	}
+	public void setType(EventType type) {
+		this.type = type;
 	}
 	public EventType getType() {
 		return type;
@@ -81,11 +89,14 @@ public class Event {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public Room getRoom() {
-		return room;
+	public void addRoom(Room room) {
+		rooms.add(room);
 	}
-	public void setRoom(Room room) {
-		this.room = room;
+	public void removeRoom (Room room) {
+		rooms.remove(room);
+	}
+	public Set<Room> getRooms() {
+		return Collections.unmodifiableSet(rooms);
 	}
 	public Lecturer getLecturer() {
 		return lecturer;

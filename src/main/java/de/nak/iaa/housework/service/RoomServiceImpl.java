@@ -1,6 +1,7 @@
 package de.nak.iaa.housework.service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,8 +29,9 @@ public class RoomServiceImpl extends AbstractDomainService<Room> implements Room
 			FilterUtils.instance(repository)
 						.getAllOverlappingEvents(start, end)
 						.stream()
-						.map(event -> event.getRoom())
-						.forEach(event -> allRooms.remove(event));
+						.map(event -> event.getRooms())
+						.collect(() -> new ArrayList<>(), (l1, l2) -> l1.addAll(l2), (l1, l2) -> l1.addAll(l2))
+						.forEach(room -> allRooms.remove(room));
 		}
 		return allRooms;
 	}

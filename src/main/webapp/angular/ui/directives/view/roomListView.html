@@ -28,7 +28,7 @@
 	</thead>
 	<tbody>
 		<tr ng-repeat="room in rooms | filter:roomSearchQuery | orderBy:['name.building', 'name.number']"
-			ng-click="selectRoom(room)" ng-class="{selection: selectedRoom === room}">
+			ng-click="selectRoom(room)" ng-class="{selection: isRoomSelected(room)}">
 			<!-- prepare building rep -->
 			<td>{{room.roomName}}</td>
 			<td>{{room.type}}</td>

@@ -63,7 +63,10 @@ public class TestDefaultDomainRepository {
 		roomName = new RoomName(Building.A, 1);
 		room =  new Room(roomName, 30);
 		lecturer = new Lecturer("Test", "Lecturer", 15);
-		event = new Event(EventType.LECTURE, "TestEvent", START, START.plus(90,ChronoUnit.MINUTES), room, lecturer, 10);
+		event = new Event(EventType.LECTURE, "TestEvent", START, START.plus(90,ChronoUnit.MINUTES));
+		event.addRoom(room);
+		event.setLecturer(lecturer);
+		event.setChangeDuration(10);
 		
 		studentsClassId = new StudentsClassId(FieldOfStudy.I, 14, 'c');
 		studentsClass = new StudentsClass(studentsClassId, 36, 15);
@@ -96,7 +99,7 @@ public class TestDefaultDomainRepository {
 		assertEquals (event.getTitle(), updatedEvent.getTitle());
 		assertEquals (event.getStart(), updatedEvent.getStart());
 		assertEquals (event.getEnd(), updatedEvent.getEnd());
-		assertEquals (event.getRoom(), updatedEvent.getRoom());
+		assertEquals (event.getRooms(), updatedEvent.getRooms());
 		assertEquals (event.getLecturer(), updatedEvent.getLecturer());
 		assertEquals (event.getChangeDuration(), updatedEvent.getChangeDuration());
 		
@@ -134,22 +137,7 @@ public class TestDefaultDomainRepository {
 		
 		allEvents = repository.readAll(Event.class, chain);
 		assertTrue (allEvents.isEmpty());
-		
-		// 2.) find Events by room
-		PropertyFilter roomFilter = new PropertyFilter(room, Operator.EQ, Event.PROPERTY_NAME_ROOM);
-		chain = PropertyFilterChain.startWith(roomFilter);
-		
-		allEvents = repository.readAll(Event.class, chain);
-		assertFalse (allEvents.isEmpty());
-		assertEquals (event, allEvents.get(0));
-		
-		// 2.1) Counter-example
-		roomFilter = new PropertyFilter(room, Operator.NOTEQ, Event.PROPERTY_NAME_ROOM);
-		chain = PropertyFilterChain.startWith(roomFilter);
-		
-		allEvents = repository.readAll(Event.class, chain);
-		assertTrue (allEvents.isEmpty());
-		
+			
 		
 		// 3.) find Event by lecturer
 		PropertyFilter lecturerFilter = new PropertyFilter(lecturer, Operator.EQ, Event.PROPERTY_NAME_LECTURER);
