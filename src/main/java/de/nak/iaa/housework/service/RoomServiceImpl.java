@@ -12,6 +12,11 @@ import de.nak.iaa.housework.model.Room;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 import de.nak.iaa.housework.service.validation.ValidationService;
 
+/**
+ * Die Implementierung eines {@link RoomService}
+ * 
+ * @author da0015 14096
+ */
 @Service
 public class RoomServiceImpl extends AbstractDomainService<Room> implements RoomService {
 	

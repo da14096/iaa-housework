@@ -2,6 +2,11 @@ package de.nak.iaa.housework.service.validation;
 
 import java.io.Serializable;
 
+/**
+ * Diese Klasse entspricht einer fehlgeschlagenen Validierung, welche eine Nachricht als Parameter trägt.
+ * 
+ * @author da0015 14096
+ */
 public class Violation implements Serializable {
 
 	private static final long serialVersionUID = -4490906054457238211L;

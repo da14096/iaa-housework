@@ -5,6 +5,13 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+/**
+ * Validiert für ein gegebenes Objekt, dass die mittels {@link #propertiesToValidate} übergebenen Attribute
+ * nicht null sind. Hierzu wird eine Map übergeben, welche einen Getter für ein Benanntes Property bereitstellt.
+ * 
+ * @author da0015 14096
+ * @param <TYPE> der zu validierende Typ
+ */
 public class PropertyNotNullValidator <TYPE> extends TypeOrientedValidator<TYPE> {
 
 	private final Map <String, Function<TYPE, ?>> propertiesToValidate;

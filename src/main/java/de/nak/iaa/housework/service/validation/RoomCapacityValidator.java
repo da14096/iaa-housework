@@ -7,6 +7,11 @@ import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.Room;
 import de.nak.iaa.housework.model.StudentsClass;
 
+/**
+ *  Validiert, dass die Größe von Räumen zu der von Zenturien passen.
+ * 
+ * @author da0015 14096
+ */
 @ValidatorBean
 public class RoomCapacityValidator extends TypeOrientedValidator<StudentsClass> {
 

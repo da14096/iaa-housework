@@ -7,6 +7,11 @@ import de.nak.iaa.housework.model.Lecturer;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 import de.nak.iaa.housework.service.validation.ValidationService;
 
+/**
+ * Standardimplementierung eines {@link DomainService} für Dozenten
+ * 
+ * @author da0015 14096
+ */
 @Service
 public class LecturerService extends AbstractDomainService<Lecturer> {
 

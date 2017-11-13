@@ -15,8 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.model.repository.DomainRepository;
+import de.nak.iaa.housework.service.validation.ValidationException;
 import de.nak.iaa.housework.service.validation.ValidationService;
 
+/**
+ * Die Implementierung eines {@link StudentsClassService}
+ * 
+ * @author da0015 14096
+ */
 @Service
 public class StudentsClassServiceImpl extends AbstractDomainService<StudentsClass> implements StudentsClassService {
 

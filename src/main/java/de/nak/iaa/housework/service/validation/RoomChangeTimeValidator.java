@@ -15,6 +15,11 @@ import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
 
+/**
+ * Validiert, dass die Wechselzeit der Räume eines Ereignisses eingehalten werden.
+ * 
+ * @author da0015 14096
+ */
 @ValidatorBean(previentValidator = EventPropertyValidator.class)
 public class RoomChangeTimeValidator extends TypeOrientedValidator<Event> {
 

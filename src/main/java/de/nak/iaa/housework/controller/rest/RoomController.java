@@ -19,7 +19,7 @@ import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.Room;
 import de.nak.iaa.housework.service.DomainService;
 import de.nak.iaa.housework.service.EventService;
-import de.nak.iaa.housework.service.ValidationException;
+import de.nak.iaa.housework.service.validation.ValidationException;
 
 @RestController
 @RequestMapping("/room")

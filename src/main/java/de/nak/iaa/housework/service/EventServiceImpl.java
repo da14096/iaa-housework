@@ -22,9 +22,15 @@ import de.nak.iaa.housework.model.repository.PropertyFilter;
 import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
+import de.nak.iaa.housework.service.validation.ValidationException;
 import de.nak.iaa.housework.service.validation.ValidationService;
 import de.nak.iaa.housework.service.validation.Violation;
 
+/**
+ * Die Implementierung eines {@link EventService}
+ * 
+ * @author da0015 14096
+ */
 @Service
 public class EventServiceImpl extends AbstractDomainService<Event> implements EventService {
 

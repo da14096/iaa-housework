@@ -17,7 +17,7 @@ import de.nak.iaa.housework.model.Room;
 import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.service.EventService;
 import de.nak.iaa.housework.service.RoomService;
-import de.nak.iaa.housework.service.ValidationException;
+import de.nak.iaa.housework.service.validation.ValidationException;
 
 @RestController
 @RequestMapping("/event")

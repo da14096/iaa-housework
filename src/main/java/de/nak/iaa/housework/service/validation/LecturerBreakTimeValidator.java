@@ -16,6 +16,11 @@ import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
 
+/**
+ * Validiert, dass die Pausenzeit eines Dozenten eingehalten wird.
+ *  
+ * @author da0015 14096
+ */
 @ValidatorBean(previentValidator = EventPropertyValidator.class)
 public class LecturerBreakTimeValidator extends TypeOrientedValidator<Event> {
 

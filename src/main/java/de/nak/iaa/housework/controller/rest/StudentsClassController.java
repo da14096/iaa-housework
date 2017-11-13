@@ -23,7 +23,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.service.StudentsClassService;
-import de.nak.iaa.housework.service.ValidationException;
+import de.nak.iaa.housework.service.validation.ValidationException;
 
 @RestController
 @RequestMapping("/studentsClass")

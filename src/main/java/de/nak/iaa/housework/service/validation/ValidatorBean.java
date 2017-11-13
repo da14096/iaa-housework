@@ -24,5 +24,11 @@ public @interface ValidatorBean {
 
 	public static final Class <? extends Validator> NULL_REP = Validator.class;
 	
+	/**
+	 * Gibt an, dass dieses ValidatorBean von einem anderen Validator abhängig ist.
+	 * Dies ist sinnvoll bei beispielsweise Konsistenzprüfungen auf die fachliche Prüfungen folgen,
+	 * welche von bestimmten Attributen abhängig sind. Dadurch erspart man sich das wiederholte prüfen auf null-Werte
+	 * @return
+	 */
 	Class<? extends Validator> previentValidator() default Validator.class;
 }

@@ -16,7 +16,12 @@ import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain.Connector;
 
-
+/**
+ * Utility-Klasse welche komplexe Abfragen beispielsweise für Ereignisse enthält um diese wiederverwendbar zu machen.
+ * 
+ * @author da0015 14096
+ *
+ */
 public class FilterUtils {
 
 	private final DomainRepository repository;
@@ -25,6 +30,13 @@ public class FilterUtils {
 		this.repository = repository;
 	}
 	
+	/**
+	 * Liefert zu einem Intervall alle Ereignisse die dieses Schneiden/ drüber liegen.
+	 * @param start des Intervalls
+	 * @param end des Intervalls
+	 * @param additionalFilters weitere Filterkriterien. Diese werde mit {@link Connector#AND} verknüpft
+	 * @return
+	 */
 	public Set <Event> getAllOverlappingEvents (LocalDateTime start, LocalDateTime end, PropertyFilter... additionalFilters) {
 		if (start == null || end == null) {
 			throw new IllegalArgumentException("Start and End must be present to get overlapping events!");
@@ -54,7 +66,12 @@ public class FilterUtils {
 		return overlappingEvents;
 	}
 	
-	
+	/**
+	 * Für einen besseren Zugriff sorgt diese Methode durch Aufbereitung einer Liste von Datümern nach ihrem Startdatum.
+	 * Die Ereignisse unterhalb der Datümer sind hierbei in aufsteigender Reihenfolge nach ihrem Start sortiert
+	 * @param events die Ereignisse
+	 * @return die Sortierten und gemappten Ereignisse.
+	 */
 	public static final Map <LocalDate, List<Event>> mapEvents (List <Event> events) {
 		Map <LocalDate, List<Event>> result = new HashMap<>();
 		events.forEach(event -> {

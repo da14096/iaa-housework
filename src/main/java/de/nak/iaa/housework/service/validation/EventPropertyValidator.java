@@ -7,6 +7,12 @@ import java.util.function.Function;
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.EventType;
 
+/**
+ *  Validiert die Konsistenz einer Veranstaltung. Hier wird Beispielsweise auch die Mindest-Wechselzeit einer Klausur
+ *  validiert.
+ *  
+ * @author da0015 14096
+ */
 @ValidatorBean
 public class EventPropertyValidator extends PropertyNotNullValidator<Event> {
 

@@ -6,10 +6,18 @@ import java.util.Set;
 import org.springframework.transaction.annotation.Transactional;
 
 import de.nak.iaa.housework.model.repository.DomainRepository;
+import de.nak.iaa.housework.service.validation.ValidationException;
 import de.nak.iaa.housework.service.validation.ValidationService;
 import de.nak.iaa.housework.service.validation.Violation;
 
-
+/**
+ * Die abstrakte Implementierung eines {@link DomainService}.
+ * Delegiert die Standard-Methoden der Schnittstelle (CRUD) an das {@link DomainRepository}
+ * 
+ * @author da0015 14096
+ *
+ * @param <RESPTYPE> der Typ dieses Service
+ */
 abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYPE> {
 	
 	protected final DomainRepository repository;

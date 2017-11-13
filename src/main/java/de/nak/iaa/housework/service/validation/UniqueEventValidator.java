@@ -15,6 +15,11 @@ import de.nak.iaa.housework.model.repository.PropertyFilter;
 import de.nak.iaa.housework.model.repository.PropertyFilter.Operator;
 import de.nak.iaa.housework.service.FilterUtils;
 
+/**
+ * Validiert, dass ein Dozent und ein Raum jeweils nur "einmalig" besetzt sein dürfen
+ * 
+ * @author da0015 14096
+ */
 @ValidatorBean
 public class UniqueEventValidator extends TypeOrientedValidator<Event> {
 

@@ -3,6 +3,11 @@ package de.nak.iaa.housework.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
+/**
+ * Die unterschiedlichen Raumtypen
+ * @author da0015
+ *
+ */
 public enum RoomType {
 
 	LECTURE("Zenturienraum"),

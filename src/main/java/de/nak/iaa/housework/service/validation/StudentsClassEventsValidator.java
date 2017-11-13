@@ -9,6 +9,12 @@ import java.util.stream.Collectors;
 import de.nak.iaa.housework.model.Event;
 import de.nak.iaa.housework.model.StudentsClass;
 
+/**
+ * Validiert sowohl, dass sich die Ereignisse einer Zenturie nicht überschneiden, als auch dass die Pausenzeiten
+ * zwischen den einzelnen Ereignissen eingehalten werden.
+ * 
+ * @author da0015 14096
+ */
 @ValidatorBean
 public class StudentsClassEventsValidator extends TypeOrientedValidator<StudentsClass> {
 	

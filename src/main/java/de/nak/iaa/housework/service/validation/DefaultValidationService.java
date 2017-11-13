@@ -12,6 +12,13 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * Standardimplementierung des {@link ValidationService}. Dieser Service baut zur Validierung einer Entität abhängig vom
+ * Typ eine {@link ValidatorQueue} auf, basierend auf den Annotationen ({@link ValidatorBean} an den vorhandenen
+ * {@link Validator}
+ * 
+ * @author da0015 14096
+ */
 @Service
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class DefaultValidationService implements ValidationService {

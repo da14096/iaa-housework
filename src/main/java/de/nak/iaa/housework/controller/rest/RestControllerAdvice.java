@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import de.nak.iaa.housework.service.ValidationException;
+import de.nak.iaa.housework.service.validation.ValidationException;
 
 @ControllerAdvice
 public class RestControllerAdvice extends ResponseEntityExceptionHandler {
