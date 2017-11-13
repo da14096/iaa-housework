@@ -27,6 +27,12 @@ import de.nak.iaa.housework.model.RoomName;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 
+/**
+ * Testet, dass der Validator für die Wechselzeiten von Räumen richtig funktioniert.
+ * 
+ * @see {@link RoomChangeTimeValidator}
+ * @author da0015 14096
+ */
 @ContextConfiguration(locations = {"classpath:test_spring.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestRoomChangeTimeValidator {

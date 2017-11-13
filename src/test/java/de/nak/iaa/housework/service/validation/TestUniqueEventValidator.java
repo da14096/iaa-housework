@@ -27,6 +27,12 @@ import de.nak.iaa.housework.model.RoomName;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 
+/**
+ * Testet den Validator, welcher die eindeutige Zuordnung von Räumen und Dozenten zu Veranstaltungen prüft.
+ * 
+ * @see {@link UniqueEventValidator} 
+ * @author da0015 14096
+ */
 @ContextConfiguration(locations = {"classpath:test_spring.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestUniqueEventValidator {

@@ -25,6 +25,12 @@ import de.nak.iaa.housework.model.Lecturer;
 import de.nak.iaa.housework.model.repository.DomainRepository;
 import de.nak.iaa.housework.model.repository.PropertyFilterChain;
 
+/**
+ * Testet den Validator, welcher die Einhaltung der Pausenzeit eines Dozenten validiert. 
+ * @see {@link LecturerBreakTimeValidator}
+ * 
+ * @author da0015 14096
+ */
 @ContextConfiguration(locations = {"classpath:test_spring.xml"})
 @RunWith(SpringJUnit4ClassRunner.class)
 public class TestLecturerBreakTimeValidator {

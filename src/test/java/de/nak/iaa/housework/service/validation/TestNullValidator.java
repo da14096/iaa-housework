@@ -9,6 +9,11 @@ import java.util.function.Function;
 
 import org.junit.Test;
 
+/**
+ * Testet dass die Validierung auf null richtig funktioniert
+ * 
+ * @author da0015 14096
+ */
 public class TestNullValidator {
 
 	

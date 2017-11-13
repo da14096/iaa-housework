@@ -16,6 +16,13 @@ import de.nak.iaa.housework.model.RoomName;
 import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.model.StudentsClassId;
 
+/**
+ * Testet die Validierung der Zenturiengröße im Bezug auf die Raumgröße.
+ * 
+ * 
+ * @see {@link RoomCapacityValidator}
+ * @author da0015 14096
+ */
 public class TestRoomCapacityValidator {
 	
 	@Test

@@ -15,6 +15,12 @@ import de.nak.iaa.housework.model.FieldOfStudy;
 import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.model.StudentsClassId;
 
+/**
+ * Testet den Validator, welcher Überschneidungen sowie Nicht-Einhaltung von Zenturienpausenzeiten erkennt-.
+ * 
+ * @see {@link StudentsClassEventsValidator}
+ * @author da0015
+ */
 public class TestStudentsClassEventsValidator {
 	
 	@Test
