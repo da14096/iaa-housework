@@ -21,13 +21,13 @@
 	<tbody>
 		<tr ng-repeat="i in maxEventAmount">
 			<!-- prepare building rep -->
-			<td>{{eventsMatchingVisibleDates[0][i].start.toLocaleTimeString(undefined, dateFormat)}} {{eventsMatchingVisibleDates[0][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[1][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[1][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[2][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[2][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[3][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[3][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[4][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[4][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[5][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[5][i].title}}</td>
-			<td>{{eventsMatchingVisibleDates[6][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[6][i].title}}</td>
+			<td>{{parseTime(eventsMatchingVisibleDates[0][i].start)}} {{eventsMatchingVisibleDates[0][i].title}}</td>
+			<td>{{parseTime(eventsMatchingVisibleDates[1][i].start)}} {{eventsMatchingVisibleDates[1][i].title}}</td>
+			<td>{{parseTime(eventsMatchingVisibleDates[2][i].start)}} {{eventsMatchingVisibleDates[2][i].title}}</td>
+			<td>{{parseTime(eventsMatchingVisibleDates[3][i].start)}} {{eventsMatchingVisibleDates[3][i].title}}</td>
+			<td>{{parseTime(eventsMatchingVisibleDates[4][i].start)}} {{eventsMatchingVisibleDates[4][i].title}}</td>
+			<td>{{parseTime(eventsMatchingVisibleDates[5][i].start)}} {{eventsMatchingVisibleDates[5][i].title}}</td>
+			<td>{{parseTime(eventsMatchingVisibleDates[6][i].start)}} {{eventsMatchingVisibleDates[6][i].title}}</td>
 		</tr>
 	</tbody>
 </table>

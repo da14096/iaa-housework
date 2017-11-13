@@ -54,6 +54,10 @@ application.controller('weekViewController', [
 		  }
 	  }
 	
+	  $scope.parseTime = (value) => {
+		  return value? new Date(Date.UTC(value[0], value[1] - 1, value[2], value[3], value[4]))
+				  .toLocaleTimeString(undefined, $scope.timeFormat): '';
+	  }
 	  $scope.close = () => {
 		  $scope.weekViewVisible = false;
 	  }
