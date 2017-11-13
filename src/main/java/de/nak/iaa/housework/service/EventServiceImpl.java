@@ -117,4 +117,9 @@ public class EventServiceImpl extends AbstractDomainService<Event> implements Ev
 		List <Event> allEventsInInterval = repository.readAll(Event.class, chain);
 		return FilterUtils.mapEvents(allEventsInInterval);
 	}
+	
+	@Override
+	protected Object extractDatabaseID(Event entity) {
+		return entity.getId();
+	}
 }

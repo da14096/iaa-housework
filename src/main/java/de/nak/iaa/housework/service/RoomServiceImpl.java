@@ -35,4 +35,8 @@ public class RoomServiceImpl extends AbstractDomainService<Room> implements Room
 		}
 		return allRooms;
 	}
+	@Override
+	protected Object extractDatabaseID(Room entity) {
+		return entity.getName();
+	}
 }

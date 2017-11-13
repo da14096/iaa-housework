@@ -65,4 +65,8 @@ public class StudentsClassServiceImpl extends AbstractDomainService<StudentsClas
 		persistentStudentsClass.cancelEvent(event);
 		return repository.update(persistentStudentsClass);
 	}
+	@Override
+	protected Object extractDatabaseID(StudentsClass entity) {
+		return entity.getId();
+	}
 }

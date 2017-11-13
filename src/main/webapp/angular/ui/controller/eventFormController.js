@@ -119,7 +119,7 @@ application.controller('eventFormController', [
     				.then(success, response => _requestForce(studentsClass, eventToSave, repetitions, success));
     		} else {
     			studentsClassService.addEvent(studentsClass, eventToSave)
-    				.then(success, response => _requestForce(studentsClass, eventToSave, success))
+    				.then(success, response => _requestForce(studentsClass, eventToSave, 0, success))
     		}
     	}
     }

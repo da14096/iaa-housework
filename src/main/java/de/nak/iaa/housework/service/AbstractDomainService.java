@@ -26,6 +26,9 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 	@Override
 	@Transactional
 	public RESPTYPE persist(RESPTYPE item, boolean validate) throws ValidationException {
+		if (alreadyExists(item)) {
+			throw new ValidationException(new Violation("Die Entität [" + item + "] existiert bereits!"));
+		}
 		if (validate) {
 			validate(item);
 		}
@@ -59,10 +62,28 @@ abstract class AbstractDomainService <RESPTYPE> implements DomainService<RESPTYP
 	public List<RESPTYPE> readAll() {
 		return repository.readAll(type);
 	}	
+	
+	/**
+	 * Validiert ein item mittels des {@link ValidationService}. Kommt es zu {@link Violation} so wird eine 
+	 * {@link ValidationException} ausgelöst.
+	 * @param item
+	 * @throws ValidationException
+	 */
 	protected void validate (RESPTYPE item) throws ValidationException {
 		Set <Violation> violations = validationService.validate(item);
 		if (!violations.isEmpty()) {
 			throw new ValidationException(violations);
 		}
 	}
+	/**
+	 * Prüft ob ein Element bereits existiert.
+	 * 
+	 * @param item the item to check
+	 */
+	protected boolean alreadyExists (RESPTYPE item) throws ValidationException {
+		Object databaseId = extractDatabaseID(item);
+		return databaseId != null && repository.find(this.type, databaseId) != null;
+	}
+	
+	protected abstract Object extractDatabaseID (RESPTYPE entity);
 }
