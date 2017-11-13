@@ -1,3 +1,4 @@
+// Tim Lindemann 6436 
 'use strict';
 
 application.controller('dashboardController', [
@@ -9,7 +10,7 @@ application.controller('dashboardController', [
   'eventService',
   'eventBus',
   ($scope, modelService, roomService, lecturerService, studentsClassService, eventService, eventBus) => {
-    
+//    configuration-variables
 	$scope.roomListAddable = true;
     $scope.lecturerListAddable = true;
     $scope.studentsClassListAddable = true;
@@ -28,18 +29,18 @@ application.controller('dashboardController', [
     $scope.dateFormat = {year:"2-digit", month:"2-digit", day:"2-digit"};
 	$scope.timeFormat = {hour: "2-digit", minute: "2-digit"};
 	  
-    
+//    listen on eventBus
     eventBus.onDeleteEvent(function (deletedEvent) {
     	$scope.events = $scope.events.filter(function (event) {return event.id !== deletedEvent.id});
     });
-    
+//    listen on eventBus
     eventBus.onUpdateEvent(function (updatedEvent, flagCreated) {
     	_replaceEventStartAndEndWithDates(updatedEvent);
     	if (flagCreated) {
     		$scope.events.push(updatedEvent);
     	}
     });
-    
+//    listen on eventBus
     eventBus.onEndEventEdit (function () {
     	$scope.eventViewVisible = false;
     });
@@ -64,26 +65,28 @@ application.controller('dashboardController', [
     }
     
 //  lecturer-operations  
+    $scope.lecturerToCreate = {minimalBreakTime: 15};
     lecturerService.findAll().then(response => {$scope.lecturers = response.data});
     $scope.createLecturer = (lecturerToCreate) => {
         lecturerService.createLecturer(lecturerToCreate)
           .then(response => {
             if (response.status === 200) {
               $scope.lecturers.push(response.data);
-              $scope.lecturerToCreate = {};
+              $scope.lecturerToCreate = {minimalBreakTime: 15};
               $scope.newLecturerFormVisible = false;
             } 
         });
     }
 
 //  studentsClass-operations  
+    $scope.studentsClassToCreate = {minimalBreakTime: 15};
     studentsClassService.findAll().then(response => {$scope.studentsClasses = response.data});
     $scope.createStudentsClass = (studentsClassToCreate) => {
     	studentsClassService.createStudentsClass(studentsClassToCreate)
           .then(response => {
             if (response.status === 200) {
               $scope.studentsClasses.push(response.data);
-              $scope.studentsClassToCreate = {};
+              $scope.studentsClassToCreate = {minimalBreakTime: 15};
               $scope.newStudentsClassFormVisible = false;
             } 
         });
@@ -109,16 +112,17 @@ application.controller('dashboardController', [
 			event.end = new Date(Date.UTC(end[0], end[1] - 1, end[2], end[3], end[4]));
 		}
     }
-    
+//    start the planning of a new event
     $scope.planEvent = () => {
     	$scope.eventViewVisible = true;
     	eventBus.publishEditEvent({});
     }
+//    edit an existing event
     $scope.editEvent = (event) => {
     	$scope.eventViewVisible = true;
     	eventBus.publishEditEvent(event);
     }
-    
+//    select - routine for a lecturer
     $scope.selectLecturer = (lecturer) => {
     	if ($scope.selectedLecturer === lecturer) {
     		$scope.selectedLecturer = null;
@@ -126,6 +130,7 @@ application.controller('dashboardController', [
     		$scope.selectedLecturer = lecturer;
     	}
     }
+//    select -routine for a room
     $scope.selectRoom = (room) => {
     	if ($scope.selectedRoom === room) {
     		$scope.selectedRoom = null;
@@ -133,9 +138,11 @@ application.controller('dashboardController', [
     		$scope.selectedRoom = room;
     	}
     }
+//    indicator that can be used to find out whether a room is selected
     $scope.isRoomSelected = (room) => {
     	return $scope.selectedRoom == room;
     }
+//    select-routine for a studentsClass
     $scope.selectStudentsClass = (studentsClass) => {
     	if ($scope.selectedStudentsClass === studentsClass) {
     		$scope.selectedStudentsClass = null;
@@ -143,6 +150,8 @@ application.controller('dashboardController', [
     		$scope.selectedStudentsClass = studentsClass;
     	}
     }
+    
+//    weekView - calls
     $scope.createWeekViewForLecturer = (lecturer) => {
     	eventBus.publishFillWeekView(lecturerService.getEventsForWeek, lecturer, "Dozent " + lecturer.surname);
     }

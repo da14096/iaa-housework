@@ -1,5 +1,6 @@
 'use strict';
-
+//Henrik Kriegshammer 6291
+//services for model (to retrieve enum values)
 application.service('modelService', [
   '$http',
   function ($http) {
@@ -10,6 +11,7 @@ application.service('modelService', [
   }
 ]);
 
+// services for room
 application.service('roomService', [
   '$http',
   function ($http) {
@@ -20,6 +22,7 @@ application.service('roomService', [
   }
 ]);
 
+//lecturerServices
 application.service('lecturerService', [
   '$http',
   function ($http) {
@@ -30,6 +33,7 @@ application.service('lecturerService', [
    }
 ]);
 
+//studentsClass Services
 application.service('studentsClassService', [
   '$http',
   function ($http) {
@@ -48,6 +52,7 @@ application.service('studentsClassService', [
    }
 ]);
 
+// eventService
 application.service('eventService', [
   '$http',
   function ($http) {

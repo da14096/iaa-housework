@@ -9,6 +9,11 @@ import de.nak.iaa.housework.model.EventType;
 import de.nak.iaa.housework.model.FieldOfStudy;
 import de.nak.iaa.housework.model.RoomType;
 
+/**
+ * EInfacher Rest-Controller, der die vorhandenen Enums bereitstellt
+ * 
+ * @author Tim Lindemann 6436
+ */
 @RestController
 @RequestMapping("/model")
 public class ModelController {

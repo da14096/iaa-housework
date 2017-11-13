@@ -25,6 +25,11 @@ import de.nak.iaa.housework.model.StudentsClass;
 import de.nak.iaa.housework.service.StudentsClassService;
 import de.nak.iaa.housework.service.validation.ValidationException;
 
+/**
+ * Rest-Schnittstelle, die die Methoden für Zenturien bereitstellt.
+ * 
+ * @author Henrik Kriegshammer 6291
+ */
 @RestController
 @RequestMapping("/studentsClass")
 public class StudentsClassController {
@@ -51,12 +56,31 @@ public class StudentsClassController {
 	public StudentsClass create(@RequestBody final StudentsClass studentsClass) throws ValidationException {
 		return studentsClassService.persist(studentsClass);
 	}
+	/**
+	 * Liefert für eine Zenturie die Ereignisse in der angegebenen Periode
+	 * @param studentsClass die Zenturie
+	 * @param start der Periode
+	 * @param end der Periode
+	 * @return die gemappten Veranstaltungen (aufsteigend nach start sortiert)
+	 */
 	@PostMapping (path="/weekView")
 	public Map <LocalDate, List <Event>> getOverview (@RequestBody StudentsClass studentsClass, 
 						@RequestParam (name="start", required=true)@DateTimeFormat(iso=ISO.DATE_TIME) LocalDate start, 
 						@RequestParam (name="end", required=true)@DateTimeFormat(iso=ISO.DATE_TIME) LocalDate end) {
 		return studentsClassService.resolveEventsMapped(studentsClass, start, end);
 	}
+	/**
+	 * Speichert ein Ereignis über die Parameter weeks und validate kann gesteuert werden ob die Veranstaltung für
+	 * mehrere Wochen wiederholt werden soll und ob eine Validierung stattfinden soll. Daraufhin werden die Ereignisse 
+	 * der Zenturie zugeordnet.
+	 * 
+	 * @param node reqBody
+	 * @param validate validierung
+	 * @param weeks wiederholung in Wochen
+	 * @return die Ereignisse
+	 * @throws JsonProcessingException
+	 * @throws ValidationException bei Validierungs-Fehlschlägen
+	 */
 	@PostMapping(path = "/applyEvent")
 	public List <Event> addEvent(@RequestBody ObjectNode node, 
 						@RequestParam(name="validate", defaultValue="true") boolean validate,
@@ -67,7 +91,13 @@ public class StudentsClassController {
 		Event event = OBJECT_MAPPER.treeToValue(node.get(JSON_PARAMETER_EVENT), Event.class);
 		return studentsClassService.addEvent(clazz, event, validate, weeks);
 	}
-	
+	/**
+	 * Löscht ein Ereignis von einer Zenturie
+	 * 
+	 * @param node reqBody
+	 * @throws JsonProcessingException
+	 * @throws ValidationException bei Validierungsfehlschlägen
+	 */
 	@PostMapping(path = "/removeEvent")
 	public void removeEvent(@RequestBody ObjectNode node) throws JsonProcessingException, ValidationException {
 		StudentsClass clazz = OBJECT_MAPPER.treeToValue(node.get(JSON_PARAMETER_STUDENTS_CLASS), StudentsClass.class);

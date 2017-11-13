@@ -1,5 +1,9 @@
+// Henrik Kriegshammer 6291
+// general services
 application.service('eventBus', [
+//	eventBus that is used to communicate between controllers
 	function () {
+//		editEvent
 		var _editEventListener = [];
 		this.onEditEvent = (callback) => {
 			_editEventListener.push(callback);
@@ -9,7 +13,7 @@ application.service('eventBus', [
 				listener(eventToEdit);
 			}
 		}
-		
+//		updatedEvent
 		var _updateEventListener = [];
 		this.onUpdateEvent = (callback) => {
 			_updateEventListener.push(callback);
@@ -19,7 +23,7 @@ application.service('eventBus', [
 				listener(updatedEvent, flagCreated);
 			}
 		}
-		
+//		eventDeleted
 		var _deleteEventListener = [];
 		this.onDeleteEvent = (callback) => {
 			_deleteEventListener.push(callback);
@@ -29,7 +33,7 @@ application.service('eventBus', [
 				listener(eventToDelete);
 			}
 		}
-		
+//		eventEditing ended
 		var _endEventEditListener = [];
 		this.onEndEventEdit = (callback) => {
 			_endEventEditListener.push(callback);
@@ -40,7 +44,7 @@ application.service('eventBus', [
 			}
 		}
 		
-		
+//		start weekView
 		var _fillWeekViewListener = [];
 		this.onFillWeekView = (callback) => {
 			_fillWeekViewListener.push(callback);

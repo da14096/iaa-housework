@@ -21,6 +21,11 @@ import de.nak.iaa.housework.service.DomainService;
 import de.nak.iaa.housework.service.EventService;
 import de.nak.iaa.housework.service.validation.ValidationException;
 
+/**
+ * Rest-Schnittstelle, die die Methoden für Dozenten bereitstellt.
+ * 
+ * @author Henrik Kriegshammer 6291
+ */
 @RestController
 @RequestMapping("/lecturer")
 public class LecturerController {
@@ -44,6 +49,13 @@ public class LecturerController {
 		return lecturerService.persist(lecturer);
 	}
 
+	/**
+	 * Liefert für einen Dozenten die Ereignisse in der angegebenen Periode
+	 * @param lecturer der Dozent
+	 * @param start der Periode
+	 * @param end der Periode
+	 * @return die gemappten Veranstaltungen (aufsteigend nach start sortiert)
+	 */
 	@PostMapping(path = "/weekView")
 	public Map<LocalDate, List<Event>> getOverview(@RequestBody Lecturer lecturer,
 			@RequestParam(name = "start", required=true) @DateTimeFormat(iso=ISO.DATE_TIME) LocalDate start,

@@ -1,5 +1,5 @@
 'use strict';
-
+// Henrik Kriegshammer 6291
 application.controller('weekViewController', [
   '$scope',
   'eventBus',
@@ -8,6 +8,7 @@ application.controller('weekViewController', [
 	  var _serviceMethod;
 	  var _overviewObject;
 	  
+//	  listen on eventBUs
 	  eventBus.onFillWeekView (function (serviceMethod, object, caption) {
 		  _serviceMethod = serviceMethod;
 		  _overviewObject = object;
@@ -16,7 +17,7 @@ application.controller('weekViewController', [
 		  $scope.fillWeekView();
 		  $scope.caption = caption;
 	  });
-	    
+//	    fill the view with the data of the selected date
 	  $scope.fillWeekView = () => {
 		  var selDate = $scope.selDate;
 		  var dayOfWeek = selDate.getDay();

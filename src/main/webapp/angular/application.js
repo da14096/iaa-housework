@@ -1,8 +1,9 @@
 'use strict';
-
+//Henrik Kriegshammer 6291
 const application = angular.module('scheduleManagement', []);
 
 application.service('errorHandler', [
+//	handles the errors that are returned by the server and displays them to the user
 	function () {
 		var _errorWindow;
 		this.displayErrorMessage = (error) => {
@@ -30,6 +31,7 @@ application.service('errorHandler', [
 ]);
 
 application.factory('errorInterceptor', ['$q', 'errorHandler',
+//	register the errorHandler
     function ($q, errorHandler) {
         return {
             request: function (config) {

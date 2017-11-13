@@ -1,3 +1,4 @@
+<!-- Henrik Kriegshammer 6291 -->
 <head>
 	<meta charset="UTF-8"/>
 </head>
@@ -20,7 +21,7 @@
 	<tbody>
 		<tr ng-repeat="i in maxEventAmount">
 			<!-- prepare building rep -->
-			<td>{{eventsMatchingVisibleDates[0][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[0][i].title}}</td>
+			<td>{{eventsMatchingVisibleDates[0][i].start.toLocaleTimeString(undefined, dateFormat)}} {{eventsMatchingVisibleDates[0][i].title}}</td>
 			<td>{{eventsMatchingVisibleDates[1][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[1][i].title}}</td>
 			<td>{{eventsMatchingVisibleDates[2][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[2][i].title}}</td>
 			<td>{{eventsMatchingVisibleDates[3][i].start.toLocaleTimeString(undefined, timeFormat)}} {{eventsMatchingVisibleDates[3][i].title}}</td>

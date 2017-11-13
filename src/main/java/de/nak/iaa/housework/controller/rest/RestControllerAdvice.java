@@ -10,6 +10,11 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import de.nak.iaa.housework.service.validation.ValidationException;
 
+/**
+ * Interceptor, der die ValidationException zum Client durchleitet.
+ * 
+ * @author Henrik Kriegshammer 6291
+ */
 @ControllerAdvice
 public class RestControllerAdvice extends ResponseEntityExceptionHandler {
  

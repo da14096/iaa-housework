@@ -1,5 +1,5 @@
 'use strict';
-
+// Tim Lindemann 6436 
 application.controller('eventFormController', [
   '$scope',
   'modelService',
@@ -13,6 +13,7 @@ application.controller('eventFormController', [
 	  var _currentlyAssignedStudentsClasses = [];
 	  var _initialEventState;
 	  
+//	  configure context
 	$scope.today = new Date();
     $scope.lecturerListAddable = false;
     $scope.lecturerListSelectable = true;
@@ -24,11 +25,14 @@ application.controller('eventFormController', [
     $scope.roomListCaption = "Verfügbare Räume";
     $scope.roomSelectionOpened = false;
     
+//    init context
     modelService.fieldsOfStudy().then(response => $scope.allFieldsOfStudy = response.data);
     studentsClassService.findAll().then(response => $scope.studentsClasses = response.data);   
     
+//    listen on eventBus
     eventBus.onEditEvent(function (eventToEdit) {
     	lecturerService.findAll().then(response => {
+//    		restore lecturer selection
     		$scope.lecturers = response.data;
     		if ($scope.eventToEdit.lecturer !== undefined) {
         		var lecturerFilter = function (lecturer) {
@@ -39,6 +43,7 @@ application.controller('eventFormController', [
         		$scope.selectedLecturer = {};
         	}
     	});
+//    	resolve the assigned studentsclasses
     	if (eventToEdit.id) {
 	    	eventService.getAssignedStudentsClasses(eventToEdit).then(response => {
 	    		_currentlyAssignedStudentsClasses = response.data;
@@ -63,6 +68,7 @@ application.controller('eventFormController', [
 		$scope.yearToAssignEventTo = undefined;
 		$scope.formToAssignEventTo = undefined;
     	
+//		keep in memory the inital state of the event for resetting it in case of abortion
     	$scope.eventToEdit = eventToEdit;
     	_initialEventState =  {
     		id: eventToEdit.id,
@@ -78,8 +84,9 @@ application.controller('eventFormController', [
     		$scope.updateSelectableValuesForEventType();
     	}
     });
-    
+//    save routine
     $scope.saveEvent = (eventToSave) => {
+//    	determine whether the event was assigned to studentsClasses
 		var studentsClassesToAssignEventTo = $scope.studentsClasses.filter(studentsClass => {
     		var studentsClassId = studentsClass.id;
     		
@@ -90,6 +97,7 @@ application.controller('eventFormController', [
     					$scope.formToAssignEventTo == studentsClassId.form;
     		return fieldOfStudyMatches && yearMatches && formMatches;
     	});
+//		assign it
     	if (studentsClassesToAssignEventTo.length > 0) {
     		_assignToStudentsClasses(eventToSave, studentsClassesToAssignEventTo);
     	} else {
@@ -103,7 +111,7 @@ application.controller('eventFormController', [
     		.then(success, response => _requestForceForSave(eventToSave, $scope.repetitions, success));
     	}
     }
-    
+//    perform assignment
     function _assignToStudentsClasses (eventToSave, studentsClassesToAssignEventTo) {
     	var success = (response) => {
     		for (var event of response.data) {
@@ -123,7 +131,7 @@ application.controller('eventFormController', [
     		}
     	}
     }
-    
+//    in case of a validationException ask the user whether he wants to perform the request anyways
     function _requestForce (studentsClass, eventToAssign, weeks, callback) {
     	setTimeout(function () {
 	    	if (confirm("Bitte beachten Sie die Fehlermeldungen, welche beim Speichern der Veranstaltung aufgetreten sind. " +
@@ -133,6 +141,7 @@ application.controller('eventFormController', [
 	    	}
     	}, 200);
     }
+//    cancel the previously assigned studentsClasses
     function _cancelEventForPreviouslyAssignedStudentsClasses(newAssignedStudentsClasses, eventToCancel) {
     	var effectiveStudentsClasesToCancel = _currentlyAssignedStudentsClasses.filter(function (clazz) {
     		for (var sc of newAssignedStudentsClasses) {
@@ -146,6 +155,7 @@ application.controller('eventFormController', [
 			studentsClassService.removeEvent(scToCancel, eventToCancel);
 		}
     }
+//  in case of a validationException ask the user whether he wants to perform the request anyways
     function _requestForceForSave (eventToSave, weeks, callback) {
     	setTimeout(function () {
 	    	if (confirm("Bitte beachten Sie die Fehlermeldungen, welche beim Speichern der Veranstaltung aufgetreten sind. " +
@@ -156,6 +166,7 @@ application.controller('eventFormController', [
     	}, 200);
     }
        
+//    delete an event
     $scope.deleteEvent = (eventToDelete) => {
     	eventService.deleteEvent(eventToDelete).then(response => {
     		if (response.status === 200) {
@@ -177,7 +188,7 @@ application.controller('eventFormController', [
     	}
     	eventBus.publishEndEventEdit();
     }
-    
+//    autofill the end field -> standard event length = 90 min
     $scope.autofill = () => {
     	var startDate = $scope.eventToEdit.start;
     	var endDate = new Date(startDate);
@@ -187,7 +198,7 @@ application.controller('eventFormController', [
 	    	$scope.eventToEdit.end = endDate;
     	}
     }
-    
+//    select-routine for lecturer
     $scope.selectLecturer = (lecturer) => {
     	if ($scope.selectedLecturer === lecturer) {
     		$scope.selectedLecturer = null;
@@ -196,6 +207,7 @@ application.controller('eventFormController', [
     	}
     	$scope.eventToEdit.lecturer = $scope.selectedLecturer;
     }
+//    select-routine for room
     $scope.selectRoom = (room) => {
     	var contained = false;
     	if (!$scope.eventToEdit.rooms) {
@@ -212,15 +224,17 @@ application.controller('eventFormController', [
     		$scope.eventToEdit.rooms.push(room);
     	}
     }
+//    can be used by view to determine whether a room is selected or not
     $scope.isRoomSelected = (room) => {
     	return $scope.eventToEdit && $scope.eventToEdit.rooms &&
     			$scope.eventToEdit.rooms.filter(function (r) {return room.roomName == r.roomName}).length > 0;
     }
-    
+//    open the roomSelection dialogue
     $scope.toggleRoomSelection = () => {
     	$scope.roomSelectionOpened = !$scope.roomSelectionOpened;
     	if ($scope.roomSelectionOpened) {
     		eventService.getAvailableRooms($scope.eventToEdit)
+//    		determine the available rooms for the selected date
     			.then(response => {
     				$scope.rooms = response.data;
     				var selectedRooms = $scope.eventToEdit.rooms;
@@ -232,7 +246,7 @@ application.controller('eventFormController', [
     			});
     	}
     }
-        
+//        update the assignable values depending on type
     $scope.updateSelectableValuesForEventType = () => {
     	var chosenEventType = $scope.eventToEdit.type;
     	switch (chosenEventType) {
@@ -249,16 +263,16 @@ application.controller('eventFormController', [
     		console.log("No handling defined for eventType [" + chosenEventType + "]")
     	}
     }
-    
+//    fill assignable years
     $scope.updateYearsForFieldOfStudy = () => {
     	var selectedFieldOfStudy = $scope.fieldOfStudyToAssignEventTo;
     	$scope.selectableYears = _getUniqueYears (selectedFieldOfStudy);
     }
-    
+//    fill assignable forms
     $scope.updateFormsForYear = () => {
     	$scope.selectableForms = _getForms($scope.fieldOfStudyToAssignEventTo , $scope.yearToAssignEventTo);
     }
-    
+//    get fieldsOfStudy
     function _getUniqueFieldsOfStudy () {
     	return $scope.allFieldsOfStudy.filter(fieldOfStudy => {
     		for (var studentsClass of $scope.studentsClasses) {
@@ -269,7 +283,7 @@ application.controller('eventFormController', [
     		return false;
     	});
     }
-    
+//    getYears
     function _getUniqueYears (fieldOfStudy) {
     	var uniqueYears = new Set();
 		for (var studentsClass of $scope.studentsClasses) {
@@ -280,7 +294,7 @@ application.controller('eventFormController', [
 		}
 		return Array.from(uniqueYears);
     }
-    
+//    getForms
     function _getForms (fieldOfStudy, year) {
     	var forms = [];
     	for (var studentsClass of $scope.studentsClasses) {

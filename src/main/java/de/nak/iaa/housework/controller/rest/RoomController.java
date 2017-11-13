@@ -21,6 +21,11 @@ import de.nak.iaa.housework.service.DomainService;
 import de.nak.iaa.housework.service.EventService;
 import de.nak.iaa.housework.service.validation.ValidationException;
 
+/**
+ * Rest-Schnittstelle, die die Methoden für Räume bereitstellt.
+ * 
+ * @author Henrik Kriegshammer 6291
+ */
 @RestController
 @RequestMapping("/room")
 public class RoomController {
@@ -42,6 +47,13 @@ public class RoomController {
 	public Room createRoom(@RequestBody final Room room) throws ValidationException {
 		return roomService.persist(room);
 	}
+	/**
+	 * Liefert für einen Raum die Ereignisse in der angegebenen Periode
+	 * @param room der Raum
+	 * @param start der Periode
+	 * @param end der Periode
+	 * @return die gemappten Veranstaltungen (aufsteigend nach start sortiert)
+	 */
 	@PostMapping (path="/weekView")
 	public Map <LocalDate, List <Event>> getOverview (@RequestBody Room room, 
 						@RequestParam (name="start", required=true)@DateTimeFormat(iso=ISO.DATE_TIME) LocalDate start, 
