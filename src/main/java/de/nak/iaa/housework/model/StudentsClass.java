@@ -31,6 +31,8 @@ public class StudentsClass {
 	public static final String PROPERTY_ID_FIELD_OF_STUDY = "id.fieldOfStudy";
 	public static final String PROPERTY_ID_YEAR = "id.year";
 	public static final String PROPERTY_ID_FORM = "id.form";
+	public static final String PROPERTY_SIZE = "size";
+	public static final String PROPERTY_MINIMAL_BREAK_TIME = "minimalBreakTime";
 	public static final String PROPERTY_NAME_EVENTS_TO_ATTEND = "eventsToAttend";
 	
 	@EmbeddedId

@@ -17,6 +17,11 @@ import javax.persistence.Table;
 @Table (name = "LECTURER")
 public class Lecturer {
 
+	public static final String PROPERTY_PERSONNEL_NUMBER = "personnelNumber";
+	public static final String PROPERTY_NAME = "name";
+	public static final String PROPERTY_SURNAME = "surname";
+	public static final String PROPERTY_MINIMAL_BREAK_TIME = "minimalBreakTime";
+	
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY)
 	private Long personnelNumber;

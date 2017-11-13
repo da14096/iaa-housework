@@ -198,14 +198,15 @@ application.controller('eventFormController', [
     }
     $scope.selectRoom = (room) => {
     	var contained = false;
-    	if ($scope.eventToEdit.rooms) {
-	    	for (var i = 0; i < $scope.eventToEdit.rooms.length; i++) {
-	    		if ($scope.eventToEdit.rooms[i].roomName == room.roomName) {
-	    			$scope.eventToEdit.rooms.splice(i, 1);
-	    			contained = true;
-	    			break;
-	    		}
-	    	}
+    	if (!$scope.eventToEdit.rooms) {
+    		$scope.eventToEdit.rooms = [];
+    	}
+    	for (var i = 0; i < $scope.eventToEdit.rooms.length; i++) {
+    		if ($scope.eventToEdit.rooms[i].roomName == room.roomName) {
+    			$scope.eventToEdit.rooms.splice(i, 1);
+    			contained = true;
+    			break;
+    		}
     	}
     	if (!contained) {
     		$scope.eventToEdit.rooms.push(room);
